@@ -1,12 +1,13 @@
-import { Button } from "ui";
+import { Button, Input } from 'ui';
 
-import styles from "../styles/index.module.css";
+import styles from '../styles/index.module.css';
 
 export default function Web() {
   return (
     <div className={styles.container}>
       <h1>Web</h1>
-      <Button onClick={() => console.log("Pressed!")} text="Boop" />
+      <Button onClick={() => console.log('Pressed!')} text="Boop" />
+      <Input text={'dada'} />
     </div>
   );
 }
