@@ -26,7 +26,7 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
       />
       <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
       <Text style={styles.restaurantSubtitle}>
-        ${restaurant.price} {restaurant.minDeliveryTime}-
+        $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
         {restaurant.minDeliveryTime} minutes
       </Text>
     </View>

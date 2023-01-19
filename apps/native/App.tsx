@@ -1,22 +1,25 @@
-import { StyleSheet, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import RestaurantItem from './src/components/RestaurantItem';
 import restaurants from './assets/data/restaurants.json';
 
 export default function Native() {
   return (
-    <View style={styles.container}>
-      <RestaurantItem restaurant={restaurants[0]} />
-      <RestaurantItem restaurant={restaurants[1]} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={restaurants}
+        renderItem={({ item }) => <RestaurantItem restaurant={item} />}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
+    margin: 10,
   },
 });
