@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 import { DishItemInterface } from './DishListItem';
 
-interface RestaurantItemProps {
+export interface RestaurantItemProps {
   restaurant: {
     id: string;
     name: string;
@@ -12,7 +12,7 @@ interface RestaurantItemProps {
     rating: number;
     price: number;
     image: string;
-    dishes: DishItemInterface[];
+    dishes: Object[];
   };
 }
 

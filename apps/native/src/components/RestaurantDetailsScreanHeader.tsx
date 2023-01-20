@@ -1,10 +1,8 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
-import restaurants from '../../assets/data/restaurants.json';
+import { RestaurantItemProps } from './RestaurantItem';
 
-const RestaurantDetailsScreanHeader = () => {
-  const restaurant = restaurants[0];
-
+const RestaurantDetailsScreanHeader = ({ restaurant }: RestaurantItemProps) => {
   return (
     <View>
       {restaurant.image && (
