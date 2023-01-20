@@ -1,16 +1,16 @@
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import RestaurantItem from './src/components/RestaurantItem';
-import restaurants from './assets/data/restaurants.json';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import HomeScreen from './src/screens/HomeScreen';
+import RestaurantDetailsScreen from './src/screens/RestaurantDetailsScreen';
 
 export default function Native() {
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={restaurants}
-        renderItem={({ item }) => <RestaurantItem restaurant={item} />}
-        showsVerticalScrollIndicator={false}
-      />
-    </SafeAreaView>
+    <View style={styles.container}>
+      {/* <HomeScreen /> */}
+      <RestaurantDetailsScreen />
+      {/* ova e statusot od bateirjata i od mrezata... */}
+      <StatusBar style="dark" />
+    </View>
   );
 }
 
@@ -20,6 +20,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10,
   },
 });

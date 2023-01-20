@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View } from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
+import { DishItemInterface } from './DishListItem';
 
 interface RestaurantItemProps {
   restaurant: {
@@ -11,25 +12,32 @@ interface RestaurantItemProps {
     rating: number;
     price: number;
     image: string;
-    dishes: Object[];
+    dishes: DishItemInterface[];
   };
 }
 
 const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
   return (
-    <View style={styles.restaurantContainer}>
+    <TouchableOpacity style={styles.restaurantContainer}>
       <Image
         source={{
           uri: restaurant.image,
         }}
         style={styles.image}
       />
-      <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
-      <Text style={styles.restaurantSubtitle}>
-        $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
-        {restaurant.minDeliveryTime} minutes
-      </Text>
-    </View>
+      <View style={styles.row}>
+        <View>
+          <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+          <Text style={styles.restaurantSubtitle}>
+            $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
+            {restaurant.minDeliveryTime} minutes
+          </Text>
+        </View>
+        <View style={styles.rating}>
+          <Text>{restaurant.rating}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -59,5 +67,18 @@ const styles = StyleSheet.create({
   },
   restaurantSubtitle: {
     color: 'gray',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rating: {
+    marginLeft: 'auto',
+    backgroundColor: 'lightgray',
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
   },
 });
