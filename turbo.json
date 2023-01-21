@@ -5,7 +5,7 @@
       "outputs": ["dist/**", ".next/**"],
       "dependsOn": ["^build"]
     },
-    "native:client": {
+    "client:native": {
       "cache": false
     },
     "dev": {

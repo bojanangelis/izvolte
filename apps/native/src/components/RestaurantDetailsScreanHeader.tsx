@@ -19,6 +19,7 @@ const RestaurantDetailsScreanHeader = ({ restaurant }: RestaurantItemProps) => {
           $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
           {restaurant.minDeliveryTime} minutes
         </Text>
+        <Text style={styles.menuTitle}>Menu</Text>
       </View>
     </View>
   );
@@ -44,5 +45,11 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
   },
+  menuTitle: {
+    marginTop: 20,
+    fontSize: 18,
+    letterSpacing: 0.7,
+  },
 });
+
 export default RestaurantDetailsScreanHeader;

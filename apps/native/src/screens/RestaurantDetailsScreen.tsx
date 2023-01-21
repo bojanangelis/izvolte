@@ -15,7 +15,7 @@ const RestaurantDetailsScreen = () => {
           <RestaurantDetailsScreanHeader restaurant={restaurant} />
         )}
         data={restaurant.dishes}
-        //work on this one sort it by id!
+        // work on this one sort it by id!
         keyExtractor={item => item.name}
         renderItem={({ item }) => <DishListItem dish={item} />}
       />

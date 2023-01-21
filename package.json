@@ -9,7 +9,7 @@
     "build": "turbo run build",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
-    "native:client": "turbo run native:client"
+    "client:native": "turbo run client:native"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
