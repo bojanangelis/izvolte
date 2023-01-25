@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 
@@ -16,8 +17,17 @@ export interface RestaurantItemProps {
 }
 
 const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
+  const navigation = useNavigation();
+  const handleRestaurantPress = () => {
+    //@ts-ignore
+    navigation.navigate('Restaurant', { id: restaurant.id });
+  };
+
   return (
-    <TouchableOpacity style={styles.restaurantContainer}>
+    <TouchableOpacity
+      onPress={handleRestaurantPress}
+      style={styles.restaurantContainer}
+    >
       <Image
         source={{
           uri: restaurant.image,
