@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
-import { DishItemInterface } from './DishListItem';
 
 export interface RestaurantItemProps {
   restaurant: {

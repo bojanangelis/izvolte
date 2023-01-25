@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import restaurants from '../../assets/data/restaurants.json';
+import { StatusBar } from 'expo-status-bar';
 
 const DishDetailsScreen = () => {
   const dish = restaurants[0].dishes[0];
@@ -18,8 +19,13 @@ const DishDetailsScreen = () => {
     }
   };
 
+  const getTotal = () => {
+    return (dish.price * quantity).toFixed(2);
+  };
+
   return (
     <View style={styles.page}>
+      <Image source={{ uri: dish?.image }} style={styles.imageHeader} />
       <Text style={styles.title}>{dish.name}</Text>
       <Text style={styles.description}>{dish.description}</Text>
       <View style={styles.separator} />
@@ -33,6 +39,14 @@ const DishDetailsScreen = () => {
           <AntDesign name="pluscircleo" size={60} color="black" />
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>
+          Add {quantity} to basket &#8226; $ {getTotal()}
+        </Text>
+      </TouchableOpacity>
+
+      <StatusBar style="light" />
     </View>
   );
 };
@@ -41,8 +55,6 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     width: '100%',
-    paddingVertical: 50,
-    padding: 10,
   },
   title: { fontSize: 30, fontWeight: '600', marginVertical: 10 },
   description: {
@@ -53,6 +65,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginVertical: 10,
   },
+  rowView: {
+    padding: 20,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -62,6 +77,23 @@ const styles = StyleSheet.create({
   quantity: {
     fontSize: 25,
     marginHorizontal: 20,
+  },
+  imageHeader: {
+    width: '100%',
+    aspectRatio: 5 / 3,
+  },
+  button: {
+    backgroundColor: 'black',
+    bottom: 20,
+    margin: 20,
+    padding: 20,
+    marginTop: 'auto',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 16,
   },
 });
 
