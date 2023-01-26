@@ -8,6 +8,9 @@
     "client:native": {
       "cache": false
     },
+    "client:web": {
+      "cache": false
+    },
     "dev": {
       "cache": false
     },
