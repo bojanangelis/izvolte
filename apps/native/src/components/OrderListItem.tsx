@@ -1,5 +1,6 @@
 import { View, Text, Image, Pressable } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 interface OrderListInterface {
   order: {
@@ -37,10 +38,10 @@ interface OrderListInterface {
 }
 
 const OrderListItem = ({ order }: OrderListInterface) => {
-  console.log('order>>', order);
+  const navigation = useNavigation();
   return (
     <Pressable
-      // onPress={onPress}
+      onPress={() => navigation.navigate('Order', { id: order.id })}
       style={{ flexDirection: 'row', margin: 40, alignItems: 'center' }}
     >
       <Image

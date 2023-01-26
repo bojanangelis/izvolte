@@ -1,11 +1,12 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
+import { useNavigation } from '@react-navigation/native';
 
 // EXAMPLE!!!!!!
 export interface DishItemInterface {
   dish: {
-    id: number;
+    id: string;
     name: string;
     description: string;
     price: number;
@@ -14,8 +15,12 @@ export interface DishItemInterface {
 }
 
 const DishListItem = ({ dish }: DishItemInterface) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity style={RestaurantDetailsStyles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Dish', { id: dish.id })}
+      style={RestaurantDetailsStyles.container}
+    >
       <View style={RestaurantDetailsStyles.viewContainer}>
         <Text style={RestaurantDetailsStyles.name}>{dish.name}</Text>
         <Text style={RestaurantDetailsStyles.description} numberOfLines={2}>

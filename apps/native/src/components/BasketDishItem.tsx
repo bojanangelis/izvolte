@@ -3,7 +3,7 @@ import React from 'react';
 
 interface BasketDishProps {
   basketDish: {
-    id: number;
+    id: string;
     name: string;
     description: string;
     price: number;

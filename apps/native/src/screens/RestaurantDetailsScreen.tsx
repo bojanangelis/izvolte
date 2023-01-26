@@ -6,14 +6,13 @@ import DishListItem from '../components/DishListItem';
 import RestaurantDetailsScreanHeader from '../components/RestaurantDetailsScreanHeader';
 import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation';
 
 type ParamList = {
   Restaurant: {
     id: string;
   };
 };
+
 const RestaurantDetailsScreen = () => {
   const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const navigation = useNavigation();
@@ -28,9 +27,8 @@ const RestaurantDetailsScreen = () => {
           <RestaurantDetailsScreanHeader restaurant={restaurant} />
         )}
         data={restaurant.dishes}
-        // work on this one sort it by id!
-        keyExtractor={item => item.name}
         renderItem={({ item }) => <DishListItem dish={item} />}
+        keyExtractor={item => item.id}
       />
       <Ionicons
         onPress={() => navigation.goBack()}

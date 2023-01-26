@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import restaurants from '../../assets/data/restaurants.json';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 
 const DishDetailsScreen = () => {
+  const navigation = useNavigation();
   const dish = restaurants[0].dishes[0];
   const [quantity, setQuantity] = useState(0);
 
@@ -40,7 +42,10 @@ const DishDetailsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Basket')}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>
           Add {quantity} to basket &#8226; $ {getTotal()}
         </Text>
