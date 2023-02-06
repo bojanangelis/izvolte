@@ -1,0 +1,55 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-izvolte-staging-222200-authRole",
+      "UnauthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolte-staging-222200-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolte-staging-222200-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-izvolte-staging-222200-deployment",
+      "UnauthRoleName": "amplify-izvolte-staging-222200-unauthRole",
+      "StackName": "amplify-izvolte-staging-222200",
+      "StackId": "arn:aws:cloudformation:us-east-1:310817921623:stack/amplify-izvolte-staging-222200/d8af75b0-a27e-11ed-9e22-12e21802a293",
+      "AmplifyAppId": "d2h7xp7xfugrsj"
+    }
+  },
+  "auth": {
+    "Izvolte": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_45KG719gi",
+        "AppClientIDWeb": "3ob1m6p6lsqjp1njdklqpkk011",
+        "AppClientID": "3iloe28ungvsj8jl2fppuohi31",
+        "IdentityPoolId": "us-east-1:c79d1c5c-d932-4a03-bfc2-262659cf738e",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:310817921623:userpool/us-east-1_45KG719gi",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "Izvolte"
+      },
+      "lastPushTimeStamp": "2023-02-01T23:37:28.692Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolte-staging-222200-deployment/amplify-cfn-templates/auth/Izvolte-cloudformation-template.json",
+        "logicalId": "authIzvolte"
+      }
+    }
+  }
+}
