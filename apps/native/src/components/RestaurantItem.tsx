@@ -38,12 +38,12 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
         <View>
           <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
           <Text style={styles.restaurantSubtitle}>
-            $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
-            {restaurant.minDeliveryTime} minutes
+            $ {restaurant.deliveryFee.toFixed(2)} &#8226;{' '}
+            {restaurant.minDeliveryTime}-{restaurant.minDeliveryTime} minutes
           </Text>
         </View>
         <View style={styles.rating}>
-          <Text>{restaurant.rating}</Text>
+          <Text>{restaurant.rating.toFixed(1)}</Text>
         </View>
       </View>
     </TouchableOpacity>

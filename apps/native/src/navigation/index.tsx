@@ -31,6 +31,7 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
         tabBarStyle: { backgroundColor: 'white' },
       }}
     >
@@ -71,7 +72,11 @@ const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator initialRouteName="Restaurants">
       <HomeStack.Screen name="Restaurants" component={HomeScreen} />
-      <HomeStack.Screen name="Restaurant" component={RestaurantDetailsScreen} />
+      <HomeStack.Screen
+        name="Restaurant"
+        component={RestaurantDetailsScreen}
+        options={{ headerShown: false }}
+      />
       <HomeStack.Screen name="Dish" component={DishDetailsScreen} />
       <HomeStack.Screen name="Basket" component={BasketScreen} />
     </HomeStack.Navigator>
