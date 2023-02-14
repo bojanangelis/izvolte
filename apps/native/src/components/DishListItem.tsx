@@ -3,7 +3,6 @@ import React from 'react';
 import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
 import { useNavigation } from '@react-navigation/native';
 
-// EXAMPLE!!!!!!
 export interface DishItemInterface {
   dish: {
     id: string;
@@ -12,25 +11,40 @@ export interface DishItemInterface {
     price: number;
     image?: string;
   };
+  loading: boolean;
 }
 
-const DishListItem = ({ dish }: DishItemInterface) => {
+const DishListItem = ({ dish, loading }: DishItemInterface) => {
   const navigation = useNavigation();
+  if (loading || !dish) {
+    return (
+      <View style={{ padding: 140, marginTop: 55 }}>
+        <Text>Loading....</Text>
+        <Text>Working on custom spinner..</Text>
+      </View>
+    );
+  }
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Dish', { id: dish.id })}
+      onPress={() =>
+        //@ts-ignore
+        navigation.navigate('Dish', { id: dish.id } as { id: string })
+      }
       style={RestaurantDetailsStyles.container}
     >
       <View style={RestaurantDetailsStyles.viewContainer}>
-        <Text style={RestaurantDetailsStyles.name}>{dish.name}</Text>
+        <Text style={RestaurantDetailsStyles.name}>{dish?.name}</Text>
         <Text style={RestaurantDetailsStyles.description} numberOfLines={2}>
-          {dish.description}
+          {dish?.description}
         </Text>
-        <Text style={RestaurantDetailsStyles.price}>${dish.price}</Text>
+        <Text style={RestaurantDetailsStyles.price}>
+          ${dish?.price.toFixed(2)}
+        </Text>
       </View>
-      {dish.image && (
+      {dish?.image && (
         <Image
-          source={{ uri: dish.image }}
+          source={{ uri: dish?.image }}
           style={RestaurantDetailsStyles.dishImage}
         />
       )}
@@ -39,27 +53,3 @@ const DishListItem = ({ dish }: DishItemInterface) => {
 };
 
 export default DishListItem;
-
-// EXAMPLE!!!!!!
-// <FlatList
-//   ItemSeparatorComponent={
-//     Platform.OS !== 'android' &&
-//     (({highlighted}) => (
-//       <View
-//         style={[style.separator, highlighted && {marginLeft: 0}]}
-//       />
-//     ))
-//   }
-//   data={[{title: 'Title Text', key: 'item1'}]}
-//   renderItem={({item, index, separators}) => (
-//     <TouchableHighlight
-//       key={item.key}
-//       onPress={() => this._onPress(item)}
-//       onShowUnderlay={separators.highlight}
-//       onHideUnderlay={separators.unhighlight}>
-//       <View style={{backgroundColor: 'white'}}>
-//         <Text>{item.title}</Text>
-//       </View>
-//     </TouchableHighlight>
-//   )}
-// />

@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import restaurants from '../../assets/data/restaurants.json';
 import { StatusBar } from 'expo-status-bar';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { DataStore } from 'aws-amplify';
+import { Dish } from '../models';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
-  const dish = restaurants[0].dishes[0];
-  const [quantity, setQuantity] = useState(0);
+  const route = useRoute();
+  const [dish, setDish] = useState<Dish | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  //@ts-ignore
+  const { id } = route.params;
+
+  useEffect(() => {
+    if (id) DataStore.query(Dish, id).then(dish => setDish(dish || null));
+  }, [id]);
 
   const handleQuantity = (value: string) => {
     switch (value) {
@@ -22,14 +37,16 @@ const DishDetailsScreen = () => {
   };
 
   const getTotal = () => {
-    return (dish.price * quantity).toFixed(2);
+    if (dish) return (dish.price * quantity).toFixed(2);
   };
-
+  if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
   return (
     <View style={styles.page}>
-      <Image source={{ uri: dish?.image }} style={styles.imageHeader} />
+      <Image source={{ uri: dish.image }} style={styles.imageHeader} />
       <Text style={styles.title}>{dish.name}</Text>
-      <Text style={styles.description}>{dish.description}</Text>
+      <Text style={styles.description} numberOfLines={2}>
+        {dish.description}
+      </Text>
       <View style={styles.separator} />
 
       <View style={styles.row}>
@@ -43,6 +60,7 @@ const DishDetailsScreen = () => {
       </View>
 
       <TouchableOpacity
+        //@ts-ignore
         onPress={() => navigation.navigate('Basket')}
         style={styles.button}
       >

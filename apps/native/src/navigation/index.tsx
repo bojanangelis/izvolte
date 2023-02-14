@@ -1,5 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  //wokring on thisone!
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
@@ -14,7 +18,12 @@ export type RootStackParamList = {
   Restaurant: {
     id: string;
   };
+  HomeStackNavigator: undefined;
+  Dish: {
+    id: string;
+  };
 };
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
@@ -70,7 +79,7 @@ const HomeStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator initialRouteName="Restaurants">
+    <HomeStack.Navigator>
       <HomeStack.Screen name="Restaurants" component={HomeScreen} />
       <HomeStack.Screen
         name="Restaurant"

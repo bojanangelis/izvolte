@@ -1,25 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
+import { Dish, Restaurant, LazyRestaurant } from '../models';
 
-export interface RestaurantItemProps {
-  restaurant: {
-    id: string;
-    name: string;
-    deliveryFee: number;
-    minDeliveryTime: number;
-    maxDeliveryTime: number;
-    rating: number;
-    price: number;
-    image: string;
-    dishes: Object[];
-  };
-}
-
-const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
+const RestaurantItem = ({ restaurant }) => {
+  console.log('what i have hire>>>>??', restaurant);
   const navigation = useNavigation();
   const handleRestaurantPress = () => {
-    //@ts-ignore
     navigation.navigate('Restaurant', { id: restaurant.id });
   };
 
