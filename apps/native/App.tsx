@@ -6,15 +6,19 @@ import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { signUpConfig } from './utils/signUp';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 
 const App = () => {
   return (
     <NavigationContainer>
-      <RootNavigatior />
-      {/* <SignInScreen /> */}
-      <StatusBar style="dark" />
+      <Provider store={store}>
+        <RootNavigatior />
+        {/* <SignInScreen /> */}
+        <StatusBar style="dark" />
+      </Provider>
     </NavigationContainer>
   );
 };
