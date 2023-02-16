@@ -15,10 +15,10 @@ import Profile from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
-  Restaurant: {
+  HomeStackNavigator: undefined;
+  Restaurants: {
     id: string;
   };
-  HomeStackNavigator: undefined;
   Dish: {
     id: string;
   };

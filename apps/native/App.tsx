@@ -8,10 +8,19 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import { signUpConfig } from './utils/signUp';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { Auth } from 'aws-amplify';
+import { useEffect, useState } from 'react';
 
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
-
 const App = () => {
+  const [authUser, setAuthUser] = useState(null);
+  useEffect(() => {
+    Auth.currentAuthenticatedUser({ bypassCache: true }).then(user =>
+      setAuthUser(user),
+    );
+  }, [Auth]);
+  console.log(authUser?.attributes?.sub as never);
+
   return (
     <NavigationContainer>
       <Provider store={store}>

@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
-import { Dish, Restaurant, LazyRestaurant } from '../models';
+import { Restaurant } from '../models';
 
-const RestaurantItem = ({ restaurant }) => {
-  console.log('what i have hire>>>>??', restaurant);
+interface RestaurantInterface {
+  restaurant: Restaurant;
+}
+
+const RestaurantItem = ({ restaurant }: RestaurantInterface) => {
   const navigation = useNavigation();
   const handleRestaurantPress = () => {
-    navigation.navigate('Restaurant', { id: restaurant.id });
+    navigation.navigate('Restaurant' as never, { id: restaurant.id } as never);
   };
 
   return (
@@ -30,7 +33,7 @@ const RestaurantItem = ({ restaurant }) => {
           </Text>
         </View>
         <View style={styles.rating}>
-          <Text>{restaurant.rating.toFixed(1)}</Text>
+          {restaurant.rating && <Text>{restaurant.rating.toFixed(1)}</Text>}
         </View>
       </View>
     </TouchableOpacity>
