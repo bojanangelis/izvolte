@@ -6,28 +6,29 @@ import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { signUpConfig } from './utils/signUp';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
+import AuthContextProvider from './src/context/AuthContext';
 
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
-  const [authUser, setAuthUser] = useState(null);
-  useEffect(() => {
-    Auth.currentAuthenticatedUser({ bypassCache: true }).then(user =>
-      setAuthUser(user),
-    );
-  }, [Auth]);
-  console.log(authUser?.attributes?.sub as never);
+  // useEffect(() => {
+  // Auth.currentAuthenticatedUser({ bypassCache: true }).then(user =>
+  // setAuthUser(user),
+  // console.log(user)
+  // );
+  // }, []);
+
+  //@ts-ignore
+  // console.log(authUser?.attributes as never);
+  //   console.log(authUser?.attributes?.sub as never);
 
   return (
     <NavigationContainer>
-      <Provider store={store}>
+      <AuthContextProvider>
         <RootNavigatior />
-        {/* <SignInScreen /> */}
-        <StatusBar style="dark" />
-      </Provider>
+      </AuthContextProvider>
+      <StatusBar style="dark" />
     </NavigationContainer>
   );
 };

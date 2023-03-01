@@ -12,9 +12,11 @@ import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
+import { useAuthContext } from '../context/AuthContext';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
+  Profile: undefined;
   HomeStackNavigator: undefined;
   Restaurants: {
     id: string;
@@ -27,9 +29,14 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
+  const { dbUser }: any = useAuthContext();
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      {dbUser ? (
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      ) : (
+        <Stack.Screen name="Profile" component={Profile} />
+      )}
     </Stack.Navigator>
   );
 };
