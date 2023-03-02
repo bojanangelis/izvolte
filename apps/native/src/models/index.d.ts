@@ -1,16 +1,24 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+import {
+  ModelInit,
+  MutableModel,
+  __modelMeta__,
+  ManagedIdentifier,
+} from '@aws-amplify/datastore';
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
+import {
+  LazyLoading,
+  LazyLoadingDisabled,
+  AsyncItem,
+  AsyncCollection,
+} from '@aws-amplify/datastore';
 
 export enum OrderStatus {
-  NEW = "NEW",
-  COOKING = "COOKING",
-  READY_FOR_PICKUP = "READY_FOR_PICKUP",
-  PICKED_UP = "PICKED_UP",
-  COMPLETED = "COMPLETED"
+  NEW = 'NEW',
+  COOKING = 'COOKING',
+  READY_FOR_PICKUP = 'READY_FOR_PICKUP',
+  PICKED_UP = 'PICKED_UP',
+  COMPLETED = 'COMPLETED',
 }
-
-
 
 type EagerOrderDish = {
   readonly [__modelMeta__]: {
@@ -24,7 +32,7 @@ type EagerOrderDish = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderDishDishId?: string | null;
-}
+};
 
 type LazyOrderDish = {
   readonly [__modelMeta__]: {
@@ -38,13 +46,20 @@ type LazyOrderDish = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderDishDishId?: string | null;
-}
+};
 
-export declare type OrderDish = LazyLoading extends LazyLoadingDisabled ? EagerOrderDish : LazyOrderDish
+export declare type OrderDish = LazyLoading extends LazyLoadingDisabled
+  ? EagerOrderDish
+  : LazyOrderDish;
 
-export declare const OrderDish: (new (init: ModelInit<OrderDish>) => OrderDish) & {
-  copyOf(source: OrderDish, mutator: (draft: MutableModel<OrderDish>) => MutableModel<OrderDish> | void): OrderDish;
-}
+export declare const OrderDish: (new (
+  init: ModelInit<OrderDish>,
+) => OrderDish) & {
+  copyOf(
+    source: OrderDish,
+    mutator: (draft: MutableModel<OrderDish>) => MutableModel<OrderDish> | void,
+  ): OrderDish;
+};
 
 type EagerDish = {
   readonly [__modelMeta__]: {
@@ -59,7 +74,7 @@ type EagerDish = {
   readonly restaurantID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyDish = {
   readonly [__modelMeta__]: {
@@ -74,13 +89,18 @@ type LazyDish = {
   readonly restaurantID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Dish = LazyLoading extends LazyLoadingDisabled ? EagerDish : LazyDish
+export declare type Dish = LazyLoading extends LazyLoadingDisabled
+  ? EagerDish
+  : LazyDish;
 
 export declare const Dish: (new (init: ModelInit<Dish>) => Dish) & {
-  copyOf(source: Dish, mutator: (draft: MutableModel<Dish>) => MutableModel<Dish> | void): Dish;
-}
+  copyOf(
+    source: Dish,
+    mutator: (draft: MutableModel<Dish>) => MutableModel<Dish> | void,
+  ): Dish;
+};
 
 type EagerOrder = {
   readonly [__modelMeta__]: {
@@ -98,7 +118,7 @@ type EagerOrder = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderRestaurantId?: string | null;
-}
+};
 
 type LazyOrder = {
   readonly [__modelMeta__]: {
@@ -116,13 +136,18 @@ type LazyOrder = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderRestaurantId?: string | null;
-}
+};
 
-export declare type Order = LazyLoading extends LazyLoadingDisabled ? EagerOrder : LazyOrder
+export declare type Order = LazyLoading extends LazyLoadingDisabled
+  ? EagerOrder
+  : LazyOrder;
 
 export declare const Order: (new (init: ModelInit<Order>) => Order) & {
-  copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
-}
+  copyOf(
+    source: Order,
+    mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void,
+  ): Order;
+};
 
 type EagerRestaurant = {
   readonly [__modelMeta__]: {
@@ -143,7 +168,7 @@ type EagerRestaurant = {
   readonly Baskets?: (Basket | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyRestaurant = {
   readonly [__modelMeta__]: {
@@ -164,13 +189,22 @@ type LazyRestaurant = {
   readonly Baskets: AsyncCollection<Basket>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Restaurant = LazyLoading extends LazyLoadingDisabled ? EagerRestaurant : LazyRestaurant
+export declare type Restaurant = LazyLoading extends LazyLoadingDisabled
+  ? EagerRestaurant
+  : LazyRestaurant;
 
-export declare const Restaurant: (new (init: ModelInit<Restaurant>) => Restaurant) & {
-  copyOf(source: Restaurant, mutator: (draft: MutableModel<Restaurant>) => MutableModel<Restaurant> | void): Restaurant;
-}
+export declare const Restaurant: (new (
+  init: ModelInit<Restaurant>,
+) => Restaurant) & {
+  copyOf(
+    source: Restaurant,
+    mutator: (
+      draft: MutableModel<Restaurant>,
+    ) => MutableModel<Restaurant> | void,
+  ): Restaurant;
+};
 
 type EagerBasket = {
   readonly [__modelMeta__]: {
@@ -183,7 +217,7 @@ type EagerBasket = {
   readonly restaurantID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyBasket = {
   readonly [__modelMeta__]: {
@@ -196,13 +230,18 @@ type LazyBasket = {
   readonly restaurantID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Basket = LazyLoading extends LazyLoadingDisabled ? EagerBasket : LazyBasket
+export declare type Basket = LazyLoading extends LazyLoadingDisabled
+  ? EagerBasket
+  : LazyBasket;
 
 export declare const Basket: (new (init: ModelInit<Basket>) => Basket) & {
-  copyOf(source: Basket, mutator: (draft: MutableModel<Basket>) => MutableModel<Basket> | void): Basket;
-}
+  copyOf(
+    source: Basket,
+    mutator: (draft: MutableModel<Basket>) => MutableModel<Basket> | void,
+  ): Basket;
+};
 
 type EagerBasketDish = {
   readonly [__modelMeta__]: {
@@ -216,7 +255,7 @@ type EagerBasketDish = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly basketDishDishId?: string | null;
-}
+};
 
 type LazyBasketDish = {
   readonly [__modelMeta__]: {
@@ -230,13 +269,22 @@ type LazyBasketDish = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly basketDishDishId?: string | null;
-}
+};
 
-export declare type BasketDish = LazyLoading extends LazyLoadingDisabled ? EagerBasketDish : LazyBasketDish
+export declare type BasketDish = LazyLoading extends LazyLoadingDisabled
+  ? EagerBasketDish
+  : LazyBasketDish;
 
-export declare const BasketDish: (new (init: ModelInit<BasketDish>) => BasketDish) & {
-  copyOf(source: BasketDish, mutator: (draft: MutableModel<BasketDish>) => MutableModel<BasketDish> | void): BasketDish;
-}
+export declare const BasketDish: (new (
+  init: ModelInit<BasketDish>,
+) => BasketDish) & {
+  copyOf(
+    source: BasketDish,
+    mutator: (
+      draft: MutableModel<BasketDish>,
+    ) => MutableModel<BasketDish> | void,
+  ): BasketDish;
+};
 
 type EagerUser = {
   readonly [__modelMeta__]: {
@@ -254,7 +302,7 @@ type EagerUser = {
   readonly lng: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUser = {
   readonly [__modelMeta__]: {
@@ -272,10 +320,15 @@ type LazyUser = {
   readonly lng: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
+export declare type User = LazyLoading extends LazyLoadingDisabled
+  ? EagerUser
+  : LazyUser;
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
-  copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
-}
+  copyOf(
+    source: User,
+    mutator: (draft: MutableModel<User>) => MutableModel<User> | void,
+  ): User;
+};

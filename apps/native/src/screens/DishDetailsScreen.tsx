@@ -12,12 +12,15 @@ import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { DataStore } from 'aws-amplify';
 import { Dish } from '../models';
+import { useBasketContext } from '../context/BasketContext';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [dish, setDish] = useState<Dish | null>(null);
   const [quantity, setQuantity] = useState(1);
+
+  const { addDishToBasket }: any = useBasketContext();
   //@ts-ignore
   const { id } = route.params;
 
@@ -34,6 +37,11 @@ const DishDetailsScreen = () => {
         if (quantity > 1) setQuantity(quantity - 1);
         break;
     }
+  };
+
+  const addToBasket = async () => {
+    await addDishToBasket(dish, quantity);
+    navigation.goBack();
   };
 
   const getTotal = () => {
@@ -61,7 +69,7 @@ const DishDetailsScreen = () => {
 
       <TouchableOpacity
         //@ts-ignore
-        onPress={() => navigation.navigate('Basket')}
+        onPress={addToBasket}
         style={styles.button}
       >
         <Text style={styles.buttonText}>

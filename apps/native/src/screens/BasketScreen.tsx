@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
-import restaurants from '../../assets/data/restaurants.json';
 import BasketDishItem from '../components/BasketDishItem';
+import { useBasketContext } from '../context/BasketContext';
 
 const BasketScreen = () => {
-  const restaurant = restaurants[0];
+  const { restaurant, basketDishes }: any = useBasketContext();
   const onCreateOrder = async () => {
     //     const newOrder = await createOrder();
     //     navigation.navigate("OrdersTab", {
@@ -12,6 +12,7 @@ const BasketScreen = () => {
     //       params: { id: newOrder.id },
     //     });
   };
+  console.log(basketDishes);
   return (
     <View style={styles.page}>
       <Text style={styles.name}>{restaurant?.name}</Text>
@@ -21,7 +22,7 @@ const BasketScreen = () => {
       </Text>
 
       <FlatList
-        data={restaurant.dishes}
+        data={basketDishes}
         renderItem={({ item }) => <BasketDishItem basketDish={item} />}
       />
 

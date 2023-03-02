@@ -8,6 +8,7 @@ import { User } from '../models';
 
 const Profile = () => {
   const { authUser, setDbuser, dbUser }: any = useAuthContext();
+  const navigation = useNavigation();
   const [name, setName] = useState(dbUser?.name || '');
   const [address, setAddress] = useState(dbUser?.address || '');
   const [lat, setLat] = useState(dbUser?.lat.toString() || '0');
@@ -19,17 +20,17 @@ const Profile = () => {
     } else {
       await createUser();
     }
-    // navigation.goBack();
+    navigation.goBack();
   };
 
   const updateUser = async () => {
     const user = await DataStore.save(
       User.copyOf(dbUser, (updated: any) => {
         updated.name = name;
-        // updated.number = '41421412';
+        updated.number = '41421412';
         updated.address = address;
-        // updated.lat = parseFloat(lat);
-        // updated.lng = parseFloat(lng);
+        updated.lat = parseFloat(lat);
+        updated.lng = parseFloat(lng);
       }),
     );
     setDbuser(user);

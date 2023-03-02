@@ -6,13 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { User } from '../models';
-
+import { User, LazyUser } from '../models';
 const AuhtContext = createContext({});
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState(null);
-  const [dbUser, setDbuser] = useState(null);
+  const [dbUser, setDbuser] = useState<null | LazyUser>(null);
   //@ts-ignore
   const sub = authUser?.attributes?.sub;
   useEffect(() => {
@@ -20,15 +19,14 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       setAuthUser(user),
     );
   }, []);
-
   useEffect(() => {
-    if (sub) {
-      const user = DataStore.query(User, user => user.sub.eq(sub));
-      //@ts-ignore
-      setDbuser(user[0]);
-    }
+    const catchUser = async () => {
+      const data = await DataStore.query(User, user => user.sub.eq(sub));
+      setDbuser(data[0]);
+    };
+    catchUser().catch(e => console.error(e));
   }, [sub]);
-  console.log('db-->', dbUser);
+
   return (
     <AuhtContext.Provider value={{ authUser, dbUser, setDbuser }}>
       {children}

@@ -6,27 +6,17 @@ import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { signUpConfig } from './utils/signUp';
-import { Auth } from 'aws-amplify';
-import { useEffect, useState } from 'react';
 import AuthContextProvider from './src/context/AuthContext';
+import BasketContextProvider from './src/context/BasketContext';
 
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
-  // useEffect(() => {
-  // Auth.currentAuthenticatedUser({ bypassCache: true }).then(user =>
-  // setAuthUser(user),
-  // console.log(user)
-  // );
-  // }, []);
-
-  //@ts-ignore
-  // console.log(authUser?.attributes as never);
-  //   console.log(authUser?.attributes?.sub as never);
-
   return (
     <NavigationContainer>
       <AuthContextProvider>
-        <RootNavigatior />
+        <BasketContextProvider>
+          <RootNavigatior />
+        </BasketContextProvider>
       </AuthContextProvider>
       <StatusBar style="dark" />
     </NavigationContainer>
