@@ -54,10 +54,10 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
     const newDish = await DataStore.save(
       new BasketDish({ Dish, quantity, basketID: getBasket.id }),
     );
-    console.log('newDish-->', newDish.Dish);
-    setBasketDishes([...basketDishes, newDish]);
+    if (newDish)
+      //@ts-ignore
+      setBasketDishes([...basketDishes, { Dish: await newDish.Dish, newDish }]);
   };
-  console.log(basketDishes);
   return (
     <BasketContext.Provider
       value={{

@@ -3,12 +3,16 @@ import React from 'react';
 
 interface BasketDishProps {
   basketDish: {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    quantity: number;
-    image?: string;
+    Dish: {
+      id: string;
+      name: string;
+      description: string;
+      price: number;
+      image?: string;
+    };
+    newDish: {
+      quantity: number;
+    };
   };
 }
 
@@ -17,11 +21,11 @@ const BasketDishItem = ({ basketDish }: BasketDishProps) => {
     <View style={styles.row}>
       <View style={styles.viewRow}>
         <View style={styles.quantityContainer}>
-          <Text>{basketDish.quantity}</Text>
+          <Text>{basketDish.newDish.quantity}</Text>
         </View>
-        {/* <Text style={styles.name}>{basketDish.Dish.name}</Text> */}
+        <Text style={styles.name}>{basketDish.Dish.name}</Text>
       </View>
-      <Text>${basketDish.price}</Text>
+      <Text>${basketDish.Dish.price.toFixed(2)}</Text>
     </View>
   );
 };
@@ -46,7 +50,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   name: {
-    fontSize: 24,
+    width: '70%',
+    fontSize: 14,
+    flexWrap: 'wrap',
     fontWeight: '600',
     marginVertical: 10,
   },

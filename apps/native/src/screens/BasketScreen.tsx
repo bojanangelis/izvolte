@@ -12,11 +12,10 @@ const BasketScreen = () => {
     //       params: { id: newOrder.id },
     //     });
   };
-  console.log(basketDishes);
+
   return (
     <View style={styles.page}>
       <Text style={styles.name}>{restaurant?.name}</Text>
-
       <Text style={{ fontWeight: 'bold', marginTop: 20, fontSize: 19 }}>
         Your items
       </Text>
