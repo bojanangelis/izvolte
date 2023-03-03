@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import BasketDishItem from '../components/BasketDishItem';
 import { useBasketContext } from '../context/BasketContext';
+import { useOrderContext } from '../context/OrderContext';
 
 const BasketScreen = () => {
-  const { restaurant, basketDishes }: any = useBasketContext();
+  const { createOrder }: any = useOrderContext();
+  const { restaurant, basketDishes, totalPrice }: any = useBasketContext();
   const onCreateOrder = async () => {
     //     const newOrder = await createOrder();
     //     navigation.navigate("OrdersTab", {
@@ -26,8 +28,10 @@ const BasketScreen = () => {
       />
 
       <View style={styles.separator} />
-      <Pressable onPress={onCreateOrder} style={styles.button}>
-        <Text style={styles.buttonText}>Create order</Text>
+      <Pressable onPress={createOrder} style={styles.button}>
+        <Text style={styles.buttonText}>
+          Create order {totalPrice.toFixed(2)}
+        </Text>
       </Pressable>
     </View>
   );

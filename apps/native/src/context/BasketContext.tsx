@@ -16,6 +16,14 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [basket, setBasket] = useState<null | LazyBasket>(null);
   const [basketDishes, setBasketDishes] = useState<LazyBasketDish[]>([]);
+
+  const totalPrice = basketDishes.reduce(
+    (sum, basketDish) =>
+      //@ts-ignore
+      sum + basketDish.newDish.quantity * basketDish.Dish.price,
+    //@ts-ignore
+    restaurant?.deliveryFee,
+  );
   const getRestaurant = (value: any) => {
     setRestaurant(value);
   };
@@ -66,6 +74,7 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
         basket,
         basketDishes,
         restaurant,
+        totalPrice,
       }}
     >
       {children}

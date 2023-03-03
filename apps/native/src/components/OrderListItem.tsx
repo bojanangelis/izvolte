@@ -41,20 +41,21 @@ const OrderListItem = ({ order }: OrderListInterface) => {
   const navigation = useNavigation();
   return (
     <Pressable
+      //@ts-ignore
       onPress={() => navigation.navigate('Order', { id: order.id })}
       style={{ flexDirection: 'row', margin: 40, alignItems: 'center' }}
     >
       <Image
-        source={{ uri: order.Restaurant.image }}
+        source={{ uri: order?.image }}
         style={{ width: 75, height: 75, marginRight: 5 }}
       />
 
       <View>
         <Text style={{ fontWeight: '600', fontSize: 16 }}>
-          {order.Restaurant.name}
+          {order?.Restaurant.name}
         </Text>
         <Text style={{ marginVertical: 5 }}>3 items &#8226; $38.45</Text>
-        <Text>2 days ago &#8226; {order.status} </Text>
+        <Text>2 days ago &#8226; {order?.status} </Text>
       </View>
     </Pressable>
   );
