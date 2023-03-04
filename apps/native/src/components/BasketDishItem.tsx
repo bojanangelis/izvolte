@@ -17,15 +17,16 @@ interface BasketDishProps {
 }
 
 const BasketDishItem = ({ basketDish }: BasketDishProps) => {
+  console.log('here I have thisone', basketDish);
   return (
     <View style={styles.row}>
       <View style={styles.viewRow}>
         <View style={styles.quantityContainer}>
-          <Text>{basketDish.newDish.quantity}</Text>
+          {/* <Text>{basketDish?.quantity}</Text> */}
         </View>
-        <Text style={styles.name}>{basketDish.Dish.name}</Text>
+        {/* <Text style={styles.name}>{basketDish?.Dish.name}</Text> */}
       </View>
-      <Text>${basketDish.Dish.price.toFixed(2)}</Text>
+      {/* <Text>${basketDish?.Dish.price.toFixed(2)}</Text> */}
     </View>
   );
 };

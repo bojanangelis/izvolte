@@ -599,13 +599,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "basketID": {
+                    "name": "basketID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Dish": {
                     "name": "Dish",
                     "isArray": false,
                     "type": {
                         "model": "Dish"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
@@ -616,13 +623,6 @@ export const schema = {
                             "basketDishDishId"
                         ]
                     }
-                },
-                "basketID": {
-                    "name": "basketID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -644,7 +644,7 @@ export const schema = {
                     "name": "basketDishDishId",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 }
             },
@@ -823,5 +823,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "577395e3da328bf61d5dc5f98d4b4c77"
+    "version": "f0f9f800aa59352b036095c1b11a60c1"
 };

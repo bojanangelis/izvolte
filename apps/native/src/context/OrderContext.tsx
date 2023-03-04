@@ -46,9 +46,11 @@ const OrderContextProvider = ({ children }: { children: ReactNode }) => {
         ),
       ),
     );
-    console.log(newOrder);
+
     // Delete basket.
-    await DataStore.delete(basket);
+    console.log('this is my basket', basket);
+    const data = await DataStore.delete(basket);
+    console.log('deletingthis', data);
     setOrders([...orders, newOrder]);
   };
 
@@ -59,7 +61,7 @@ const OrderContextProvider = ({ children }: { children: ReactNode }) => {
     );
     return { ...order, dishes: orderDishes };
   };
-  console.log(orders);
+
   return (
     <OrderContext.Provider value={{ createOrder, orders, getOrder }}>
       {children}

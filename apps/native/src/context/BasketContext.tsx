@@ -1,4 +1,4 @@
-import { DataStore } from 'aws-amplify';
+import { DataStore, Predicates } from 'aws-amplify';
 import React, {
   createContext,
   ReactNode,
@@ -16,24 +16,31 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [basket, setBasket] = useState<null | LazyBasket>(null);
   const [basketDishes, setBasketDishes] = useState<LazyBasketDish[]>([]);
-
-  const totalPrice = basketDishes.reduce(
-    (sum, basketDish) =>
-      //@ts-ignore
-      sum + basketDish.newDish.quantity * basketDish.Dish.price,
-    //@ts-ignore
-    restaurant?.deliveryFee,
-  );
+  // const totalPrice = basketDishes.reduce(
+  // (sum, basketDish) =>
+  //@ts-ignore
+  // sum + basketDish?.quantity * basketDish?.Dish.price,
+  //@ts-ignore
+  // restaurant?.deliveryFee,
+  // );
   const getRestaurant = (value: any) => {
     setRestaurant(value);
   };
 
   useEffect(() => {
-    DataStore.query(Basket, basket =>
-      //@ts-ignore
-      basket.restaurantID.eq(restaurant.id).userID.eq(dbUser.id),
-    ).then(baskets => setBasket(baskets[0]));
+    const fatchBasket = async () => {
+      const data = await DataStore.query(Basket, baskets =>
+        baskets.and(dataBasket => [
+          //@ts-ignore
+          dataBasket.restaurantID.eq(restaurant?.id),
+          dataBasket.userID.eq(dbUser?.id),
+        ]),
+      );
+      setBasket(data[0]);
+    };
+    fatchBasket();
   }, [dbUser, restaurant]);
+  console.log('I have basketDish-->', basketDishes);
 
   useEffect(() => {
     if (basket) {
@@ -42,6 +49,7 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
           basketDish.basketID.eq(basket.id),
         );
         setBasketDishes(data);
+        console.log('data here from useeffect-->', data);
       };
       fetchData();
     }
@@ -50,22 +58,30 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
   const createNewBasket = async () => {
     const newBasket = await DataStore.save(
       //@ts-ignore
-      new Basket({ userID: dbUser.id, restaurantID: restaurant?.id }),
+      new Basket({ userID: dbUser.id, restaurantID: restaurant.id }),
     );
     setBasket(newBasket);
     return newBasket;
   };
-  const addDishToBasket = async (Dish: any, quantity: number) => {
+
+  const addDishToBasket = async (dish: any, quantity: number) => {
     // get the existing basket or create a new one
     let getBasket = basket || (await createNewBasket());
     //create basketDish item and save to DataStore.
     const newDish = await DataStore.save(
-      new BasketDish({ Dish, quantity, basketID: getBasket.id }),
+      new BasketDish({
+        Dish: dish,
+        quantity: quantity,
+        basketID: getBasket.id,
+        basketDishDishId: '',
+      }),
     );
     if (newDish)
       //@ts-ignore
-      setBasketDishes([...basketDishes, { Dish: await newDish.Dish, newDish }]);
+      console.log('new dish-->', await newDish.Dish);
+    setBasketDishes([...basketDishes, newDish]);
   };
+
   return (
     <BasketContext.Provider
       value={{
@@ -74,7 +90,7 @@ const BasketContextProvider = ({ children }: { children: ReactNode }) => {
         basket,
         basketDishes,
         restaurant,
-        totalPrice,
+        // totalPrice,
       }}
     >
       {children}

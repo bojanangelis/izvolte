@@ -46,6 +46,7 @@ const OrderListItem = ({ order }: OrderListInterface) => {
       style={{ flexDirection: 'row', margin: 40, alignItems: 'center' }}
     >
       <Image
+        //@ts-ignore
         source={{ uri: order?.image }}
         style={{ width: 75, height: 75, marginRight: 5 }}
       />

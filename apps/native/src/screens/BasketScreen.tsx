@@ -30,7 +30,7 @@ const BasketScreen = () => {
       <View style={styles.separator} />
       <Pressable onPress={createOrder} style={styles.button}>
         <Text style={styles.buttonText}>
-          Create order {totalPrice.toFixed(2)}
+          {/* Create order {totalPrice.toFixed(2)} */}
         </Text>
       </Pressable>
     </View>

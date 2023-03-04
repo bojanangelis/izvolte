@@ -27,8 +27,8 @@ type Order @model @auth(rules: [{allow: public}]) {
 type BasketDish @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int!
-  Dish: Dish @hasOne
   basketID: ID! @index(name: "byBasket")
+  Dish: Dish! @hasOne
 }
 
 type Basket @model @auth(rules: [{allow: public}]) {

@@ -1,6 +1,5 @@
 import { ActivityIndicator, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import restaurants from '../../assets/data/restaurants.json';
 import BasketDishItem from '../components/BasketDishItem';
 import OrderDetailsHeader from '../components/OrderDetailsHeader';
 import { useOrderContext } from '../context/OrderContext';
