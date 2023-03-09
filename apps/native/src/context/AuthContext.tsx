@@ -1,4 +1,4 @@
-import { Auth, DataStore } from 'aws-amplify';
+import { API, Auth, DataStore, graphqlOperation } from 'aws-amplify';
 import {
   createContext,
   ReactNode,
@@ -7,6 +7,10 @@ import {
   useState,
 } from 'react';
 import { User, LazyUser } from '../models';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { GetUserQuery } from '../API';
+import { getUser } from '../graphql/queries';
+
 const AuhtContext = createContext({});
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
@@ -19,10 +23,18 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       setAuthUser(user),
     );
   }, []);
+  console.log(sub);
   useEffect(() => {
     const catchUser = async () => {
-      const data = await DataStore.query(User, user => user.sub.eq(sub));
-      setDbuser(data[0]);
+      // getUser
+      if (sub) {
+        const userData = await API.graphql<GraphQLQuery<GetUserQuery>>(
+          graphqlOperation({ query: getUser, variables: { id: sub } }),
+        );
+        console.log(userData);
+      }
+      // const data = await DataStore.query(User, user => user.sub.eq(sub));
+      // setDbuser(data[0]);
     };
     catchUser().catch(e => console.error(e));
   }, [sub]);
