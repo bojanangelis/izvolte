@@ -1,6 +1,6 @@
 projects:
-  Izvolte:
-    schemaPath: amplify/backend/api/Izvolte/build/schema.graphql
+  izvolte:
+    schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.ts
     excludes:
@@ -10,6 +10,3 @@ projects:
         codeGenTarget: typescript
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
-        region: us-east-1
-        apiId: null
-        maxDepth: 2
