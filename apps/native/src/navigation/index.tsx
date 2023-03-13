@@ -12,7 +12,8 @@ import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
-import { useAuthContext } from '../context/AuthContext';
+import { useEffect, useState } from 'react';
+import { Auth, Hub } from 'aws-amplify';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -29,14 +30,55 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const { dbUser }: any = useAuthContext();
+  const [user, setUser] = useState(null);
+
+  const checkUser = async () => {
+    try {
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      setUser(authUser);
+    } catch (e) {
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    const listener = (data: any) => {
+      if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
+        checkUser();
+      }
+    };
+
+    Hub.listen('auth', listener);
+    return () => Hub.remove('auth', listener);
+  }, []);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {dbUser ? (
-        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      {user ? (
+        <Stack.Screen name="HomeTabs" component={HomeScreen} />
       ) : (
-        <Stack.Screen name="Profile" component={Profile} />
+        <>
+          {/* <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPasswordScreen}
+            />
+            <Stack.Screen name="NewPassword" component={NewPasswordScreen} /> */}
+        </>
       )}
+      {/* {dbUser ? ( */}
+      {/* <Stack.Screen name="HomeTabs" component={HomeTabs} /> */}
+      {/* ) : ( */}
+      {/* <Stack.Screen name="Profile" component={Profile} /> */}
+      {/* )} */}
     </Stack.Navigator>
   );
 };
