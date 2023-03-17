@@ -5,33 +5,84 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  useWindowDimensions,
 } from 'react-native';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
+import CustomInput from '../../components/CustomInput';
+import PhoneInput from 'react-native-phone-number-input';
 
 const SigninScreen = () => {
+  const [inputPhoneNumber, setInputPhoneNumber] = useState<string>('');
+
+  const handlePhoneNumber = (value: string) => {
+    setInputPhoneNumber(value);
+  };
+  const [value, setValue] = useState('');
+  const [formattedValue, setFormattedValue] = useState('');
+  const [valid, setValid] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const phoneInput = useRef<PhoneInput>(null);
+
+  const handleLogin = () => {
+    const checkValid = phoneInput.current?.isValidNumber(value);
+    setShowMessage(true);
+    setValid(checkValid ? checkValid : false);
+  };
+  const { height } = useWindowDimensions();
   return (
     <SafeAreaView style={styles.signInContainer}>
       <Animatable.Image
-        source={require('../../../assets/IzvolteLogo.jpg')}
+        source={require('../../../assets/loginLogo.jpg')}
         animation="fadeIn"
         iterationCount={1}
-        style={styles.logo}
+        style={[styles.logo, { height: height * 0.7 }]}
       />
       <Animatable.Text
         animation="fadeIn"
         iterationCount={1}
-        style={styles.logoText}
+        style={styles.signInContainerLogo}
       >
-        Enter your phone number
+        Izvolte logo
       </Animatable.Text>
-      <View style={styles.phoneNumberContainer}>
-        <TextInput style={styles.inputNumber} />
-        <TouchableOpacity style={styles.inputButton}>
-          <Text style={styles.inputButtonText}>next</Text>
-        </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <Animatable.Text
+          animation="fadeIn"
+          iterationCount={1}
+          style={styles.inputContainerText}
+        >
+          Use your izvolte phone number to get started
+        </Animatable.Text>
+        <View style={styles.phoneNumberContainer}>
+          {/* <CustomInput
+            style={styles.inputNumber}
+            onChange={handlePhoneNumber}
+            value={inputPhoneNumber}
+          /> */}
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={value}
+            defaultCode="MK"
+            layout="first"
+            onChangeText={text => {
+              setValue(text);
+            }}
+            onChangeFormattedText={text => {
+              setFormattedValue(text);
+            }}
+            withDarkTheme
+            withShadow
+            autoFocus
+          />
+
+          <TouchableOpacity onPress={handleLogin} style={styles.buttonNext}>
+            <Text style={styles.inputButtonText}>next</Text>
+            <Icon name="arrowright" size={20} color="#000000" />
+          </TouchableOpacity>
+          {showMessage && <Text style={styles.wrongInput}>Wrong input</Text>}
+        </View>
       </View>
-      {/* <Progress.Bar size={50} color="white" indeterminate={true} /> */}
     </SafeAreaView>
   );
 };
@@ -40,48 +91,57 @@ export default SigninScreen;
 
 const styles = StyleSheet.create({
   signInContainer: {
-    backgroundColor: '#ecc716',
+    backgroundColor: 'white',
     height: '100%',
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
   },
-  signInHeader: {
-    color: 'white',
-    fontWeight: '900',
-    fontSize: 29,
-    textAlign: 'center',
+  signInContainerLogo: {
+    position: 'absolute',
+    top: 110,
+    left: 10,
+    zIndex: 999,
+    fontSize: 36,
+    fontWeight: '700',
+    fontStyle: 'normal',
+    letterSpacing: 2,
+    color: 'black',
   },
   logo: {
     width: '100%',
-    height: '50%',
+    zIndex: 1,
   },
-  logoText: {
+  inputContainer: {
+    padding: 20,
+  },
+  inputContainerText: {
     fontSize: 18,
     letterSpacing: 2,
     fontWeight: '600',
-    textAlign: 'center',
-    color: 'white',
+    textAlign: 'left',
+    color: 'black',
   },
+
   phoneNumberContainer: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-    paddingHorizontal: 40,
-    margin: 20,
-    borderRadius: 4,
-    backgroundColor: 'white',
+    justifyContent: 'space-between',
   },
-  inputNumber: {
-    flexGrow: 1,
+  buttonNext: {
+    marginHorizontal: 5,
+    backgroundColor: 'whitesmoke',
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative',
+    alignItems: 'center',
   },
   inputButtonText: {
-    color: 'black',
+    marginHorizontal: 1,
     fontWeight: '600',
   },
-  inputButton: {
-    padding: 10,
-    backgroundColor: 'lightgray',
-    borderRadius: 4,
+  wrongInput: {
+    color: 'red',
+    fontWeight: '600',
   },
 });
