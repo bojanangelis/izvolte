@@ -1,24 +1,16 @@
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
-import Icon from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
-import CustomInput from '../../components/CustomInput';
 import PhoneInput from 'react-native-phone-number-input';
+import KeyboardAvoidingInput from '../../components/CustomInput';
 
 const SigninScreen = () => {
   const [inputPhoneNumber, setInputPhoneNumber] = useState<string>('');
-
-  const handlePhoneNumber = (value: string) => {
-    setInputPhoneNumber(value);
-  };
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [valid, setValid] = useState(false);
@@ -29,6 +21,7 @@ const SigninScreen = () => {
     const checkValid = phoneInput.current?.isValidNumber(value);
     setShowMessage(true);
     setValid(checkValid ? checkValid : false);
+    console.log(valid);
   };
   const { height } = useWindowDimensions();
   return (
@@ -54,34 +47,12 @@ const SigninScreen = () => {
         >
           Use your izvolte phone number to get started
         </Animatable.Text>
-        <View style={styles.phoneNumberContainer}>
-          {/* <CustomInput
-            style={styles.inputNumber}
-            onChange={handlePhoneNumber}
-            value={inputPhoneNumber}
-          /> */}
-          <PhoneInput
-            ref={phoneInput}
-            defaultValue={value}
-            defaultCode="MK"
-            layout="first"
-            onChangeText={text => {
-              setValue(text);
-            }}
-            onChangeFormattedText={text => {
-              setFormattedValue(text);
-            }}
-            withDarkTheme
-            withShadow
-            autoFocus
-          />
-
-          <TouchableOpacity onPress={handleLogin} style={styles.buttonNext}>
-            <Text style={styles.inputButtonText}>next</Text>
-            <Icon name="arrowright" size={20} color="#000000" />
-          </TouchableOpacity>
-          {showMessage && <Text style={styles.wrongInput}>Wrong input</Text>}
-        </View>
+        {/* <KeyboardAvoidingInput
+          phoneInput={phoneInput}
+          value={value}
+          handleValue={setValue}
+          setFormattedValue={setFormattedValue}
+        /> */}
       </View>
     </SafeAreaView>
   );
@@ -90,11 +61,15 @@ const SigninScreen = () => {
 export default SigninScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   signInContainer: {
     backgroundColor: 'white',
     height: '100%',
     display: 'flex',
     justifyContent: 'space-between',
+    flex: 1,
   },
   signInContainerLogo: {
     position: 'absolute',
@@ -120,28 +95,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'left',
     color: 'black',
-  },
-
-  phoneNumberContainer: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonNext: {
-    marginHorizontal: 5,
-    backgroundColor: 'whitesmoke',
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'relative',
-    alignItems: 'center',
-  },
-  inputButtonText: {
-    marginHorizontal: 1,
-    fontWeight: '600',
-  },
-  wrongInput: {
-    color: 'red',
-    fontWeight: '600',
   },
 });

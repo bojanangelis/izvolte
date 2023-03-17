@@ -19,24 +19,25 @@ import SigninScreen from './src/screens/Auth/SigninScreen';
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
   const [user, setUser] = useState<ISignUpResult | null>(null);
-  useEffect(() => {
-    Auth.signIn({
-      username: 'johndoe@example.com',
-      password: 'password123',
-    })
-      .then(data => setUser(data))
-      .catch(err => console.error(err));
+  // useEffect(() => {
+  //   Auth.signIn({
+  //     username: 'johndoe@example.com',
+  //     password: 'password123',
+  //   })
+  //     .then(data => setUser(data))
+  //     .catch(err => console.error(err));
 
-    // Auth.signUp({
-    //   username: 'bojanangjeleski@gmail.com',
-    //   password: 'password123',
-    //   attributes: {
-    //     email: 'bojanangjeleski@gmail.com',
-    //   },
-    // })
-    //   .then(data => setUser(data))
-    //   .catch(error => console.log('err->', error.message));
-  }, []);
+  // Auth.signUp({
+  //   username: 'bojanangjeleski@gmail.com',
+  //   password: 'password123',
+  //   attributes: {
+  //     email: 'bojanangjeleski@gmail.com',
+  //   },
+  // })
+  //   .then(data => setUser(data))
+  //   .catch(error => console.log('err->', error.message));
+  // }, []);
+
   console.log(user);
   return (
     <View>
