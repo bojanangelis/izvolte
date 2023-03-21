@@ -1,29 +1,39 @@
 import {
+  Button,
   SafeAreaView,
   StyleSheet,
+  TextInput,
   View,
   useWindowDimensions,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Animatable from 'react-native-animatable';
 import PhoneInput from 'react-native-phone-number-input';
 import KeyboardAvoidingInput from '../../components/CustomInput';
+import phoneUtil from 'google-libphonenumber';
+import { Auth } from 'aws-amplify';
 
 const SigninScreen = () => {
   const [inputPhoneNumber, setInputPhoneNumber] = useState<string>('');
-  const [value, setValue] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
   const [valid, setValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
 
   const handleLogin = () => {
-    const checkValid = phoneInput.current?.isValidNumber(value);
+    const checkValid = phoneInput.current?.isValidNumber(inputPhoneNumber);
     setShowMessage(true);
     setValid(checkValid ? checkValid : false);
-    console.log(valid);
   };
+
+  const handleFormatedValue = async (data: any) => {
+    // const response = await Auth.signIn(data.username, data.password)
+    console.log(data);
+  };
+  useEffect(() => {
+    handleFormatedValue({ username: 'da', password: 'daaa' });
+  }, []);
   const { height } = useWindowDimensions();
+
   return (
     <SafeAreaView style={styles.signInContainer}>
       <Animatable.Image
@@ -47,12 +57,12 @@ const SigninScreen = () => {
         >
           Use your izvolte phone number to get started
         </Animatable.Text>
-        {/* <KeyboardAvoidingInput
+        <KeyboardAvoidingInput
           phoneInput={phoneInput}
-          value={value}
-          handleValue={setValue}
-          setFormattedValue={setFormattedValue}
-        /> */}
+          value={inputPhoneNumber}
+          handleValue={setInputPhoneNumber}
+          handleLogin={handleLogin}
+        />
       </View>
     </SafeAreaView>
   );
@@ -61,21 +71,21 @@ const SigninScreen = () => {
 export default SigninScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  inputView: {
+    display: 'flex',
+    flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    marginVertical: 10,
+    zIndex: 999,
   },
   signInContainer: {
-    backgroundColor: 'white',
     height: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flex: 1,
   },
   signInContainerLogo: {
     position: 'absolute',
     top: 110,
     left: 10,
-    zIndex: 999,
     fontSize: 36,
     fontWeight: '700',
     fontStyle: 'normal',
@@ -84,10 +94,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: '100%',
-    zIndex: 1,
   },
   inputContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   inputContainerText: {
     fontSize: 18,
@@ -95,5 +105,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'left',
     color: 'black',
+  },
+  btnContainer: {
+    textAlign: 'center',
   },
 });

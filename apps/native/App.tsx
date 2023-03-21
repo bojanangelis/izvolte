@@ -1,24 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
 // import { NavigationContainer } from '@react-navigation/native';
 // import RootNavigatior from './src/navigation';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify, Auth, Hub } from 'aws-amplify';
 // import SignInScreen from './src/screens/SignInScreen';
 import awsmobile from './src/aws-exports';
 import { withAuthenticator } from 'aws-amplify-react-native';
+// i don't need with authenticator custom signup screen
 // import { signUpConfig } from './utils/signUp';
 // import OrderContextProvider from './src/context/OrderContext';
 // import { syncRestaurants } from './src/graphql/queries';
 // import { GraphQLQuery } from '@aws-amplify/api';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { ISignUpResult } from 'amazon-cognito-identity-js';
 import SigninScreen from './src/screens/Auth/SigninScreen';
+import SignUpScreen from './src/screens/Auth/SignupScreen';
+import RootNavigator from './src/navigation';
 // import { GetBlogQuery } from './src/API';
 // import { SyncRestaurantsQuery } from './src/API';
 
 Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
   const [user, setUser] = useState<ISignUpResult | null>(null);
+  Hub.listen('auth', e => {
+    console.log('dadaa', e);
+    // ova slusha koga ke se povika nekoja mutacija so auth.
+  });
+  useEffect(() => {
+    Auth.signOut();
+  }, []);
   // useEffect(() => {
   //   Auth.signIn({
   //     username: 'johndoe@example.com',
@@ -38,11 +48,12 @@ const App = () => {
   //   .catch(error => console.log('err->', error.message));
   // }, []);
 
-  console.log(user);
+  // console.log('user?', user);
   return (
     <View>
-      <SigninScreen />
-
+      {/* <SigninScreen /> */}
+      <RootNavigator />
+      {/* <RootNavigator /> */}
       <StatusBar style="dark" />
     </View>
   );

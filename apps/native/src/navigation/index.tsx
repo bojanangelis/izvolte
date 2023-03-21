@@ -14,6 +14,9 @@ import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
 import { useEffect, useState } from 'react';
 import { Auth, Hub } from 'aws-amplify';
+import SigninScreen from '../screens/Auth/SigninScreen';
+import SignUpScreen from '../screens/Auth/SignupScreen';
+import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -64,14 +67,27 @@ const RootNavigator = () => {
         <Stack.Screen name="HomeTabs" component={HomeScreen} />
       ) : (
         <>
-          {/* <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
-            <Stack.Screen
-              name="ForgotPassword"
-              component={ForgotPasswordScreen}
-            />
-            <Stack.Screen name="NewPassword" component={NewPasswordScreen} /> */}
+          <Stack.Screen
+            //@ts-ignore
+            name="SignIn"
+            component={SigninScreen}
+          />
+          <Stack.Screen
+            //@ts-ignore
+            name="SignUp"
+            component={SignUpScreen}
+          />
+          <Stack.Screen
+            //@ts-ignore
+            name="ConfirmEmail"
+            component={ConfirmEmailScreen}
+          />
+          {/* <Stack.Screen
+            //@ts-ignore
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+          /> */}
+          {/* <Stack.Screen name="NewPassword" component={NewPasswordScreen} /> */}
         </>
       )}
       {/* {dbUser ? ( */}
