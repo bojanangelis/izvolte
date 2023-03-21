@@ -1,6 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import RestaurantItem from '../components/RestaurantItem';
 // import { Restaurant } from '../models';
 
@@ -14,11 +14,12 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <FlatList
-      data={restaurants}
-      renderItem={({ item }) => <RestaurantItem restaurant={item} />}
-      showsVerticalScrollIndicator={false}
-    />
+    <Text>dada</Text>
+    // <FlatList
+    // data={restaurants}
+    // renderItem={({ item }) => <RestaurantItem restaurant={item} />}
+    // showsVerticalScrollIndicator={false}
+    // />
   );
 };
 

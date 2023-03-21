@@ -1,13 +1,13 @@
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BasketDishItem from '../components/BasketDishItem';
 import OrderDetailsHeader from '../components/OrderDetailsHeader';
-import { useOrderContext } from '../context/OrderContext';
+// import { useOrderContext } from '../context/OrderContext';
 import { useRoute } from '@react-navigation/native';
 
 const OrderDetailsScreen = () => {
-  const [order, setOrder] = useState();
-  const { getOrder }: any = useOrderContext();
+  const [order, setOrder] = useState(null);
+  // const { getOrder }: any = useOrderContext();
   const route = useRoute();
   useEffect(() => {
     //@ts-ignore
@@ -20,12 +20,13 @@ const OrderDetailsScreen = () => {
 
   console.log(order);
   return (
-    <FlatList
-      ListHeaderComponent={() => <OrderDetailsHeader order={order} />}
-      //@ts-ignore
-      data={order.dishes}
-      renderItem={({ item }) => <BasketDishItem basketDish={item} />}
-    />
+    <Text>daadwe</Text>
+    // <FlatList
+    //   ListHeaderComponent={() => <OrderDetailsHeader order={order} />}
+    //   //@ts-ignore
+    //   data={order.dishes}
+    //   renderItem={({ item }) => <BasketDishItem basketDish={item} />}
+    // />
   );
 };
 

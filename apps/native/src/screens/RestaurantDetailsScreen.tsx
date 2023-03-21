@@ -11,9 +11,9 @@ import DishListItem from '../components/DishListItem';
 import RestaurantDetailsScreanHeader from '../components/RestaurantDetailsScreanHeader';
 import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Dish, Restaurant, LazyRestaurant } from '../models';
+// import { Dish, Restaurant, LazyRestaurant } from '../models';
 import { DataStore } from 'aws-amplify';
-import { useBasketContext } from '../context/BasketContext';
+// import { useBasketContext } from '../context/BasketContext';
 
 type ParamList = {
   Restaurant: {
@@ -22,37 +22,42 @@ type ParamList = {
 };
 
 const RestaurantDetailsScreen: FC = () => {
-  const [restaurant, setRestaurant] = useState<LazyRestaurant | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
-  const navigation = useNavigation();
-  const { id } = route.params;
-  const { getRestaurant, basket, basketDishes }: any = useBasketContext();
+  // const [restaurant, setRestaurant] = useState<LazyRestaurant | null>(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [dishes, setDishes] = useState<Dish[]>([]);
+  // const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
+  // const navigation = useNavigation();
+  // const { id } = route.params;
+  // const { getRestaurant, basket, basketDishes }: any = useBasketContext();
 
-  useEffect(() => {
-    if (!id) return;
-    DataStore.query(Restaurant, id).then(results =>
-      setRestaurant(results || null),
-    );
-    const getDishes = async () => {
-      const allDishesOfrestaurant = await DataStore.query(Dish, dish =>
-        dish.restaurantID.eq(id),
-      );
-      setDishes(allDishesOfrestaurant);
-      setIsLoading(false);
-    };
-    getDishes();
-  }, [id]);
+  useEffect(
+    () => {
+      // if (!id) return;
+      // DataStore.query(Restaurant, id).then(results =>
+      //   setRestaurant(results || null),
+      // );
+      // const getDishes = async () => {
+      //   const allDishesOfrestaurant = await DataStore.query(Dish, dish =>
+      //     dish.restaurantID.eq(id),
+      //   );
+      //   setDishes(allDishesOfrestaurant);
+      //   setIsLoading(false);
+      // };
+      // getDishes();
+    },
+    [
+      // id
+    ],
+  );
 
-  useEffect(() => {
-    if (!restaurant) return;
-    getRestaurant(restaurant);
-  }, [restaurant]);
+  // useEffect(() => {
+  //   if (!restaurant) return;
+  //   getRestaurant(restaurant);
+  // }, [restaurant]);
 
   return (
     <View style={RestaurantDetailsStyles.page}>
-      <FlatList
+      {/* <FlatList
         ListHeaderComponent={() => (
           <RestaurantDetailsScreanHeader restaurant={restaurant} />
         )}
@@ -79,7 +84,7 @@ const RestaurantDetailsScreen: FC = () => {
             View Basket ({basketDishes.length})
           </Text>
         </TouchableOpacity>
-      )}
+      )} */}
     </View>
   );
 };

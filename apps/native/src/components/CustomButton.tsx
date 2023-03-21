@@ -1,32 +1,39 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Image } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
+interface CustomButtonInterface {
+  onPress: () => void;
+  text: string;
+  bgColor: string;
+  fgColor: string;
+  border: string;
+  image?: string;
+}
 
 const CustomButton = ({
   onPress,
   text,
-  type = 'PRIMARY',
   bgColor,
   fgColor,
-}: any) => {
+  border,
+  image,
+}: CustomButtonInterface) => {
   return (
     <Pressable
       onPress={onPress}
       style={[
         styles.container,
-        //@ts-ignore
-        styles[`container_${type}`],
+        border ? { borderColor: border, borderWidth: 1 } : {},
         bgColor ? { backgroundColor: bgColor } : {},
       ]}
     >
-      <Text
-        style={[
-          styles.text,
-          //@ts-ignore
-
-          styles[`text_${type}`],
-          fgColor ? { color: fgColor } : {},
-        ]}
-      >
+      <Image
+        source={{
+          uri: image,
+        }}
+        style={styles.logo}
+      />
+      <Text style={[styles.text, fgColor ? { color: fgColor } : {}]}>
         {text}
       </Text>
     </Pressable>
@@ -35,26 +42,22 @@ const CustomButton = ({
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
     width: '100%',
-
     padding: 15,
     marginVertical: 5,
-
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 2,
   },
-
-  container_PRIMARY: {
-    backgroundColor: '#3B71F3',
+  logo: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    left: 15,
   },
-
-  container_SECONDARY: {
-    borderColor: '#3B71F3',
-    borderWidth: 2,
-  },
-
-  container_TERTIARY: {},
-
   text: {
     fontWeight: 'bold',
     color: 'white',

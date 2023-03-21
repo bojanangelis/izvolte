@@ -5,8 +5,8 @@ import BasketDishItem from '../components/BasketDishItem';
 // import { useOrderContext } from '../context/OrderContext';
 
 const BasketScreen = () => {
-  const { createOrder }: any = useOrderContext();
-  const { restaurant, basketDishes, totalPrice }: any = useBasketContext();
+  // const { createOrder }: any = useOrderContext();
+  // const { restaurant, basketDishes, totalPrice }: any = useBasketContext();
   const onCreateOrder = async () => {
     //     const newOrder = await createOrder();
     //     navigation.navigate("OrdersTab", {
@@ -17,18 +17,24 @@ const BasketScreen = () => {
 
   return (
     <View style={styles.page}>
-      <Text style={styles.name}>{restaurant?.name}</Text>
+      {/* <Text style={styles.name}>{restaurant?.name}</Text> */}
       <Text style={{ fontWeight: 'bold', marginTop: 20, fontSize: 19 }}>
         Your items
       </Text>
 
-      <FlatList
+      {/* <FlatList
         data={basketDishes}
         renderItem={({ item }) => <BasketDishItem basketDish={item} />}
-      />
+      /> */}
 
       <View style={styles.separator} />
-      <Pressable onPress={createOrder} style={styles.button}>
+      <Pressable
+        onPress={
+          () => console.log('order')
+          // createOrder
+        }
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>
           {/* Create order {totalPrice.toFixed(2)} */}
         </Text>

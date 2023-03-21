@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-// import { NavigationContainer } from '@react-navigation/native';
-// import RootNavigatior from './src/navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigatior from './src/navigation';
 import { Amplify, Auth, Hub } from 'aws-amplify';
 // import SignInScreen from './src/screens/SignInScreen';
 import awsmobile from './src/aws-exports';
@@ -13,8 +13,8 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import { Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { ISignUpResult } from 'amazon-cognito-identity-js';
-import SigninScreen from './src/screens/Auth/SigninScreen';
-import SignUpScreen from './src/screens/Auth/SignupScreen';
+import SigninScreen from './src/screens/Auth/StartUp';
+import SignUpScreen from './src/screens/Auth/GetStarted';
 import RootNavigator from './src/navigation';
 // import { GetBlogQuery } from './src/API';
 // import { SyncRestaurantsQuery } from './src/API';
@@ -50,12 +50,11 @@ const App = () => {
 
   // console.log('user?', user);
   return (
-    <View>
-      {/* <SigninScreen /> */}
-      <RootNavigator />
-      {/* <RootNavigator /> */}
+    <NavigationContainer>
+      <RootNavigatior />
+      {/* <SignInScreen /> */}
       <StatusBar style="dark" />
-    </View>
+    </NavigationContainer>
   );
 };
 

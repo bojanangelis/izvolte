@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import CustomButton from './CustomButton';
 
 const SocialSignInButtons = () => {
@@ -18,22 +17,30 @@ const SocialSignInButtons = () => {
   return (
     <>
       <CustomButton
-        text="Sign In with Facebook"
+        text="Continue with facebook"
         onPress={onSignInFacebook}
-        bgColor="#E7EAF4"
-        fgColor="#4765A9"
+        bgColor="white"
+        fgColor="black"
+        border="black"
+        image="https://www.edigitalagency.com.au/wp-content/uploads/Facebook-logo-blue-circle-large-transparent-png.png"
       />
       <CustomButton
-        text="Sign In with Google"
+        text="Continue with google"
         onPress={onSignInGoogle}
-        bgColor="#FAE9EA"
-        fgColor="#DD4D44"
+        bgColor="white"
+        image={
+          'https://www.freepnglogos.com/uploads/google-logo-png/google-logo-icon-png-transparent-background-osteopathy-16.png'
+        }
+        fgColor="black"
+        border="black"
       />
       <CustomButton
-        text="Sign In with Apple"
+        text="Continue with apple"
         onPress={onSignInApple}
-        bgColor="#e3e3e3"
-        fgColor="#363636"
+        bgColor="white"
+        fgColor="black"
+        border="black"
+        image="https://alchemyimmersive.com/wp-content/uploads/sites/4/2020/04/apple-logo-transparent.png"
       />
     </>
   );

@@ -12,19 +12,21 @@ import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
-import { useEffect, useState } from 'react';
-import { Auth, Hub } from 'aws-amplify';
-import SigninScreen from '../screens/Auth/SigninScreen';
-import SignUpScreen from '../screens/Auth/SignupScreen';
+import { useState, useEffect } from 'react';
+import { Auth } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
+import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
+import NewPasswordScreen from '../screens/Auth/NewPasswordScreen';
+import StartUp from '../screens/Auth/StartUp';
+import GetStarted from '../screens/Auth/GetStarted';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
-  Profile: undefined;
-  HomeStackNavigator: undefined;
-  Restaurants: {
+  AuthStackNavigator: undefined;
+  Restaurant: {
     id: string;
   };
+  HomeStackNavigator: undefined;
   Dish: {
     id: string;
   };
@@ -34,7 +36,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   const [user, setUser] = useState(null);
-
   const checkUser = async () => {
     try {
       const authUser = await Auth.currentAuthenticatedUser({
@@ -45,56 +46,20 @@ const RootNavigator = () => {
       setUser(null);
     }
   };
-
   useEffect(() => {
     checkUser();
-  }, []);
-
-  useEffect(() => {
-    const listener = (data: any) => {
-      if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
-        checkUser();
-      }
-    };
-
-    Hub.listen('auth', listener);
-    return () => Hub.remove('auth', listener);
   }, []);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        <Stack.Screen name="HomeTabs" component={HomeScreen} />
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
       ) : (
-        <>
-          <Stack.Screen
-            //@ts-ignore
-            name="SignIn"
-            component={SigninScreen}
-          />
-          <Stack.Screen
-            //@ts-ignore
-            name="SignUp"
-            component={SignUpScreen}
-          />
-          <Stack.Screen
-            //@ts-ignore
-            name="ConfirmEmail"
-            component={ConfirmEmailScreen}
-          />
-          {/* <Stack.Screen
-            //@ts-ignore
-            name="ForgotPassword"
-            component={ForgotPasswordScreen}
-          /> */}
-          {/* <Stack.Screen name="NewPassword" component={NewPasswordScreen} /> */}
-        </>
+        <Stack.Screen
+          name="AuthStackNavigator"
+          component={AuthStackNavigator}
+        />
       )}
-      {/* {dbUser ? ( */}
-      {/* <Stack.Screen name="HomeTabs" component={HomeTabs} /> */}
-      {/* ) : ( */}
-      {/* <Stack.Screen name="Profile" component={Profile} /> */}
-      {/* )} */}
     </Stack.Navigator>
   );
 };
@@ -168,4 +133,14 @@ const OrderStackNavigator = () => {
   );
 };
 
+const AuthStack = createNativeStackNavigator();
+
+const AuthStackNavigator = () => {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="StartUp" component={StartUp} />
+      <AuthStack.Screen name="GetStarted" component={GetStarted} />
+    </AuthStack.Navigator>
+  );
+};
 export default RootNavigator;

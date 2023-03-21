@@ -2,62 +2,62 @@ import { Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth, DataStore } from 'aws-amplify';
-import { useAuthContext } from '../context/AuthContext';
+// import { useAuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import { User } from '../models';
+// import { User } from '../models';
 
 const Profile = () => {
-  const { authUser, setDbuser, dbUser }: any = useAuthContext();
+  // const { authUser, setDbuser, dbUser }: any = useAuthContext();
   const navigation = useNavigation();
-  const [name, setName] = useState(dbUser?.name || '');
-  const [address, setAddress] = useState(dbUser?.address || '');
-  const [lat, setLat] = useState(dbUser?.lat.toString() || '0');
-  const [lng, setLng] = useState(dbUser?.lng.toString() || '0');
+  // const [name, setName] = useState(dbUser?.name || '');
+  // const [address, setAddress] = useState(dbUser?.address || '');
+  // const [lat, setLat] = useState(dbUser?.lat.toString() || '0');
+  // const [lng, setLng] = useState(dbUser?.lng.toString() || '0');
 
   const onSave = async () => {
-    if (dbUser) {
-      await updateUser();
-    } else {
-      await createUser();
-    }
-    navigation.goBack();
+    // if (dbUser) {
+    //   await updateUser();
+    // } else {
+    //   await createUser();
+    // }
+    // navigation.goBack();
   };
 
   const updateUser = async () => {
-    const user = await DataStore.save(
-      User.copyOf(dbUser, (updated: any) => {
-        updated.name = name;
-        updated.number = '41421412';
-        updated.address = address;
-        updated.lat = parseFloat(lat);
-        updated.lng = parseFloat(lng);
-      }),
-    );
-    setDbuser(user);
+    // const user = await DataStore.save(
+    //   User.copyOf(dbUser, (updated: any) => {
+    //     updated.name = name;
+    //     updated.number = '41421412';
+    //     updated.address = address;
+    //     updated.lat = parseFloat(lat);
+    //     updated.lng = parseFloat(lng);
+    //   }),
+    // );
+    // setDbuser(user);
   };
 
   const createUser = async () => {
-    try {
-      const user = await DataStore.save(
-        new User({
-          name,
-          address,
-          number: '072210024',
-          lat: parseFloat(lat),
-          lng: parseFloat(lng),
-          sub: authUser.attributes.sub,
-        } as any),
-      );
-      setDbuser(user);
-    } catch ({ message }) {
-      if (message) return Alert.alert(message as string);
-    }
+    // try {
+    //   const user = await DataStore.save(
+    //     new User({
+    //       name,
+    //       address,
+    //       number: '072210024',
+    //       lat: parseFloat(lat),
+    //       lng: parseFloat(lng),
+    //       sub: authUser.attributes.sub,
+    //     } as any),
+    //   );
+    //   setDbuser(user);
+    // } catch ({ message }) {
+    //   if (message) return Alert.alert(message as string);
+    // }
   };
 
   return (
     <SafeAreaView>
       <Text style={styles.title}>Profile</Text>
-      <TextInput
+      {/* <TextInput
         value={name}
         onChangeText={setName}
         placeholder="Name"
@@ -88,7 +88,7 @@ const Profile = () => {
         style={{ textAlign: 'center', color: 'red', margin: 10 }}
       >
         Sign out
-      </Text>
+      </Text> */}
     </SafeAreaView>
   );
 };

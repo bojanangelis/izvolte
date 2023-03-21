@@ -11,22 +11,22 @@ import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { DataStore } from 'aws-amplify';
-import { Dish } from '../models';
-import { useBasketContext } from '../context/BasketContext';
+// import { Dish } from '../models';
+// import { useBasketContext } from '../context/BasketContext';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [dish, setDish] = useState<Dish | null>(null);
+  // const [dish, setDish] = useState<Dish | null>(null);
   const [quantity, setQuantity] = useState(1);
 
-  const { addDishToBasket }: any = useBasketContext();
+  // const { addDishToBasket }: any = useBasketContext();
   //@ts-ignore
   const { id } = route.params;
 
-  useEffect(() => {
-    if (id) DataStore.query(Dish, id).then(dish => setDish(dish || null));
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) DataStore.query(Dish, id).then(dish => setDish(dish || null));
+  // }, [id]);
 
   const handleQuantity = (value: string) => {
     switch (value) {
@@ -40,21 +40,21 @@ const DishDetailsScreen = () => {
   };
 
   const addToBasket = async () => {
-    await addDishToBasket(dish, quantity);
+    // await addDishToBasket(dish, quantity);
     navigation.goBack();
   };
 
   const getTotal = () => {
-    if (dish) return (dish.price * quantity).toFixed(2);
+    // if (dish) return (dish.price * quantity).toFixed(2);
   };
-  if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
+  // if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
   return (
     <View style={styles.page}>
-      <Image source={{ uri: dish.image }} style={styles.imageHeader} />
+      {/* <Image source={{ uri: dish.image }} style={styles.imageHeader} />
       <Text style={styles.title}>{dish.name}</Text>
       <Text style={styles.description} numberOfLines={2}>
         {dish.description}
-      </Text>
+      </Text> */}
       <View style={styles.separator} />
 
       <View style={styles.row}>
@@ -73,7 +73,7 @@ const DishDetailsScreen = () => {
         style={styles.button}
       >
         <Text style={styles.buttonText}>
-          Add {quantity} to basket &#8226; $ {getTotal()}
+          {/* Add {quantity} to basket &#8226; $ {getTotal()} */}
         </Text>
       </TouchableOpacity>
 
