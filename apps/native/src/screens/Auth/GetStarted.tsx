@@ -3,43 +3,20 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Alert,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import CustomInput from '../../components/CustomInput';
-// import CustomButton from '../../components/CustomButton';
-// import SocialSignInButtons from '../../components/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/core';
 import { Auth } from 'aws-amplify';
 import SocialSignInButtons from '../../components/SocialSigninButtons';
-import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
 import { AntDesign } from '@expo/vector-icons';
 
 const GetStarted = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-
-  const onRegisterPressed = async (data: any) => {
-    const { username, password, email, name } = data;
-    try {
-      await Auth.signUp({
-        username,
-        password,
-        attributes: { email, name, preferred_username: username },
-      });
-      //@ts-ignore
-      navigation.navigate('ConfirmEmail', { username });
-    } catch (e: any) {
-      Alert.alert('Oops', e.message);
-    }
-  };
-
-  const onSignInPress = () => {
-    //@ts-ignore
-    navigation.navigate('SignIn');
-  };
 
   const onTermsOfUsePressed = () => {
     console.warn('onTermsOfUsePressed');
@@ -48,45 +25,52 @@ const GetStarted = () => {
   const onPrivacyPressed = () => {
     console.warn('onPrivacyPressed');
   };
-  const handlePhoneNumberChange = () => {
-    if (phoneNumber) {
-      // Initialize PhoneNumberUtil with default region
-      const phoneUtil = PhoneNumberUtil.getInstance();
-      try {
-        // Parse phone number with country code
-        const parsedNumber = phoneUtil.parse(phoneNumber, 'MK');
-
-        // Format phone number in E.164 format
-        const formattedNumber = phoneUtil.format(
-          parsedNumber,
-          PhoneNumberFormat.E164,
-        );
-        // Update state with formatted phone number
-        setPhoneNumber(formattedNumber);
-      } catch (error) {
-        // Invalid phone number, update state with original input
-        setPhoneNumber(phoneNumber);
-      }
+  const handleSignIn = () => {
+    setLoading(true);
+    try {
+      const authUser = Auth.signIn(email, password);
+    } catch (err: unknown) {
+      Alert.alert(err?.message);
     }
+    setLoading(false);
   };
-  console.warn('this is my phone', phoneNumber);
+  console.log(loading);
+
   return (
     <View style={styles.root}>
-      <Text style={styles.title}>Enter your phone number</Text>
-      <TextInput
-        style={styles.phoneNumberInput}
-        value={phoneNumber}
-        placeholder="+389 70 555 555"
-        onChangeText={(text: string) => setPhoneNumber(text)}
-        keyboardType="phone-pad"
-      />
+      <Text style={styles.title}>Sign in with your izvolte account</Text>
+      <View style={styles.inputContainerView}>
+        <Text style={styles.textInputLabel}>Enter your email address</Text>
+        <TextInput
+          style={styles.inputContainer}
+          value={email}
+          onChangeText={(text: string) => setEmail(text)}
+          placeholder="Type your email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="email"
+        />
+      </View>
+      <View style={styles.inputContainerView}>
+        <Text style={styles.textInputLabel}>Enter your password</Text>
+        <TextInput
+          style={styles.inputContainer}
+          value={password}
+          placeholder="Type your password"
+          autoCapitalize="none"
+          secureTextEntry={true}
+          onChangeText={(text: string) => setPassword(text)}
+          keyboardType="visible-password"
+        />
+      </View>
       <TouchableOpacity
-        //@ts-ignore
-        onPress={handlePhoneNumberChange}
+        disabled={!loading}
+        onPress={handleSignIn}
         style={styles.buttonNext}
       >
         <Text> </Text>
-        <Text style={styles.buttonNextText}>Next</Text>
+        <Text style={styles.buttonNextText}>Sign in</Text>
         <AntDesign
           style={styles.arrowNext}
           name="arrowright"
@@ -117,6 +101,15 @@ const GetStarted = () => {
 };
 
 const styles = StyleSheet.create({
+  textInputLabel: {
+    fontWeight: '500',
+    color: 'black',
+    marginBottom: 5,
+  },
+  inputContainerView: {
+    paddingVertical: 10,
+  },
+
   dividerContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -145,7 +138,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     padding: 10,
     paddingHorizontal: 20,
-    marginVertical: 5,
+    marginVertical: 10,
   },
   buttonNextText: {
     color: 'white',
@@ -159,15 +152,15 @@ const styles = StyleSheet.create({
     paddingTop: '25%',
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
+    paddingBottom: 20,
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'left',
   },
-  phoneNumberInput: {
+  inputContainer: {
     backgroundColor: '#EEEEEE',
     width: '100%',
-    marginVertical: 20,
     padding: 20,
     borderRadius: 2,
   },

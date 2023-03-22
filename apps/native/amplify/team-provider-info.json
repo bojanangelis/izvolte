@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "izvolteclienta498652a": {}
+        "izvolteclienta498652a": {},
+        "izvolteClient": {}
       },
       "api": {
         "izvolteclient": {}

@@ -33,6 +33,7 @@ const StartUp = () => {
           onPress={() => navigation.navigate('GetStarted')}
           style={styles.buttonSingIn}
         >
+          <Text></Text>
           <Text style={styles.buttonSingInText}>Get started</Text>
           <AntDesign
             style={styles.gettingStartedIcon}
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'black',
     borderRadius: 4,
-    padding: 10,
+    padding: 18,
     paddingHorizontal: 20,
     marginVertical: 5,
   },

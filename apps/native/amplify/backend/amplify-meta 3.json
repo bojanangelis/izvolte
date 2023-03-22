@@ -12,8 +12,39 @@
       "AmplifyAppId": "d2yufx908y9tzk"
     }
   },
+  "api": {
+    "izvolteclient": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        },
+        "GraphQLAPIIdOutput": "325twgw2jzgqjei3lcobreasji",
+        "GraphQLAPIEndpointOutput": "https://qlkfgkzpljc2nh6l47wke2rdoq.appsync-api.eu-central-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-wftx2rmb25cgbbgpmfxu6jwx24"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-03-22T15:48:00.696Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiizvolteclient"
+      }
+    }
+  },
   "auth": {
-    "izvolteclienta498652a": {
+    "izvolteClient": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -21,14 +52,15 @@
       "frontendAuthConfig": {
         "socialProviders": [],
         "usernameAttributes": [
-          "EMAIL",
-          "PHONE_NUMBER"
-        ],
-        "signupAttributes": [
           "EMAIL"
         ],
+        "signupAttributes": [
+          "EMAIL",
+          "PHONE_NUMBER",
+          "NAME"
+        ],
         "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
+          "passwordPolicyMinLength": 6,
           "passwordPolicyCharacters": []
         },
         "mfaConfiguration": "OFF",
@@ -40,47 +72,21 @@
         ]
       },
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/auth/izvolteclienta498652a-cloudformation-template.json",
-        "logicalId": "authizvolteclienta498652a"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/auth/izvolteClient-cloudformation-template.json",
+        "logicalId": "authizvolteClient"
       },
-      "lastPushTimeStamp": "2023-03-13T10:25:07.883Z",
+      "lastPushTimeStamp": "2023-03-22T15:48:00.698Z",
       "output": {
-        "UserPoolId": "eu-central-1_1x4AEZe4p",
-        "AppClientIDWeb": "1v3qfftah75cnlp03c4f41juts",
-        "AppClientID": "36i81oqrr6415u5jifc1fih07g",
-        "IdentityPoolId": "eu-central-1:89c21c22-10df-42a4-8baf-c343de0cfba4",
-        "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:310817921623:userpool/eu-central-1_1x4AEZe4p",
-        "IdentityPoolName": "izvolteclienta498652a_identitypool_a498652a__dev",
-        "UserPoolName": "izvolteclienta498652a_userpool_a498652a"
+        "CreatedSNSRole": "arn:aws:iam::310817921623:role/sns07d00d19154420-dev",
+        "UserPoolId": "eu-central-1_MuN1Umr9D",
+        "AppClientIDWeb": "21efm0mdlhff57hf3gl0eci4dc",
+        "AppClientID": "93ksejagjsuf3bk1uj3fooprm",
+        "IdentityPoolId": "eu-central-1:a04303be-dec5-47c2-b319-81b28575b975",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:310817921623:userpool/eu-central-1_MuN1Umr9D",
+        "IdentityPoolName": "testAuthIdentityPool__dev",
+        "UserPoolName": "izvolteClient"
       },
-      "lastPushDirHash": "oo7BnLoD9m4E4TeQnZ9tTTUZhLw="
-    }
-  },
-  "api": {
-    "izvolteclient": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            }
-          },
-          "additionalAuthenticationProviders": []
-        },
-        "GraphQLAPIIdOutput": "325twgw2jzgqjei3lcobreasji",
-        "GraphQLAPIEndpointOutput": "https://qlkfgkzpljc2nh6l47wke2rdoq.appsync-api.eu-central-1.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-wftx2rmb25cgbbgpmfxu6jwx24"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "logicalId": "apiizvolteclient"
-      },
-      "lastPushTimeStamp": "2023-03-13T10:25:10.771Z",
-      "lastPushDirHash": "sEgRM5zYjDYwe6/WujcrUKwYMoM="
+      "lastPushDirHash": "4r3q8W7hGksaygBqtsBzH6a3Vmg="
     }
   }
 }

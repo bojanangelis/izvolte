@@ -1,7 +1,3 @@
-# This "input" configures a global authorization rule to enable public access to
-# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-# input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
 enum OrderStatus {
   NEW
   COOKING
@@ -10,14 +6,14 @@ enum OrderStatus {
   COMPLETED
 }
 
-type OrderDish @model @auth(rules: [{ allow: public }]) {
+type OrderDish @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int!
   Dish: Dish @hasOne
   orderID: ID! @index(name: "byOrder")
 }
 
-type Order @model @auth(rules: [{ allow: public }]) {
+type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
   userID: ID! @index(name: "byUser")
   Restaurant: Restaurant @hasOne
@@ -28,21 +24,21 @@ type Order @model @auth(rules: [{ allow: public }]) {
   OrderDishes: [OrderDish] @hasMany(indexName: "byOrder", fields: ["id"])
 }
 
-type BasketDish @model @auth(rules: [{ allow: public }]) {
+type BasketDish @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int!
   basketID: ID! @index(name: "byBasket")
   Dish: Dish! @hasOne
 }
 
-type Basket @model @auth(rules: [{ allow: public }]) {
+type Basket @model @auth(rules: [{allow: public}]) {
   id: ID!
   BasketDishes: [BasketDish] @hasMany(indexName: "byBasket", fields: ["id"])
   userID: ID! @index(name: "byUser")
   restaurantID: ID! @index(name: "byRestaurant")
 }
 
-type User @model @auth(rules: [{ allow: public }]) {
+type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   sub: String!
   name: String!
@@ -54,7 +50,7 @@ type User @model @auth(rules: [{ allow: public }]) {
   lng: Float!
 }
 
-type Dish @model @auth(rules: [{ allow: public }]) {
+type Dish @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
   image: String!
@@ -63,7 +59,7 @@ type Dish @model @auth(rules: [{ allow: public }]) {
   restaurantID: ID! @index(name: "byRestaurant")
 }
 
-type Restaurant @model @auth(rules: [{ allow: public }]) {
+type Restaurant @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
   image: String!
@@ -77,3 +73,4 @@ type Restaurant @model @auth(rules: [{ allow: public }]) {
   Dishes: [Dish] @hasMany(indexName: "byRestaurant", fields: ["id"])
   Baskets: [Basket] @hasMany(indexName: "byRestaurant", fields: ["id"])
 }
+ 

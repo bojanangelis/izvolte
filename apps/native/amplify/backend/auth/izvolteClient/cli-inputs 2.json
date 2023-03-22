@@ -3,8 +3,8 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "izvolt4270d323",
-    "userPoolName": "Izvolte",
+    "resourceNameTruncated": "izvolt07d00d19",
+    "userPoolName": "izvolteClient",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -14,21 +14,25 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Welcome to Izvolte: {####}",
-    "emailVerificationMessage": "Verification code: {####}",
+    "emailVerificationSubject": "Welcome to Izvolte",
+    "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
+    "passwordPolicyMinLength": 6,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": [],
+    "requiredAttributes": [
+      "email",
+      "phone_number",
+      "name"
+    ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "Izvolt4270d323_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "izvolt07d00d19_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "4270d323",
-    "resourceName": "Izvolte",
+    "sharedId": "07d00d19",
+    "resourceName": "izvolteClient",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
     "usernameAttributes": [

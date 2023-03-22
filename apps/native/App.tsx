@@ -23,12 +23,12 @@ Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
   const [user, setUser] = useState<ISignUpResult | null>(null);
   Hub.listen('auth', e => {
-    console.log('dadaa', e);
+    // console.log('dadaa', e);
     // ova slusha koga ke se povika nekoja mutacija so auth.
   });
-  useEffect(() => {
-    Auth.signOut();
-  }, []);
+  // useEffect(() => {
+  //   Auth.signOut();
+  // }, []);
   // useEffect(() => {
   //   Auth.signIn({
   //     username: 'johndoe@example.com',

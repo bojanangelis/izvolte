@@ -65,9 +65,9 @@ const ConfirmEmailScreen = () => {
           }}
         />
 
-        <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPressed)} />
+        {/* <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPressed)} /> */}
 
-        <CustomButton
+        {/* <CustomButton
           text="Resend code"
           onPress={onResendPress}
           type="SECONDARY"
@@ -77,7 +77,7 @@ const ConfirmEmailScreen = () => {
           text="Back to Sign in"
           onPress={onSignInPress}
           type="TERTIARY"
-        />
+        /> */}
       </View>
     </ScrollView>
   );

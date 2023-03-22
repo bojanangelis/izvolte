@@ -19,6 +19,7 @@ import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/Auth/NewPasswordScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
+import SignUpScreen from '../screens/Auth/SignUpScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -140,6 +141,7 @@ const AuthStackNavigator = () => {
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name="StartUp" component={StartUp} />
       <AuthStack.Screen name="GetStarted" component={GetStarted} />
+      <AuthStack.Screen name="SignUpScreen" component={SignUpScreen} />
     </AuthStack.Navigator>
   );
 };

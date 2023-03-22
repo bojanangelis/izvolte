@@ -7,7 +7,7 @@ interface CustomButtonInterface {
   bgColor: string;
   fgColor: string;
   border: string;
-  image?: string;
+  image?: Object;
 }
 
 const CustomButton = ({
@@ -27,12 +27,7 @@ const CustomButton = ({
         bgColor ? { backgroundColor: bgColor } : {},
       ]}
     >
-      <Image
-        source={{
-          uri: image,
-        }}
-        style={styles.logo}
-      />
+      {image && <Image source={image} style={styles.logo} />}
       <Text style={[styles.text, fgColor ? { color: fgColor } : {}]}>
         {text}
       </Text>
