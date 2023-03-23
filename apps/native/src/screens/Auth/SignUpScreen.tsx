@@ -8,21 +8,21 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
+import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 interface FormData {
-  username: string;
+  email: string;
   password: string;
   confirmPassword: string;
-  email: string;
-  name: string;
 }
 const SignUpScreen = () => {
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FormData>({
-    username: '',
+    email: '',
     password: '',
     confirmPassword: '',
-    email: '',
-    name: '',
   });
   const handleInput = (value: string, key: keyof FormData) => {
     setData(prevState => ({
@@ -30,38 +30,23 @@ const SignUpScreen = () => {
       [key]: value,
     }));
   };
-  const onRegisterPressed = async (data: any) => {
-    // const { username, password, email, name } = data;
+  const onRegisterPressed = async () => {
+    if (data.password !== data.confirmPassword) return;
     try {
-      //   await Auth.signIn({
-      // username,
-      // password,
-      // attributes: { email, name, phone_number },
-      //   });
+      setLoading(true);
+      await Auth.signUp({
+        username: data.email,
+        password: data.password,
+        attributes: { email: data.email },
+        autoSignIn: { enabled: true },
+      });
       //@ts-ignore
-      navigation.navigate('ConfirmEmail', { username });
+      navigation.navigate('ConfirmEmail', { email: data.email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
+      setLoading(false);
     }
   };
-  useEffect(() => {
-    // Auth.signUp({
-    //   username: 'bojanangjeleski@gmail.com',
-    //   password: '12345678',
-    //   attributes: {
-    //     email: 'bojanangjeleski@gmail.com',
-    //     phone_number: '+38972210024',
-    //     name: 'Bojan Angjeleski',
-    //   },
-    // })
-    //   .then(() => {
-    //     console.log('Sign up successful!');
-    //   })
-    //   .catch(err => {
-    //     console.log('Error signing up:', err);
-    //   });
-    // handleResendCode();
-  }, []);
 
   return (
     <View style={styles.root}>
@@ -106,15 +91,33 @@ const SignUpScreen = () => {
 
       <TouchableOpacity
         //@ts-ignore
-        // onPress={handlePhoneNumberChange}
+        disabled={loading}
+        onPress={onRegisterPressed}
         style={styles.buttonNext}
       >
         <Text style={styles.buttonNextText}>Create account</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.viewIcon}
+      >
+        <AntDesign name="arrowleft" size={25} color="black" />
       </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
+  viewIcon: {
+    position: 'absolute',
+    left: 25,
+    bottom: 50,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'whitesmoke',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   textInputLabel: {
     fontWeight: '500',
     marginBottom: 5,
@@ -167,6 +170,7 @@ const styles = StyleSheet.create({
     paddingTop: '25%',
   },
   title: {
+    marginBottom: 20,
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',

@@ -15,7 +15,7 @@ const StartUp = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.signInContainer}>
+    <View style={styles.signInContainer}>
       <Image
         source={require('../../../assets/loginLogo.jpg')}
         style={styles.backgroundImage}
@@ -26,47 +26,54 @@ const StartUp = () => {
           iterationCount={1}
           style={styles.inputContainerText}
         >
-          Use your izvolte phone number to get started
+          Get started with Izvolte
         </Animatable.Text>
+        <TouchableOpacity
+          //@ts-ignore
+          // onPress={() => navigation.navigate('')}
+          style={styles.buttonSeeStores}
+        >
+          <Text style={styles.buttonSeeStoresText}>See stores nearby</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           //@ts-ignore
           onPress={() => navigation.navigate('GetStarted')}
           style={styles.buttonSingIn}
         >
-          <Text></Text>
-          <Text style={styles.buttonSingInText}>Get started</Text>
-          <AntDesign
-            style={styles.gettingStartedIcon}
-            name="arrowright"
-            size={22}
-            color="white"
-          />
+          <Text style={styles.buttonSingInText}>Sign up or log in</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default StartUp;
 
 const styles = StyleSheet.create({
-  gettingStartedIcon: {},
-  buttonSingIn: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  buttonSeeStores: {
     width: '100%',
-    backgroundColor: 'black',
-    borderRadius: 4,
-    padding: 18,
-    paddingHorizontal: 20,
-    marginVertical: 5,
+    backgroundColor: '#f7d639',
+    padding: 20,
+    borderRadius: 2,
   },
-  buttonSingInText: {
+  buttonSeeStoresText: {
+    textAlign: 'center',
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
+  },
+  gettingStartedIcon: {},
+  buttonSingIn: {
+    width: '100%',
+    paddingHorizontal: 20,
+    marginTop: 20,
+    marginVertical: 40,
+  },
+  buttonSingInText: {
+    textAlign: 'center',
+    color: 'black',
+    fontSize: 18,
+    fontWeight: '500',
   },
   signInContainer: {
     flex: 1,
@@ -85,10 +92,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginVertical: 20,
+    marginBottom: 20,
   },
   inputContainerText: {
-    fontSize: 18,
+    fontSize: 24,
     letterSpacing: 2,
     paddingVertical: 20,
     fontWeight: '600',

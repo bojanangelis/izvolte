@@ -25,16 +25,16 @@ const GetStarted = () => {
   const onPrivacyPressed = () => {
     console.warn('onPrivacyPressed');
   };
-  const handleSignIn = () => {
-    setLoading(true);
+  const handleSignIn = async () => {
     try {
-      const authUser = Auth.signIn(email, password);
-    } catch (err: unknown) {
+      setLoading(true);
+      const authUser = await Auth.signIn(email, password);
+      console.log('>>>>', authUser);
+    } catch (err: any) {
       Alert.alert(err?.message);
     }
     setLoading(false);
   };
-  console.log(loading);
 
   return (
     <View style={styles.root}>
@@ -65,7 +65,14 @@ const GetStarted = () => {
         />
       </View>
       <TouchableOpacity
-        disabled={!loading}
+        //@ts-ignore
+        onPress={() => navigation.navigate('ForgotPassword')}
+        style={styles.forgotPasswordButton}
+      >
+        <Text style={styles.forgotPasswordText}>Forgot password</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        disabled={loading}
         onPress={handleSignIn}
         style={styles.buttonNext}
       >
@@ -96,11 +103,34 @@ const GetStarted = () => {
         <View style={styles.divider}></View>
       </View>
       <SocialSignInButtons />
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.viewIcon}
+      >
+        <AntDesign name="arrowleft" size={25} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  viewIcon: {
+    position: 'absolute',
+    left: 25,
+    bottom: 50,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'whitesmoke',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  forgotPasswordText: {
+    color: 'gray',
+  },
+  forgotPasswordButton: {
+    marginVertical: 10,
+  },
   textInputLabel: {
     fontWeight: '500',
     color: 'black',

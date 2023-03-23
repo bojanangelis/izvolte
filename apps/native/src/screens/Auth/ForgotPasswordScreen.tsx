@@ -39,13 +39,13 @@ const ForgotPasswordScreen = () => {
           }}
         />
 
-        <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} />
+        {/* <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} /> */}
 
-        <CustomButton
+        {/* <CustomButton
           text="Back to Sign in"
           onPress={onSignInPress}
           type="TERTIARY"
-        />
+        /> */}
       </View>
     </ScrollView>
   );

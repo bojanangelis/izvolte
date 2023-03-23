@@ -2,7 +2,12 @@ import React from 'react';
 import CustomButton from './CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
-const SocialSignInButtons = () => {
+interface SocialSigninButtonsInterface {
+  signInButton?: boolean;
+}
+const SocialSignInButtons = ({
+  signInButton,
+}: SocialSigninButtonsInterface) => {
   const navigation = useNavigation();
 
   const onSignInFacebook = () => {
@@ -12,7 +17,11 @@ const SocialSignInButtons = () => {
   const onSignInGoogle = () => {
     console.warn('onSignInGoogle');
   };
-
+  const onSignIn = () => {
+    console.warn('signIn');
+    //@ts-ignore
+    navigation.navigate('GetStarted');
+  };
   const onEmail = () => {
     console.warn('onEmail');
     //@ts-ignore
@@ -21,13 +30,23 @@ const SocialSignInButtons = () => {
 
   return (
     <>
-      <CustomButton
-        text="Sign up with email"
-        onPress={onEmail}
-        bgColor="white"
-        fgColor="black"
-        border="black"
-      />
+      {signInButton ? (
+        <CustomButton
+          text="Sign in"
+          onPress={onSignIn}
+          bgColor="white"
+          fgColor="black"
+          border="black"
+        />
+      ) : (
+        <CustomButton
+          text="Sign up with email"
+          onPress={onEmail}
+          bgColor="white"
+          fgColor="black"
+          border="black"
+        />
+      )}
       {/* <CustomButton
         text="Continue with facebook"
         onPress={onSignInFacebook}

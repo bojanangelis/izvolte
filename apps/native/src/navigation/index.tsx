@@ -15,11 +15,10 @@ import Profile from '../screens/ProfileScreen';
 import { useState, useEffect } from 'react';
 import { Auth } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
-import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
-import NewPasswordScreen from '../screens/Auth/NewPasswordScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
+import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -47,9 +46,12 @@ const RootNavigator = () => {
       setUser(null);
     }
   };
+
   useEffect(() => {
     checkUser();
   }, []);
+
+  console.log(user);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -142,6 +144,11 @@ const AuthStackNavigator = () => {
       <AuthStack.Screen name="StartUp" component={StartUp} />
       <AuthStack.Screen name="GetStarted" component={GetStarted} />
       <AuthStack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <AuthStack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
+      <AuthStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+      />
     </AuthStack.Navigator>
   );
 };
