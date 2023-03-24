@@ -12,13 +12,21 @@ import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Auth } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
+import NewPasswordScreen from '../screens/Auth/NewPasswordScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  authUserData,
+  login,
+  logout,
+  UserState,
+} from '../../features/authUser';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -35,27 +43,41 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const [user, setUser] = useState(null);
-  const checkUser = async () => {
-    try {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(authUser);
-    } catch (e) {
-      setUser(null);
-    }
-  };
+  const dispatch = useDispatch();
+  const dispatchLogin = useCallback(
+    (user: UserState['user']) =>
+      dispatch(
+        login({
+          email: user?.email ?? '',
+          sub: user?.sub ?? '',
+          emailAuthenticated: user?.emailAuthenticated ?? false,
+        }),
+      ),
+    [dispatch],
+  );
+
+  const userAuthentication = useSelector(authUserData);
 
   useEffect(() => {
-    checkUser();
-  }, []);
+    try {
+      Auth.currentAuthenticatedUser({ bypassCache: true }).then(user => {
+        console.log(user?.attributes?.sub),
+          dispatchLogin({
+            email: user?.attributes?.email ?? '',
+            emailAuthenticated: user?.attributes?.email_verified ?? false,
+            sub: user?.attributes?.sub ?? '',
+          });
+      });
+    } catch (err) {
+      dispatch(logout);
+    }
+  }, [dispatch, dispatchLogin]);
 
-  console.log(user);
+  console.log('ova mene mi treba samo--->', userAuthentication?.sub);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {user ? (
+      {userAuthentication ? (
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
       ) : (
         <Stack.Screen
@@ -149,6 +171,7 @@ const AuthStackNavigator = () => {
         name="ForgotPassword"
         component={ForgotPasswordScreen}
       />
+      <AuthStack.Screen name="NewPassword" component={NewPasswordScreen} />
     </AuthStack.Navigator>
   );
 };

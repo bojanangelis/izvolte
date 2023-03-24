@@ -28,8 +28,7 @@ const GetStarted = () => {
   const handleSignIn = async () => {
     try {
       setLoading(true);
-      const authUser = await Auth.signIn(email, password);
-      console.log('>>>>', authUser);
+      await Auth.signIn(email, password);
     } catch (err: any) {
       Alert.alert(err?.message);
     }

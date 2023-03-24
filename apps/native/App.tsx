@@ -16,6 +16,8 @@ import { ISignUpResult } from 'amazon-cognito-identity-js';
 import SigninScreen from './src/screens/Auth/StartUp';
 import SignUpScreen from './src/screens/Auth/GetStarted';
 import RootNavigator from './src/navigation';
+import { Provider } from 'react-redux';
+import store from './store';
 // import { GetBlogQuery } from './src/API';
 // import { SyncRestaurantsQuery } from './src/API';
 
@@ -23,12 +25,12 @@ Amplify.configure({ ...awsmobile, Analytics: { disabled: true } });
 const App = () => {
   const [user, setUser] = useState<ISignUpResult | null>(null);
   Hub.listen('auth', e => {
-    console.log('dadaa', e);
+    // console.log('dadaa', e);
     // ova slusha koga ke se povika nekoja mutacija so auth.
   });
-  useEffect(() => {
-    Auth.signOut();
-  }, []);
+  // useEffect(() => {
+  //   Auth.signOut();
+  // }, []);
   // useEffect(() => {
   //   Auth.signIn({
   //     username: 'johndoe@example.com',
@@ -50,11 +52,13 @@ const App = () => {
 
   // console.log('user?', user);
   return (
-    <NavigationContainer>
-      <RootNavigatior />
-      {/* <SignInScreen /> */}
-      <StatusBar style="dark" />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <RootNavigatior />
+        {/* <SignInScreen /> */}
+        <StatusBar style="dark" />
+      </NavigationContainer>
+    </Provider>
   );
 };
 
