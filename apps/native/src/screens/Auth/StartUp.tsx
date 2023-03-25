@@ -1,14 +1,6 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import React from 'react';
 import * as Animatable from 'react-native-animatable';
-import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const StartUp = () => {

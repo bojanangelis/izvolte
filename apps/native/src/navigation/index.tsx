@@ -13,7 +13,7 @@ import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
 import { useState, useEffect, useCallback } from 'react';
-import { Auth } from 'aws-amplify';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
@@ -27,10 +27,17 @@ import {
   logout,
   UserState,
 } from '../../features/authUser';
+import LoadingScreen from '../screens/LoadingScreen';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { getUser } from '../graphql/queries';
+import { GetUserQuery, ListUsersQuery } from '../API';
+import { ParamListBase } from '@react-navigation/native';
+import { listUsers } from '../graphql/queries';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
   AuthStackNavigator: undefined;
+  loadingStack: undefined;
   Restaurant: {
     id: string;
   };
@@ -43,7 +50,10 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
+  const [loading, setLoding] = useState(false);
   const dispatch = useDispatch();
+  const userAuthentication = useSelector(authUserData);
+
   const dispatchLogin = useCallback(
     (user: UserState['user']) =>
       dispatch(
@@ -56,25 +66,51 @@ const RootNavigator = () => {
     [dispatch],
   );
 
-  const userAuthentication = useSelector(authUserData);
-
   useEffect(() => {
     try {
+      setLoding(true);
       Auth.currentAuthenticatedUser({ bypassCache: true }).then(user => {
-        console.log(user?.attributes?.sub),
-          dispatchLogin({
-            email: user?.attributes?.email ?? '',
-            emailAuthenticated: user?.attributes?.email_verified ?? false,
-            sub: user?.attributes?.sub ?? '',
-          });
+        dispatchLogin({
+          email: user?.attributes?.email ?? '',
+          emailAuthenticated: user?.attributes?.email_verified ?? false,
+          sub: user?.attributes?.sub ?? '',
+        });
+        setLoding(false);
       });
     } catch (err) {
       dispatch(logout);
+      setLoding(false);
     }
   }, [dispatch, dispatchLogin]);
+  useEffect(() => {
+    const catchUser = async () => {
+      // const data = await API.graphql<GraphQLQuery<GetUserQuery>>({
+      //   query: listUsers,
+      //   // variables: { id: userAuthentication?.sub },
+      // });
 
-  console.log('ova mene mi treba samo--->', userAuthentication?.sub);
+      const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
+        graphqlOperation(listUsers, {
+          filter: {
+            sub: {
+              eq: userAuthentication?.sub,
+            },
+          },
+        }),
+      );
+      console.log('userdata->>', data.data?.listUsers?.items[0]);
+      // const data = await DataStore.query(User, user => user.sub.eq(sub));
+      // setDbuser(data[0]);
+    };
+    catchUser().catch(e => console.error(e));
+  }, [userAuthentication?.sub]);
 
+  if (loading)
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />
+      </Stack.Navigator>
+    );
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {userAuthentication ? (
@@ -119,7 +155,7 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={Profile as any}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user-alt" size={24} color={color} />
@@ -175,4 +211,14 @@ const AuthStackNavigator = () => {
     </AuthStack.Navigator>
   );
 };
+
+const LoadingStack = createNativeStackNavigator();
+const LoadingStackNavigator = () => {
+  return (
+    <LoadingStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="loadingStack" component={LoadingScreen} />
+    </LoadingStack.Navigator>
+  );
+};
+
 export default RootNavigator;

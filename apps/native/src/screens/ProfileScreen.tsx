@@ -1,13 +1,19 @@
 import { Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Auth, DataStore } from 'aws-amplify';
-// import { useAuthContext } from '../context/AuthContext';
+import { API, Auth, DataStore } from 'aws-amplify';
+import { GraphQLQuery } from '@aws-amplify/api';
 import { useNavigation } from '@react-navigation/native';
-// import { User } from '../models';
+import { createUser } from '../graphql/mutations';
+import { RouteProp } from '@react-navigation/native';
+import { CreateUserMutation } from '../API';
+import { useSelector } from 'react-redux';
+import { authUserData } from '../../features/authUser';
 
 const Profile = () => {
   // const { authUser, setDbuser, dbUser }: any = useAuthContext();
+  const selectAuthSub = useSelector(authUserData);
+  console.log(selectAuthSub?.sub);
   const navigation = useNavigation();
   // const [name, setName] = useState(dbUser?.name || '');
   // const [address, setAddress] = useState(dbUser?.address || '');
@@ -16,11 +22,11 @@ const Profile = () => {
 
   const onSave = async () => {
     // if (dbUser) {
-    //   await updateUser();
+    // await updateUser();
     // } else {
-    //   await createUser();
+    await create();
     // }
-    // navigation.goBack();
+    navigation.goBack();
   };
 
   const updateUser = async () => {
@@ -36,7 +42,28 @@ const Profile = () => {
     // setDbuser(user);
   };
 
-  const createUser = async () => {
+  const create = async (): Promise<any> => {
+    const userInput = {};
+    API.graphql<GraphQLQuery<CreateUserMutation>>({
+      query: createUser,
+      variables: {
+        input: {
+          name: 'Bojan Angjeleski',
+          address: 'Kopachka bb',
+          number: '+38972210024',
+          lat: 13,
+          lng: 11,
+          sub: selectAuthSub?.sub,
+        },
+      },
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        // Handle any errors that occurred
+      });
+
     // try {
     //   const user = await DataStore.save(
     //     new User({
@@ -89,6 +116,7 @@ const Profile = () => {
       >
         Sign out
       </Text> */}
+      <Button onPress={onSave} title="Save" />
     </SafeAreaView>
   );
 };
