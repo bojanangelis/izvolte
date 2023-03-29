@@ -13,7 +13,7 @@ import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
 import { useState, useEffect, useCallback } from 'react';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, Auth, graphqlOperation, Hub } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
@@ -29,10 +29,9 @@ import {
 } from '../../features/authUser';
 import LoadingScreen from '../screens/LoadingScreen';
 import { GraphQLQuery } from '@aws-amplify/api';
-import { getUser } from '../graphql/queries';
-import { GetUserQuery, ListUsersQuery } from '../API';
-import { ParamListBase } from '@react-navigation/native';
+import { ListUsersQuery } from '../API';
 import { listUsers } from '../graphql/queries';
+import { addDbUser, DbUserState, User } from '../../features/dbUser';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -50,7 +49,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const userAuthentication = useSelector(authUserData);
 
@@ -65,30 +64,34 @@ const RootNavigator = () => {
       ),
     [dispatch],
   );
+  const dispatchDbUser = useCallback(
+    (dbUser: User) => {
+      dispatch(addDbUser({ dbUser }));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
-    try {
-      setLoding(true);
-      Auth.currentAuthenticatedUser({ bypassCache: true }).then(user => {
+    const checkAuthStatus = async () => {
+      try {
+        const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
         dispatchLogin({
           email: user?.attributes?.email ?? '',
           emailAuthenticated: user?.attributes?.email_verified ?? false,
           sub: user?.attributes?.sub ?? '',
         });
-        setLoding(false);
-      });
-    } catch (err) {
-      dispatch(logout);
-      setLoding(false);
-    }
+      } catch (err) {
+        console.log('Error fetching current authenticated user:', err);
+        dispatch(logout);
+      }
+      setLoading(false);
+    };
+
+    checkAuthStatus();
   }, [dispatch, dispatchLogin]);
+
   useEffect(() => {
     const catchUser = async () => {
-      // const data = await API.graphql<GraphQLQuery<GetUserQuery>>({
-      //   query: listUsers,
-      //   // variables: { id: userAuthentication?.sub },
-      // });
-
       const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
         graphqlOperation(listUsers, {
           filter: {
@@ -98,9 +101,8 @@ const RootNavigator = () => {
           },
         }),
       );
-      console.log('userdata->>', data.data?.listUsers?.items[0]);
-      // const data = await DataStore.query(User, user => user.sub.eq(sub));
-      // setDbuser(data[0]);
+      if (data.data?.listUsers?.items[0])
+        dispatchDbUser(data.data?.listUsers?.items[0]);
     };
     catchUser().catch(e => console.error(e));
   }, [userAuthentication?.sub]);

@@ -7,8 +7,15 @@ import {
 } from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
+interface RouteParams {
+  email: string;
+}
 const NewPasswordScreen = () => {
+  const router = useRoute();
+  console.log((router?.params as RouteParams)?.email);
+
   return (
     <View style={styles.root}>
       <Text style={styles.title}>Create Izvolte account</Text>
@@ -16,7 +23,7 @@ const NewPasswordScreen = () => {
         <Text style={styles.textInputLabel}>Enter your email address</Text>
         <TextInput
           style={styles.inputContainer}
-          // value={data.email}
+          value={(router?.params as RouteParams)?.email}
           // onChangeText={value => handleInput(value, 'email')}
           placeholder="Type your email"
           keyboardType="email-address"
@@ -52,7 +59,7 @@ const NewPasswordScreen = () => {
 
       <TouchableOpacity
         //@ts-ignore
-        disabled={loading}
+        // disabled={loading}
         // onPress={onRegisterPressed}
         style={styles.buttonNext}
       >

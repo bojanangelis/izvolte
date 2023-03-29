@@ -42,11 +42,7 @@ const ForgotPasswordScreen = () => {
         />
       </View>
 
-      <TouchableOpacity
-        // disabled={loading}
-        onPress={onSendPressed}
-        style={styles.buttonNext}
-      >
+      <TouchableOpacity onPress={onSendPressed} style={styles.buttonNext}>
         <Text style={styles.buttonNextText}>Send code</Text>
       </TouchableOpacity>
 

@@ -7,13 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 import { createUser } from '../graphql/mutations';
 import { RouteProp } from '@react-navigation/native';
 import { CreateUserMutation } from '../API';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authUserData } from '../../features/authUser';
+import { logout } from '../../features/authUser';
 
 const Profile = () => {
   // const { authUser, setDbuser, dbUser }: any = useAuthContext();
+  const dispatch = useDispatch();
   const selectAuthSub = useSelector(authUserData);
-  console.log(selectAuthSub?.sub);
+  console.log('sub', selectAuthSub?.sub);
   const navigation = useNavigation();
   // const [name, setName] = useState(dbUser?.name || '');
   // const [address, setAddress] = useState(dbUser?.address || '');
@@ -28,7 +30,10 @@ const Profile = () => {
     // }
     navigation.goBack();
   };
-
+  const signOut = async () => {
+    dispatch(logout());
+    Auth.signOut();
+  };
   const updateUser = async () => {
     // const user = await DataStore.save(
     //   User.copyOf(dbUser, (updated: any) => {
@@ -117,6 +122,7 @@ const Profile = () => {
         Sign out
       </Text> */}
       <Button onPress={onSave} title="Save" />
+      <Button onPress={signOut} title="SignOut" />
     </SafeAreaView>
   );
 };

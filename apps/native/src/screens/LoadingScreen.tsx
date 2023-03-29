@@ -18,7 +18,7 @@ const LoadingScreen = () => {
     },
 
     inputContainerText: {
-      fontSize: 24,
+      fontSize: 20,
       letterSpacing: 2,
       paddingVertical: 20,
       fontWeight: '600',
