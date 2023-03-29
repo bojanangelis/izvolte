@@ -5,44 +5,77 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
 
 interface RouteParams {
   email: string;
 }
 const NewPasswordScreen = () => {
+  const navigation = useNavigation();
   const router = useRoute();
-  console.log((router?.params as RouteParams)?.email);
+  const [data, setData] = useState({
+    code: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
+
+  const handleInput = (value: string, key: keyof FormData) => {
+    setData(prevState => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const resetPassword = async (): Promise<void> => {
+    try {
+      await Auth.forgotPasswordSubmit(
+        (router?.params as RouteParams)?.email,
+        '',
+        '31',
+      );
+      console.log('Password reset successful');
+      // Redirect the user to the login page or perform any other desired action
+    } catch (error) {
+      console.log('Password reset failed', error);
+      // Handle any errors that occurred during the password reset process
+    }
+  };
 
   return (
     <View style={styles.root}>
-      <Text style={styles.title}>Create Izvolte account</Text>
+      <Text style={styles.title}>Reset password</Text>
       <View style={styles.inputContainerView}>
-        <Text style={styles.textInputLabel}>Enter your email address</Text>
-        <TextInput
-          style={styles.inputContainer}
-          value={(router?.params as RouteParams)?.email}
-          // onChangeText={value => handleInput(value, 'email')}
-          placeholder="Type your email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoComplete="email"
-        />
+        <Text>Your email</Text>
+        <Text style={styles.textInputLabelEmail}>
+          {(router?.params as RouteParams)?.email}
+        </Text>
       </View>
       <View style={styles.inputContainerView}>
-        <Text style={styles.textInputLabel}>Enter your password</Text>
+        <Text style={styles.textInputLabel}>Enter your code</Text>
         <TextInput
           style={styles.inputContainer}
-          placeholder="Type your new password"
+          placeholder="Type your code"
           secureTextEntry={true}
-          // value={data.password}
-          // onChangeText={value => handleInput(value, 'password')}
+          value={data.password}
+          onChangeText={value => handleInput(value, 'password')}
           keyboardType="visible-password"
           autoCorrect={false}
         />
+        <View style={styles.inputContainerView}>
+          <Text style={styles.textInputLabel}>Enter your password</Text>
+          <TextInput
+            style={styles.inputContainer}
+            placeholder="Type your password"
+            secureTextEntry={true}
+            // value={data.confirmPassword}
+            // onChangeText={value => handleInput(value, 'confirmPassword')}
+            keyboardType="visible-password"
+            autoCorrect={false}
+          />
+        </View>
       </View>
       <View style={styles.inputContainerView}>
         <Text style={styles.textInputLabel}>Enter your confirm password</Text>
@@ -66,7 +99,7 @@ const NewPasswordScreen = () => {
         <Text style={styles.buttonNextText}>Create account</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        // onPress={() => navigation.goBack()}
+        onPress={() => navigation.goBack()}
         style={styles.viewIcon}
       >
         <AntDesign name="arrowleft" size={25} color="black" />
@@ -86,9 +119,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textInputLabelEmail: {
+    fontWeight: '500',
+    marginBottom: 5,
+    color: 'gray',
+    paddingVertical: 5,
+  },
   textInputLabel: {
     fontWeight: '500',
     marginBottom: 5,
+    color: 'gray',
   },
   inputContainerView: {
     paddingVertical: 10,
