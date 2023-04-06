@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,8 @@ import { useNavigation } from '@react-navigation/core';
 import { Auth } from 'aws-amplify';
 import SocialSignInButtons from '../../components/SocialSigninButtons';
 import { AntDesign } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { UserState, login, logout } from '../../../features/authUser';
 
 const GetStarted = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,57 +25,16 @@ const GetStarted = () => {
   const onPrivacyPressed = () => {
     console.warn('onPrivacyPressed');
   };
-
   const handleSignIn = async () => {
-    setLoading(true);
-    Auth.signIn(email, password)
-      .then(user => {
-        dispatchLogin({
-          email: user?.attributes?.email ?? '',
-          emailAuthenticated: user?.attributes?.email_verified ?? false,
-          sub: user?.attributes?.sub ?? '',
-        });
-      })
-      .catch(err => {
-        Alert.alert(err?.message);
-        dispatch(logout);
-      });
+    try {
+      setLoading(true);
+      const authUser = await Auth.signIn(email, password);
+      console.log('>>>>', authUser);
+    } catch (err: any) {
+      Alert.alert(err?.message);
+    }
     setLoading(false);
   };
-
-  const dispatchLogin = useCallback(
-    (user: UserState['user']) =>
-      dispatch(
-        login({
-          email: user?.email ?? '',
-          sub: user?.sub ?? '',
-          emailAuthenticated: user?.emailAuthenticated ?? false,
-        }),
-      ),
-    [dispatch],
-  );
-  // useEffect(() => {
-  //   // Hub.listen('auth', data => {
-  //   // console.log('Auth event:', data?.payload?.data?.attributes?.sub);
-  //   // dispatchLogin({
-  //   //   email: data?.payload?.data?.attributes?.email,
-  //   //   emailAuthenticated: data?.payload?.data?.attributes?.email_verified,
-  //   //   sub: data?.payload?.data?.attributes?.sub,
-  //   // });
-  //   try {
-  //     Auth.currentAuthenticatedUser({ bypassCache: true }).then(user => {
-  //       dispatchLogin({
-  //         email: user?.attributes?.email ?? '',
-  //         emailAuthenticated: user?.attributes?.email_verified ?? false,
-  //         sub: user?.attributes?.sub ?? '',
-  //       });
-  //       console.log('here');
-  //     });
-  //   } catch (err) {
-  //     dispatch(logout);
-  //   }
-  //   // });
-  // }, [dispatch, dispatchLogin]);
 
   return (
     <View style={styles.root}>

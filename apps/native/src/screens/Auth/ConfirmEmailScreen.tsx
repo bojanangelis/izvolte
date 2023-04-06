@@ -12,32 +12,20 @@ import { useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { AntDesign } from '@expo/vector-icons';
 import SocialSignInButtons from '../../components/SocialSigninButtons';
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
 interface Params {
   email: string;
 }
 const ConfirmEmailScreen = () => {
-  const CELL_COUNT = 6;
   const route = useRoute();
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+  const [code, setCode] = useState('');
+
   const navigation = useNavigation();
   const email = (route?.params as Params)?.email ?? '';
   const onConfirmPressed = async () => {
     try {
       setLoading(true);
-      const data = await Auth.confirmSignUp(email, value);
+      const data = await Auth.confirmSignUp(email, code);
       console.log(data);
       //@ts-ignore
       navigation.navigate('HomeTabs');
@@ -63,26 +51,8 @@ const ConfirmEmailScreen = () => {
     <View style={styles.rootView}>
       <Text style={styles.titleView}>Confirm your email</Text>
       <View style={styles.inputContainerView}>
-        <CodeField
-          ref={ref}
-          {...props}
-          value={value}
-          onChangeText={setValue}
-          cellCount={CELL_COUNT}
-          rootStyle={styles.codeFieldRoot}
-          keyboardType="number-pad"
-          textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <Text
-              key={index}
-              style={[styles.cell, isFocused && styles.focusCell]}
-              onLayout={getCellOnLayoutHandler(index)}
-            >
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
-          )}
-        />
-        {/* <TextInput
+        <Text style={styles.textInputLabel}>Enter your code</Text>
+        <TextInput
           style={styles.inputContainer}
           value={code}
           onChangeText={(text: string) => setCode(text)}
@@ -90,7 +60,7 @@ const ConfirmEmailScreen = () => {
           keyboardType="number-pad"
           autoCapitalize="none"
           autoCorrect={false}
-        /> */}
+        />
       </View>
 
       <TouchableOpacity
@@ -136,20 +106,6 @@ const ConfirmEmailScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  codeFieldRoot: { marginTop: 20 },
-  cell: {
-    width: 40,
-    height: 44,
-    lineHeight: 38,
-    fontSize: 24,
-    borderWidth: 2,
-    borderColor: '#00000030',
-    textAlign: 'center',
-  },
-  focusCell: {
-    borderColor: '#000',
-  },
-
   textInputLabel: {
     fontWeight: '500',
     color: 'black',

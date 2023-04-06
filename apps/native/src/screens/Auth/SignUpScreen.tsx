@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
@@ -88,9 +88,7 @@ const SignUpScreen = () => {
           autoCorrect={false}
         />
       </View>
-      {data.password !== data.confirmPassword && (
-        <Text style={styles.errText}>Passwords do not match</Text>
-      )}
+
       <TouchableOpacity
         //@ts-ignore
         disabled={loading}
@@ -109,10 +107,6 @@ const SignUpScreen = () => {
   );
 };
 const styles = StyleSheet.create({
-  errText: {
-    color: 'red',
-    font: 18,
-  },
   viewIcon: {
     position: 'absolute',
     left: 25,

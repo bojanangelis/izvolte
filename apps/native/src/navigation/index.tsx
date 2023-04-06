@@ -12,31 +12,17 @@ import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
-import { useState, useEffect, useCallback } from 'react';
-import { API, Auth, graphqlOperation, Hub } from 'aws-amplify';
+import { useState, useEffect } from 'react';
+import { Auth } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
-import NewPasswordScreen from '../screens/Auth/NewPasswordScreen';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  authUserData,
-  login,
-  logout,
-  UserState,
-} from '../../features/authUser';
-import LoadingScreen from '../screens/LoadingScreen';
-import { GraphQLQuery } from '@aws-amplify/api';
-import { ListUsersQuery } from '../API';
-import { listUsers } from '../graphql/queries';
-import { addDbUser, DbUserState, User } from '../../features/dbUser';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
   AuthStackNavigator: undefined;
-  loadingStack: undefined;
   Restaurant: {
     id: string;
   };
@@ -49,73 +35,27 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
-  const userAuthentication = useSelector(authUserData);
-
-  const dispatchLogin = useCallback(
-    (user: UserState['user']) =>
-      dispatch(
-        login({
-          email: user?.email ?? '',
-          sub: user?.sub ?? '',
-          emailAuthenticated: user?.emailAuthenticated ?? false,
-        }),
-      ),
-    [dispatch],
-  );
-  const dispatchDbUser = useCallback(
-    (dbUser: User) => {
-      dispatch(addDbUser({ dbUser }));
-    },
-    [dispatch],
-  );
+  const [user, setUser] = useState(null);
+  const checkUser = async () => {
+    try {
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      setUser(authUser);
+    } catch (e) {
+      setUser(null);
+    }
+  };
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        dispatchLogin({
-          email: user?.attributes?.email ?? '',
-          emailAuthenticated: user?.attributes?.email_verified ?? false,
-          sub: user?.attributes?.sub ?? '',
-        });
-      } catch (err) {
-        console.log('Error fetching current authenticated user:', err);
-        dispatch(logout);
-      }
-      setLoading(false);
-    };
+    checkUser();
+  }, []);
 
-    checkAuthStatus();
-  }, [dispatch, dispatchLogin]);
+  console.log(user);
 
-  useEffect(() => {
-    const catchUser = async () => {
-      const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
-        graphqlOperation(listUsers, {
-          filter: {
-            sub: {
-              eq: userAuthentication?.sub,
-            },
-          },
-        }),
-      );
-      if (data.data?.listUsers?.items[0])
-        dispatchDbUser(data.data?.listUsers?.items[0]);
-    };
-    catchUser().catch(e => console.error(e));
-  }, [userAuthentication?.sub]);
-
-  if (loading)
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />
-      </Stack.Navigator>
-    );
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {userAuthentication ? (
+      {user ? (
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
       ) : (
         <Stack.Screen
@@ -157,7 +97,7 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile as any}
+        component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user-alt" size={24} color={color} />
@@ -209,18 +149,7 @@ const AuthStackNavigator = () => {
         name="ForgotPassword"
         component={ForgotPasswordScreen}
       />
-      <AuthStack.Screen name="NewPassword" component={NewPasswordScreen} />
     </AuthStack.Navigator>
   );
 };
-
-const LoadingStack = createNativeStackNavigator();
-const LoadingStackNavigator = () => {
-  return (
-    <LoadingStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="loadingStack" component={LoadingScreen} />
-    </LoadingStack.Navigator>
-  );
-};
-
 export default RootNavigator;
