@@ -31,7 +31,7 @@ import LoadingScreen from '../screens/LoadingScreen';
 import { GraphQLQuery } from '@aws-amplify/api';
 import { ListUsersQuery } from '../API';
 import { listUsers } from '../graphql/queries';
-import { addDbUser, DbUserState, User } from '../../features/dbUser';
+import { addDbUser, dbUserData, User } from '../../features/dbUser';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -52,6 +52,12 @@ const RootNavigator = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const userAuthentication = useSelector(authUserData);
+
+  // da imame nekoj test tuka kade shto ako dbUser e poln a userAuthentication e prazen
+  // daj neshto da se desili ili obratno, just to be safe.
+  const dbUser = useSelector(dbUserData);
+  // console.log('dbUSER-->', dbUser);
+  // console.log('userAuthentication->>', userAuthentication?.sub);
 
   const dispatchLogin = useCallback(
     (user: UserState['user']) =>
@@ -81,28 +87,29 @@ const RootNavigator = () => {
           sub: user?.attributes?.sub ?? '',
         });
       } catch (err) {
-        console.log('Error fetching current authenticated user:', err);
+        console.error('Error fetching current authenticated user:', err);
         dispatch(logout);
       }
       setLoading(false);
     };
-
     checkAuthStatus();
   }, [dispatch, dispatchLogin]);
 
   useEffect(() => {
     const catchUser = async () => {
-      const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
-        graphqlOperation(listUsers, {
-          filter: {
-            sub: {
-              eq: userAuthentication?.sub,
+      if (userAuthentication?.sub) {
+        const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
+          graphqlOperation(listUsers, {
+            filter: {
+              sub: {
+                eq: userAuthentication.sub,
+              },
             },
-          },
-        }),
-      );
-      if (data.data?.listUsers?.items[0])
-        dispatchDbUser(data.data?.listUsers?.items[0]);
+          }),
+        );
+        if (data.data?.listUsers?.items[0])
+          dispatchDbUser(data.data?.listUsers?.items[0]);
+      }
     };
     catchUser().catch(e => console.error(e));
   }, [userAuthentication?.sub]);
@@ -113,10 +120,17 @@ const RootNavigator = () => {
         <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />
       </Stack.Navigator>
     );
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {userAuthentication ? (
-        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+        <Stack.Screen
+          name="HomeTabs"
+          component={HomeTabs}
+          options={{
+            headerShown: false,
+          }}
+        />
       ) : (
         <Stack.Screen
           name="AuthStackNavigator"
@@ -141,6 +155,7 @@ const HomeTabs = () => {
         name="Home"
         component={HomeStackNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Foundation name="home" size={24} color={color} />
           ),
@@ -148,8 +163,9 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Orders"
-        component={OrderStackNavigator}
+        component={OrderStackNavigator as any}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="list-alt" size={24} color={color} />
           ),
@@ -159,6 +175,7 @@ const HomeTabs = () => {
         name="Profile"
         component={Profile as any}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user-alt" size={24} color={color} />
           ),
@@ -172,7 +189,7 @@ const HomeStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="Restaurants" component={HomeScreen} />
       <HomeStack.Screen
         name="Restaurant"
@@ -189,7 +206,7 @@ const OrdersStack = createNativeStackNavigator();
 
 const OrderStackNavigator = () => {
   return (
-    <OrdersStack.Navigator>
+    <OrdersStack.Navigator screenOptions={{ headerShown: false }}>
       <OrdersStack.Screen name="Orders" component={OrdersScreen} />
       <OrdersStack.Screen name="Order" component={OrderDetailsScreen} />
     </OrdersStack.Navigator>

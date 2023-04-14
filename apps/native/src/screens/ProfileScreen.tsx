@@ -6,6 +6,7 @@ import { Auth, DataStore } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/authUser';
+import { removeDbUser } from '../../features/dbUser';
 // import { User } from '../models';
 
 const Profile = () => {
@@ -58,6 +59,7 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     dispatch(logout());
+    dispatch(removeDbUser());
     Auth.signOut();
   };
 
