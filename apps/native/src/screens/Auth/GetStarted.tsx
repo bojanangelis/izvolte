@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -11,8 +11,11 @@ import { useNavigation } from '@react-navigation/core';
 import { Auth } from 'aws-amplify';
 import SocialSignInButtons from '../../components/SocialSigninButtons';
 import { AntDesign } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { UserState, login, logout } from '../../../features/authUser';
 
 const GetStarted = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,16 +28,42 @@ const GetStarted = () => {
   const onPrivacyPressed = () => {
     console.warn('onPrivacyPressed');
   };
+
   const handleSignIn = async () => {
-    try {
-      setLoading(true);
-      const authUser = await Auth.signIn(email, password);
-      console.log('>>>>', authUser);
-    } catch (err: any) {
-      Alert.alert(err?.message);
-    }
+    setLoading(true);
+    Auth.signIn(email, password)
+      .then(user => {
+        dispatchLogin({
+          email: user?.attributes?.email ?? '',
+          emailAuthenticated: user?.attributes?.email_verified ?? false,
+          sub: user?.attributes?.sub ?? '',
+        });
+      })
+      .catch(err => {
+        Alert.alert(err?.message);
+        dispatch(logout);
+      });
     setLoading(false);
   };
+
+  const dispatchLogin = useCallback(
+    (user: UserState['user']) =>
+      dispatch(
+        login({
+          email: user?.email ?? '',
+          sub: user?.sub ?? '',
+          emailAuthenticated: user?.emailAuthenticated ?? false,
+        }),
+      ),
+    [dispatch],
+  );
+
+  if (loading)
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
 
   return (
     <View style={styles.root}>

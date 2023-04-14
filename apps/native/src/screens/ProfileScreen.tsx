@@ -4,11 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth, DataStore } from 'aws-amplify';
 // import { useAuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../features/authUser';
 // import { User } from '../models';
 
 const Profile = () => {
-  // const { authUser, setDbuser, dbUser }: any = useAuthContext();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   // const [name, setName] = useState(dbUser?.name || '');
   // const [address, setAddress] = useState(dbUser?.address || '');
   // const [lat, setLat] = useState(dbUser?.lat.toString() || '0');
@@ -54,6 +56,11 @@ const Profile = () => {
     // }
   };
 
+  const handleSignOut = async () => {
+    dispatch(logout());
+    Auth.signOut();
+  };
+
   return (
     <SafeAreaView>
       <Text style={styles.title}>Profile</Text>
@@ -83,12 +90,13 @@ const Profile = () => {
         style={styles.input}
       />
       <Button onPress={onSave} title="Save" />
+    */}
       <Text
-        onPress={() => Auth.signOut()}
+        onPress={handleSignOut}
         style={{ textAlign: 'center', color: 'red', margin: 10 }}
       >
         Sign out
-      </Text> */}
+      </Text>
     </SafeAreaView>
   );
 };
