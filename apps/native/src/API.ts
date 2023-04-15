@@ -456,6 +456,12 @@ export type ModelOrderDishFilterInput = {
   orderDishDishId?: ModelIDInput | null,
 };
 
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelOrderFilterInput = {
   id?: ModelIDInput | null,
   userID?: ModelIDInput | null,
@@ -540,12 +546,6 @@ export type ModelRestaurantConnection = {
   items:  Array<Restaurant | null >,
   nextToken?: string | null,
 };
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
 
 export type ModelSubscriptionOrderDishFilterInput = {
   id?: ModelSubscriptionIDInput | null,
@@ -1302,6 +1302,30 @@ export type ListOrderDishesQuery = {
   } | null,
 };
 
+export type OrderDishesByOrderIDQueryVariables = {
+  orderID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderDishFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type OrderDishesByOrderIDQuery = {
+  orderDishesByOrderID?:  {
+    __typename: "ModelOrderDishConnection",
+    items:  Array< {
+      __typename: "OrderDish",
+      id: string,
+      quantity: number,
+      orderID: string,
+      createdAt: string,
+      updatedAt: string,
+      orderDishDishId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetOrderQueryVariables = {
   id: string,
 };
@@ -1348,6 +1372,33 @@ export type ListOrdersQueryVariables = {
 
 export type ListOrdersQuery = {
   listOrders?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      userID: string,
+      details?: string | null,
+      subtotal?: number | null,
+      total: number,
+      status: OrderStatus,
+      createdAt: string,
+      updatedAt: string,
+      orderRestaurantId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OrdersByUserIDQueryVariables = {
+  userID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type OrdersByUserIDQuery = {
+  ordersByUserID?:  {
     __typename: "ModelOrderConnection",
     items:  Array< {
       __typename: "Order",
@@ -1414,6 +1465,30 @@ export type ListBasketDishesQuery = {
   } | null,
 };
 
+export type BasketDishesByBasketIDQueryVariables = {
+  basketID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelBasketDishFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type BasketDishesByBasketIDQuery = {
+  basketDishesByBasketID?:  {
+    __typename: "ModelBasketDishConnection",
+    items:  Array< {
+      __typename: "BasketDish",
+      id: string,
+      quantity: number,
+      basketID: string,
+      createdAt: string,
+      updatedAt: string,
+      basketDishDishId: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetBasketQueryVariables = {
   id: string,
 };
@@ -1441,6 +1516,52 @@ export type ListBasketsQueryVariables = {
 
 export type ListBasketsQuery = {
   listBaskets?:  {
+    __typename: "ModelBasketConnection",
+    items:  Array< {
+      __typename: "Basket",
+      id: string,
+      userID: string,
+      restaurantID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type BasketsByUserIDQueryVariables = {
+  userID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelBasketFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type BasketsByUserIDQuery = {
+  basketsByUserID?:  {
+    __typename: "ModelBasketConnection",
+    items:  Array< {
+      __typename: "Basket",
+      id: string,
+      userID: string,
+      restaurantID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type BasketsByRestaurantIDQueryVariables = {
+  restaurantID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelBasketFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type BasketsByRestaurantIDQuery = {
+  basketsByRestaurantID?:  {
     __typename: "ModelBasketConnection",
     items:  Array< {
       __typename: "Basket",
@@ -1548,6 +1669,32 @@ export type ListDishesQuery = {
   } | null,
 };
 
+export type DishesByRestaurantIDQueryVariables = {
+  restaurantID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelDishFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type DishesByRestaurantIDQuery = {
+  dishesByRestaurantID?:  {
+    __typename: "ModelDishConnection",
+    items:  Array< {
+      __typename: "Dish",
+      id: string,
+      name: string,
+      image: string,
+      description: string,
+      price: number,
+      restaurantID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetRestaurantQueryVariables = {
   id: string,
 };
@@ -1599,153 +1746,6 @@ export type ListRestaurantsQuery = {
       address: string,
       lat: number,
       lng: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type OrderDishesByOrderIDQueryVariables = {
-  orderID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelOrderDishFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type OrderDishesByOrderIDQuery = {
-  orderDishesByOrderID?:  {
-    __typename: "ModelOrderDishConnection",
-    items:  Array< {
-      __typename: "OrderDish",
-      id: string,
-      quantity: number,
-      orderID: string,
-      createdAt: string,
-      updatedAt: string,
-      orderDishDishId?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type OrdersByUserIDQueryVariables = {
-  userID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type OrdersByUserIDQuery = {
-  ordersByUserID?:  {
-    __typename: "ModelOrderConnection",
-    items:  Array< {
-      __typename: "Order",
-      id: string,
-      userID: string,
-      details?: string | null,
-      subtotal?: number | null,
-      total: number,
-      status: OrderStatus,
-      createdAt: string,
-      updatedAt: string,
-      orderRestaurantId?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type BasketDishesByBasketIDQueryVariables = {
-  basketID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelBasketDishFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type BasketDishesByBasketIDQuery = {
-  basketDishesByBasketID?:  {
-    __typename: "ModelBasketDishConnection",
-    items:  Array< {
-      __typename: "BasketDish",
-      id: string,
-      quantity: number,
-      basketID: string,
-      createdAt: string,
-      updatedAt: string,
-      basketDishDishId: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type BasketsByUserIDQueryVariables = {
-  userID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelBasketFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type BasketsByUserIDQuery = {
-  basketsByUserID?:  {
-    __typename: "ModelBasketConnection",
-    items:  Array< {
-      __typename: "Basket",
-      id: string,
-      userID: string,
-      restaurantID: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type BasketsByRestaurantIDQueryVariables = {
-  restaurantID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelBasketFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type BasketsByRestaurantIDQuery = {
-  basketsByRestaurantID?:  {
-    __typename: "ModelBasketConnection",
-    items:  Array< {
-      __typename: "Basket",
-      id: string,
-      userID: string,
-      restaurantID: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type DishesByRestaurantIDQueryVariables = {
-  restaurantID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelDishFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type DishesByRestaurantIDQuery = {
-  dishesByRestaurantID?:  {
-    __typename: "ModelDishConnection",
-    items:  Array< {
-      __typename: "Dish",
-      id: string,
-      name: string,
-      image: string,
-      description: string,
-      price: number,
-      restaurantID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,

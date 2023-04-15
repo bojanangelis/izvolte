@@ -43,6 +43,33 @@ export const listOrderDishes = /* GraphQL */ `
     }
   }
 `;
+export const orderDishesByOrderID = /* GraphQL */ `
+  query OrderDishesByOrderID(
+    $orderID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderDishFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    orderDishesByOrderID(
+      orderID: $orderID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        quantity
+        orderID
+        createdAt
+        updatedAt
+        orderDishDishId
+      }
+      nextToken
+    }
+  }
+`;
 export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {
@@ -82,6 +109,36 @@ export const listOrders = /* GraphQL */ `
     $nextToken: String
   ) {
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        details
+        subtotal
+        total
+        status
+        createdAt
+        updatedAt
+        orderRestaurantId
+      }
+      nextToken
+    }
+  }
+`;
+export const ordersByUserID = /* GraphQL */ `
+  query OrdersByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ordersByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         userID
@@ -138,6 +195,33 @@ export const listBasketDishes = /* GraphQL */ `
     }
   }
 `;
+export const basketDishesByBasketID = /* GraphQL */ `
+  query BasketDishesByBasketID(
+    $basketID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBasketDishFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    basketDishesByBasketID(
+      basketID: $basketID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        quantity
+        basketID
+        createdAt
+        updatedAt
+        basketDishDishId
+      }
+      nextToken
+    }
+  }
+`;
 export const getBasket = /* GraphQL */ `
   query GetBasket($id: ID!) {
     getBasket(id: $id) {
@@ -159,6 +243,58 @@ export const listBaskets = /* GraphQL */ `
     $nextToken: String
   ) {
     listBaskets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        restaurantID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const basketsByUserID = /* GraphQL */ `
+  query BasketsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBasketFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    basketsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        restaurantID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const basketsByRestaurantID = /* GraphQL */ `
+  query BasketsByRestaurantID(
+    $restaurantID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelBasketFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    basketsByRestaurantID(
+      restaurantID: $restaurantID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         userID
@@ -248,6 +384,35 @@ export const listDishes = /* GraphQL */ `
     }
   }
 `;
+export const dishesByRestaurantID = /* GraphQL */ `
+  query DishesByRestaurantID(
+    $restaurantID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDishFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    dishesByRestaurantID(
+      restaurantID: $restaurantID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        image
+        description
+        price
+        restaurantID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getRestaurant = /* GraphQL */ `
   query GetRestaurant($id: ID!) {
     getRestaurant(id: $id) {
@@ -263,6 +428,16 @@ export const getRestaurant = /* GraphQL */ `
       lng
       Dishes {
         nextToken
+        items {
+          id
+          name
+          image
+          description
+          price
+          restaurantID
+          createdAt
+          updatedAt
+        }
       }
       Baskets {
         nextToken
@@ -290,171 +465,6 @@ export const listRestaurants = /* GraphQL */ `
         address
         lat
         lng
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const orderDishesByOrderID = /* GraphQL */ `
-  query OrderDishesByOrderID(
-    $orderID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelOrderDishFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    orderDishesByOrderID(
-      orderID: $orderID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        quantity
-        orderID
-        createdAt
-        updatedAt
-        orderDishDishId
-      }
-      nextToken
-    }
-  }
-`;
-export const ordersByUserID = /* GraphQL */ `
-  query OrdersByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    ordersByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userID
-        details
-        subtotal
-        total
-        status
-        createdAt
-        updatedAt
-        orderRestaurantId
-      }
-      nextToken
-    }
-  }
-`;
-export const basketDishesByBasketID = /* GraphQL */ `
-  query BasketDishesByBasketID(
-    $basketID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBasketDishFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    basketDishesByBasketID(
-      basketID: $basketID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        quantity
-        basketID
-        createdAt
-        updatedAt
-        basketDishDishId
-      }
-      nextToken
-    }
-  }
-`;
-export const basketsByUserID = /* GraphQL */ `
-  query BasketsByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBasketFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    basketsByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userID
-        restaurantID
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const basketsByRestaurantID = /* GraphQL */ `
-  query BasketsByRestaurantID(
-    $restaurantID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelBasketFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    basketsByRestaurantID(
-      restaurantID: $restaurantID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        userID
-        restaurantID
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const dishesByRestaurantID = /* GraphQL */ `
-  query DishesByRestaurantID(
-    $restaurantID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelDishFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    dishesByRestaurantID(
-      restaurantID: $restaurantID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        image
-        description
-        price
-        restaurantID
         createdAt
         updatedAt
       }
