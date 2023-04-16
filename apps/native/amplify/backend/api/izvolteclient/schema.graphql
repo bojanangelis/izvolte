@@ -41,8 +41,8 @@ type Basket @model @auth(rules: [{ allow: public }]) {
 type User @model @auth(rules: [{ allow: public }]) {
   id: ID!
   sub: String!
-  email: String!
   name: String!
+  email: String
   number: String!
   address: String!
   lat: Float!

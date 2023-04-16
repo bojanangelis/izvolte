@@ -131,7 +131,8 @@ const GetStarted = () => {
         <Text style={styles.dividerText}>or</Text>
         <View style={styles.divider}></View>
       </View>
-      <SocialSignInButtons />
+      <SocialSignInButtons signInButton={false} />
+
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.viewIcon}
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#f7d639',
     borderRadius: 2,
     padding: 10,
     paddingHorizontal: 20,
@@ -202,7 +203,8 @@ const styles = StyleSheet.create({
   buttonNextText: {
     color: 'white',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 2,
   },
   root: {
     backgroundColor: 'white',

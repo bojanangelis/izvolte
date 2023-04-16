@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 
 const RestaurantDetailsScreanHeader = ({ restaurant }: any) => {
-  console.log(restaurant);
   return (
     <View>
       <Image
@@ -18,7 +17,8 @@ const RestaurantDetailsScreanHeader = ({ restaurant }: any) => {
           {restaurant?.minDeliveryTime} - {restaurant?.minDeliveryTime} minutes
         </Text>
         <Text style={styles.menuTitle}>
-          Tuka se listaat pojadok, rucek, vecera, blago, sokovi
+          Tuka se listaat pojadok, rucek, vecera, blago, sokovi moram i backend
+          da sredam i koga ke se klikne da me scrollne do niv
         </Text>
       </View>
     </View>

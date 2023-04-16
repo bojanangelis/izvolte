@@ -289,8 +289,8 @@ export const onCreateUser = /* GraphQL */ `
     onCreateUser(filter: $filter) {
       id
       sub
-      email
       name
+      email
       number
       address
       lat
@@ -311,8 +311,8 @@ export const onUpdateUser = /* GraphQL */ `
     onUpdateUser(filter: $filter) {
       id
       sub
-      email
       name
+      email
       number
       address
       lat
@@ -333,8 +333,8 @@ export const onDeleteUser = /* GraphQL */ `
     onDeleteUser(filter: $filter) {
       id
       sub
-      email
       name
+      email
       number
       address
       lat

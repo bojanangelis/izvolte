@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
@@ -153,14 +153,15 @@ const styles = StyleSheet.create({
   buttonNext: {
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#f7d639',
     borderRadius: 2,
     padding: 14,
     marginVertical: 20,
   },
   buttonNextText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 19,
+    letterSpacing: 1,
     fontWeight: '600',
   },
   root: {

@@ -26,13 +26,13 @@ type ParamList = {
 
 const RestaurantDetailsScreen: FC = () => {
   const [restaurant, setRestaurant] = useState<GetRestaurantQuery>();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [dishes, setDishes] = useState<DishesItems | null>();
   const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const navigation = useNavigation();
   const { id } = route.params;
   // const { getRestaurant, basket, basketDishes }: any = useBasketContext();
-
+  console.log(id);
   useEffect(() => {
     if (!id) return;
     const fetchRestaurantById = async () => {

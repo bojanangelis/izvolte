@@ -8,7 +8,12 @@ import HomeScreen from '../screens/HomeScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import RestaurantDetailsScreen from '../screens/RestaurantDetailsScreen';
-import { Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import {
+  Foundation,
+  FontAwesome5,
+  MaterialIcons,
+  Feather,
+} from '@expo/vector-icons';
 import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
@@ -32,6 +37,7 @@ import { GraphQLQuery } from '@aws-amplify/api';
 import { ListUsersQuery } from '../API';
 import { listUsers } from '../graphql/queries';
 import { addDbUser, dbUserData, User } from '../../features/dbUser';
+import SearchScreen from '../screens/SearchScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -98,6 +104,7 @@ const RootNavigator = () => {
   useEffect(() => {
     const catchUser = async () => {
       if (userAuthentication?.sub) {
+        console.log('usersub->', userAuthentication?.sub);
         const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
           graphqlOperation(listUsers, {
             filter: {
@@ -162,8 +169,18 @@ const HomeTabs = () => {
         }}
       />
       <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Feather name="search" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Orders"
-        component={OrderStackNavigator as any}
+        component={OrderStackNavigator}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (

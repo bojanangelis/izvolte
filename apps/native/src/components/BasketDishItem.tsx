@@ -10,6 +10,7 @@ interface BasketDishProps {
       price: number;
       image?: string;
     };
+    quantity?: number;
     newDish: {
       quantity: number;
     };
@@ -22,11 +23,11 @@ const BasketDishItem = ({ basketDish }: BasketDishProps) => {
     <View style={styles.row}>
       <View style={styles.viewRow}>
         <View style={styles.quantityContainer}>
-          {/* <Text>{basketDish?.quantity}</Text> */}
+          <Text>{basketDish?.quantity}</Text>
         </View>
-        {/* <Text style={styles.name}>{basketDish?.Dish.name}</Text> */}
+        <Text style={styles.name}>{basketDish?.Dish.name}</Text>
       </View>
-      {/* <Text>${basketDish?.Dish.price.toFixed(2)}</Text> */}
+      <Text>${basketDish?.Dish.price.toFixed(2)}</Text>
     </View>
   );
 };
