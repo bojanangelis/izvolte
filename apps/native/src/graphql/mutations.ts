@@ -316,6 +316,7 @@ export const createUser = /* GraphQL */ `
     createUser(input: $input, condition: $condition) {
       id
       sub
+      email
       name
       number
       address
@@ -340,6 +341,7 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       sub
+      email
       name
       number
       address
@@ -364,6 +366,7 @@ export const deleteUser = /* GraphQL */ `
     deleteUser(input: $input, condition: $condition) {
       id
       sub
+      email
       name
       number
       address

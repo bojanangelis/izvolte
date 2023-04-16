@@ -311,6 +311,7 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       sub
+      email
       name
       number
       address
@@ -337,6 +338,7 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         sub
+        email
         name
         number
         address

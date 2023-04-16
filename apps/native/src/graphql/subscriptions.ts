@@ -289,6 +289,7 @@ export const onCreateUser = /* GraphQL */ `
     onCreateUser(filter: $filter) {
       id
       sub
+      email
       name
       number
       address
@@ -310,6 +311,7 @@ export const onUpdateUser = /* GraphQL */ `
     onUpdateUser(filter: $filter) {
       id
       sub
+      email
       name
       number
       address
@@ -331,6 +333,7 @@ export const onDeleteUser = /* GraphQL */ `
     onDeleteUser(filter: $filter) {
       id
       sub
+      email
       name
       number
       address
