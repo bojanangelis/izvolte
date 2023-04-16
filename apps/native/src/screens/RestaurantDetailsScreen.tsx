@@ -13,8 +13,9 @@ import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
-import { getRestaurant, dishesByRestaurantID } from '../graphql/queries';
+import { getRestaurant } from '../graphql/queries';
 import { GetRestaurantQuery } from '../API';
+import { DishItem, DishesItems } from '../../utils/Types';
 // import { useBasketContext } from '../context/BasketContext';
 
 type ParamList = {
@@ -26,13 +27,12 @@ type ParamList = {
 const RestaurantDetailsScreen: FC = () => {
   const [restaurant, setRestaurant] = useState<GetRestaurantQuery>();
   const [isLoading, setIsLoading] = useState(false);
-  const [dishes, setDishes] = useState();
+  const [dishes, setDishes] = useState<DishesItems>();
   const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const navigation = useNavigation();
   const { id } = route.params;
   // const { getRestaurant, basket, basketDishes }: any = useBasketContext();
 
-  console.log('restaurantId-->', id);
   useEffect(() => {
     if (!id) return;
     const fetchRestaurantById = async () => {
@@ -41,14 +41,13 @@ const RestaurantDetailsScreen: FC = () => {
           GraphQLQuery<GetRestaurantQuery>
         >(graphqlOperation(getRestaurant, { id }));
         setRestaurant(restaurantData?.data);
-        setDishes(restaurantData.data?.getRestaurant?.Dishes.items);
+        setDishes(restaurantData?.data?.getRestaurant?.Dishes ?? null);
       } catch (err) {
         console.error('Error fetching restaurant', err);
       }
     };
     fetchRestaurantById();
   }, [id]);
-  console.log(dishes);
 
   // DataStore.query(Restaurant, id).then(results =>
   //   setRestaurant(results || null),
@@ -69,15 +68,15 @@ const RestaurantDetailsScreen: FC = () => {
 
   return (
     <View style={RestaurantDetailsStyles.page}>
-      {/* <FlatList
+      <FlatList
         ListHeaderComponent={() => (
-          <RestaurantDetailsScreanHeader restaurant={restaurant} />
+          <RestaurantDetailsScreanHeader
+            restaurant={restaurant?.getRestaurant}
+          />
         )}
-        data={dishes}
-        renderItem={({ item }) => (
-          <DishListItem loading={isLoading} dish={item} />
-        )}
-        keyExtractor={item => item.id}
+        data={dishes?.items}
+        renderItem={({ item }) => <DishListItem dish={item as DishItem} />}
+        keyExtractor={item => item?.id ?? ''}
       />
       <Ionicons
         onPress={() => navigation.goBack()}
@@ -86,7 +85,7 @@ const RestaurantDetailsScreen: FC = () => {
         size={45}
         color="black"
       />
-      {basket?.restaurantID === restaurant?.id && (
+      {/* {basket?.restaurantID === restaurant?.id && (
         <TouchableOpacity
           //@ts-ignore
           onPress={() => navigation.navigate('Basket')}

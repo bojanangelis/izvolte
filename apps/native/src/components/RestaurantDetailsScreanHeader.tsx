@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 
 const RestaurantDetailsScreanHeader = ({ restaurant }: any) => {
+  console.log(restaurant);
   return (
     <View>
       <Image
@@ -13,10 +14,12 @@ const RestaurantDetailsScreanHeader = ({ restaurant }: any) => {
       <View style={styles.container}>
         <Text style={styles.title}>{restaurant?.name}</Text>
         <Text style={styles.subtitle}>
-          $ {restaurant?.deliveryFee.toFixed(2)} &#8226;{' '}
+          $ {restaurant?.deliveryFee?.toFixed(2)} &#8226;{' '}
           {restaurant?.minDeliveryTime} - {restaurant?.minDeliveryTime} minutes
         </Text>
-        <Text style={styles.menuTitle}>Menu</Text>
+        <Text style={styles.menuTitle}>
+          Tuka se listaat pojadok, rucek, vecera, blago, sokovi
+        </Text>
       </View>
     </View>
   );

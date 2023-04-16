@@ -1715,6 +1715,17 @@ export type GetRestaurantQuery = {
     Dishes?:  {
       __typename: "ModelDishConnection",
       nextToken?: string | null,
+      items:  Array< {
+        __typename: "Dish",
+        id: string,
+        name: string,
+        image: string,
+        description: string,
+        price: number,
+        restaurantID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
     } | null,
     Baskets?:  {
       __typename: "ModelBasketConnection",

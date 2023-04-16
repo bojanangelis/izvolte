@@ -440,6 +440,34 @@ export const getRestaurant = /* GraphQL */ `
         }
       }
       Baskets {
+        items {
+          id
+          restaurantID
+          updatedAt
+          userID
+          BasketDishes {
+            items {
+              basketID
+              createdAt
+              id
+              quantity
+              updatedAt
+              basketDishDishId
+              Dish {
+                createdAt
+                description
+                id
+                image
+                name
+                price
+                restaurantID
+                updatedAt
+              }
+            }
+            nextToken
+          }
+          createdAt
+        }
         nextToken
       }
       createdAt

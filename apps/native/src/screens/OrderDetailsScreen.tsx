@@ -11,14 +11,13 @@ const OrderDetailsScreen = () => {
   const route = useRoute();
   useEffect(() => {
     //@ts-ignore
-    getOrder(route.params?.id as string).then(data => setOrder(data));
+    // getOrder(route.params?.id as string).then(data => setOrder(data));
   }, [order]);
 
   if (!order) {
     return <ActivityIndicator size={'large'} color="gray" />;
   }
 
-  console.log(order);
   return (
     <Text>daadwe</Text>
     // <FlatList

@@ -10,23 +10,37 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { DataStore } from 'aws-amplify';
-// import { Dish } from '../models';
+import { API, graphqlOperation } from 'aws-amplify';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { getDish } from '../graphql/queries';
+import { GetDishQuery } from '../API';
 // import { useBasketContext } from '../context/BasketContext';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  // const [dish, setDish] = useState<Dish | null>(null);
+  const [dish, setDish] = useState<GetDishQuery['getDish']>();
   const [quantity, setQuantity] = useState(1);
 
   // const { addDishToBasket }: any = useBasketContext();
+
   //@ts-ignore
   const { id } = route.params;
 
-  // useEffect(() => {
-  //   if (id) DataStore.query(Dish, id).then(dish => setDish(dish || null));
-  // }, [id]);
+  useEffect(() => {
+    if (!id) return;
+    const fetchDishById = async () => {
+      try {
+        const dishDetails = await API.graphql<GraphQLQuery<GetDishQuery>>(
+          graphqlOperation(getDish, { id }),
+        );
+        setDish(dishDetails?.data?.getDish);
+      } catch (err) {
+        console.error('Error fetching restaurant', err);
+      }
+    };
+    fetchDishById();
+  }, [id]);
 
   const handleQuantity = (value: string) => {
     switch (value) {
@@ -45,16 +59,18 @@ const DishDetailsScreen = () => {
   };
 
   const getTotal = () => {
-    // if (dish) return (dish.price * quantity).toFixed(2);
+    if (dish) return (dish.price * quantity).toFixed(2);
   };
-  // if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
+
+  if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
+
   return (
     <View style={styles.page}>
-      {/* <Image source={{ uri: dish.image }} style={styles.imageHeader} />
-      <Text style={styles.title}>{dish.name}</Text>
+      <Image source={{ uri: dish?.image }} style={styles.imageHeader} />
+      <Text style={styles.title}>{dish?.name}</Text>
       <Text style={styles.description} numberOfLines={2}>
-        {dish.description}
-      </Text> */}
+        {dish?.description}
+      </Text>
       <View style={styles.separator} />
 
       <View style={styles.row}>
@@ -73,7 +89,7 @@ const DishDetailsScreen = () => {
         style={styles.button}
       >
         <Text style={styles.buttonText}>
-          {/* Add {quantity} to basket &#8226; $ {getTotal()} */}
+          Add {quantity} to basket &#8226; $ {getTotal()}
         </Text>
       </TouchableOpacity>
 
