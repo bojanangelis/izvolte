@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import GoBackComponent from '../../components/GoBackIcon';
 
 interface FormData {
   email: string;
@@ -97,12 +98,7 @@ const SignUpScreen = () => {
       >
         <Text style={styles.buttonNextText}>Create account</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.viewIcon}
-      >
-        <AntDesign name="arrowleft" size={25} color="black" />
-      </TouchableOpacity>
+      <GoBackComponent />
     </View>
   );
 };

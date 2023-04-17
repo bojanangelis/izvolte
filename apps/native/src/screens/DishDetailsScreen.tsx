@@ -9,23 +9,25 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
 import { getDish } from '../graphql/queries';
 import { GetDishQuery } from '../API';
+import { useSelector } from 'react-redux';
+import { dbUserData } from '../../features/dbUser';
+import { ParamList } from './RestaurantDetailsScreen';
 // import { useBasketContext } from '../context/BasketContext';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
-  const route = useRoute();
+  const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const [dish, setDish] = useState<GetDishQuery['getDish']>();
   const [quantity, setQuantity] = useState(1);
-
-  // const { addDishToBasket }: any = useBasketContext();
+  const dbUser = useSelector(dbUserData);
+  const { id } = route.params;
 
   //@ts-ignore
-  const { id } = route.params;
 
   useEffect(() => {
     if (!id) return;

@@ -15,10 +15,9 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
 import { getRestaurant } from '../graphql/queries';
 import { GetRestaurantQuery } from '../API';
-import { DishItem, DishesItems } from '../../utils/Types';
-// import { useBasketContext } from '../context/BasketContext';
+import { DishItem } from '../../utils/Types';
 
-type ParamList = {
+export type ParamList = {
   Restaurant: {
     id: string;
   };
@@ -26,8 +25,6 @@ type ParamList = {
 
 const RestaurantDetailsScreen: FC = () => {
   const [restaurant, setRestaurant] = useState<GetRestaurantQuery>();
-  // const [isLoading, setIsLoading] = useState(false);
-  const [dishes, setDishes] = useState<DishesItems | null>();
   const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const navigation = useNavigation();
   const { id } = route.params;
@@ -41,31 +38,13 @@ const RestaurantDetailsScreen: FC = () => {
           GraphQLQuery<GetRestaurantQuery>
         >(graphqlOperation(getRestaurant, { id }));
         setRestaurant(restaurantData?.data);
-        setDishes(restaurantData?.data?.getRestaurant?.Dishes ?? null);
       } catch (err) {
         console.error('Error fetching restaurant', err);
       }
     };
     fetchRestaurantById();
   }, [id]);
-
-  // DataStore.query(Restaurant, id).then(results =>
-  //   setRestaurant(results || null),
-  // );
-  // const getDishes = async () => {
-  //   const allDishesOfrestaurant = await DataStore.query(Dish, dish =>
-  //     dish.restaurantID.eq(id),
-  //   );
-  //   setDishes(allDishesOfrestaurant);
-  //   setIsLoading(false);
-  // };
-  // getDishes();
-
-  // useEffect(() => {
-  //   if (!restaurant) return;
-  //   getRestaurant(restaurant);
-  // }, [restaurant]);
-
+  console.log('ova mi treba', restaurant?.getRestaurant?.Baskets?.items);
   return (
     <View style={RestaurantDetailsStyles.page}>
       <FlatList
@@ -74,8 +53,14 @@ const RestaurantDetailsScreen: FC = () => {
             restaurant={restaurant?.getRestaurant}
           />
         )}
-        data={dishes?.items}
-        renderItem={({ item }) => <DishListItem dish={item as DishItem} />}
+        data={restaurant?.getRestaurant?.Dishes?.items}
+        renderItem={({ item }) => (
+          <DishListItem
+            dish={item as DishItem}
+            // mislam deka ke mi treba basket tuka da pushtam da ne go vikav po vtorpat vo componenta
+            // basket={restaurant?.getRestaurant?.Baskets?.items}
+          />
+        )}
         keyExtractor={item => item?.id ?? ''}
       />
       <Ionicons

@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import CustomInput from '../../components/CustomInput';
-import CustomButton from '../../components/CustomButton';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
+import GoBackComponent from '../../components/GoBackIcon';
 
 const ForgotPasswordScreen = () => {
   const { control, handleSubmit } = useForm();
@@ -26,48 +33,82 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.root}>
-        <Text style={styles.title}>Reset your password</Text>
-
-        <CustomInput
-          name="username"
-          control={control}
-          placeholder="Username"
-          rules={{
-            required: 'Username is required',
-          }}
+    <SafeAreaView style={styles.root}>
+      <Text style={styles.title}>Reset password on your izvolte account</Text>
+      <View style={styles.inputContainerView}>
+        <Text style={styles.textInputLabel}>Enter your email address</Text>
+        <TextInput
+          style={styles.inputContainer}
+          // value={data.email}
+          // onChangeText={value => handleInput(value, 'email')}
+          placeholder="Type your email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="email"
         />
-
-        {/* <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} /> */}
-
-        {/* <CustomButton
-          text="Back to Sign in"
-          onPress={onSignInPress}
-          type="TERTIARY"
-        /> */}
       </View>
-    </ScrollView>
+
+      <TouchableOpacity
+        //@ts-ignore
+        // disabled={loading}
+        // onPress={onRegisterPressed}
+        style={styles.buttonNext}
+      >
+        <Text style={styles.buttonNextText}>Reset password</Text>
+      </TouchableOpacity>
+      <GoBackComponent />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flex: 1,
     padding: 20,
+    width: '100%',
   },
   title: {
-    fontSize: 24,
+    marginVertical: 20,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#051C60',
-    margin: 10,
+    color: 'black',
+    textAlign: 'left',
   },
   text: {
     color: 'gray',
     marginVertical: 10,
   },
-  link: {
-    color: '#FDB075',
+  inputContainerView: {
+    padding: 20,
+    paddingVertical: 10,
+    width: '100%',
+  },
+  textInputLabel: {
+    fontWeight: '500',
+    marginBottom: 5,
+  },
+  inputContainer: {
+    backgroundColor: '#EEEEEE',
+    width: '100%',
+    // marginTop: 20,
+    padding: 20,
+    borderRadius: 2,
+  },
+  buttonNext: {
+    alignItems: 'center',
+    backgroundColor: '#f7d639',
+    borderRadius: 2,
+
+    padding: 14,
+    marginVertical: 20,
+  },
+  buttonNextText: {
+    color: 'white',
+    fontSize: 19,
+    letterSpacing: 1,
+    fontWeight: '600',
   },
 });
 

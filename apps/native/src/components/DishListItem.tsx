@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import RestaurantDetailsStyles from '../styles/RestaurantDetailsStyles';
 import { useNavigation } from '@react-navigation/native';
 import { DishItem } from '../../utils/Types';
@@ -7,11 +7,13 @@ import { DishItem } from '../../utils/Types';
 //wip
 const DishListItem = ({ dish }: { dish: DishItem }) => {
   const navigation = useNavigation();
+  const [open, setOpen] = useState(false);
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={
+        () => setOpen(e => !e)
         //@ts-ignore
-        navigation.navigate('Dish', { id: dish.id } as { id: string })
+        // navigation.navigate('Dish', { id: dish.id } as { id: string })
       }
       style={RestaurantDetailsStyles.container}
     >
@@ -21,21 +23,28 @@ const DishListItem = ({ dish }: { dish: DishItem }) => {
           {dish?.description}
         </Text>
         <Text style={RestaurantDetailsStyles.price}>${dish?.price}</Text>
+        {open && (
+          <View style={RestaurantDetailsStyles.shortAddToBasket}>
+            <TouchableOpacity>
+              <Text>+</Text>
+            </TouchableOpacity>
+            {/* ova ke bide so globalstore */}
+            <Text>Quantity</Text>
+            <TouchableOpacity>
+              <Text>-</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
-      {dish?.image ? (
-        <Image
-          source={{ uri: dish?.image }}
-          style={RestaurantDetailsStyles.dishImage}
-        />
-      ) : (
-        //wip on this one don't do this url.
-        <Image
-          source={{
-            uri: 'https://www.charlotteathleticclub.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png',
-          }}
-          style={RestaurantDetailsStyles.dishImage}
-        />
-      )}
+
+      <Image
+        source={
+          dish.image
+            ? { uri: dish?.image }
+            : require('../../assets/image-not-found.png')
+        }
+        style={RestaurantDetailsStyles.dishImage}
+      />
     </TouchableOpacity>
   );
 };
