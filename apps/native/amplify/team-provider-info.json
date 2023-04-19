@@ -1,19 +1,23 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-izvolte-staging-222200-authRole",
-      "UnauthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolte-staging-222200-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolte-staging-222200-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-izvolte-staging-222200-deployment",
-      "UnauthRoleName": "amplify-izvolte-staging-222200-unauthRole",
-      "StackName": "amplify-izvolte-staging-222200",
-      "StackId": "arn:aws:cloudformation:us-east-1:310817921623:stack/amplify-izvolte-staging-222200/d8af75b0-a27e-11ed-9e22-12e21802a293",
-      "AmplifyAppId": "d2h7xp7xfugrsj"
+      "AuthRoleName": "amplify-izvolteclient-dev-154420-authRole",
+      "UnauthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolteclient-dev-154420-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolteclient-dev-154420-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-izvolteclient-dev-154420-deployment",
+      "UnauthRoleName": "amplify-izvolteclient-dev-154420-unauthRole",
+      "StackName": "amplify-izvolteclient-dev-154420",
+      "StackId": "arn:aws:cloudformation:eu-central-1:310817921623:stack/amplify-izvolteclient-dev-154420/0b9fd100-bf52-11ed-8acc-06b6933bbd4e",
+      "AmplifyAppId": "d2yufx908y9tzk"
     },
     "categories": {
       "auth": {
-        "Izvolte": {}
+        "izvolteclienta498652a": {},
+        "izvolteClient": {}
+      },
+      "api": {
+        "izvolteclient": {}
       }
     }
   }

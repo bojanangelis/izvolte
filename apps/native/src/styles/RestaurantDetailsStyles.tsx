@@ -52,7 +52,15 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   dishImage: {
-    height: 75,
+    height: 85,
+    width: 85,
     aspectRatio: 1,
+  },
+  shortAddToBasket: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
   },
 });

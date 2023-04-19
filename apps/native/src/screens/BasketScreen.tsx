@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
-import restaurants from '../../assets/data/restaurants.json';
 import BasketDishItem from '../components/BasketDishItem';
+// import { useBasketContext } from '../context/BasketContext';
+// import { useOrderContext } from '../context/OrderContext';
 
 const BasketScreen = () => {
-  const restaurant = restaurants[0];
+  // const { createOrder }: any = useOrderContext();
+  // const { restaurant, basketDishes, totalPrice }: any = useBasketContext();
   const onCreateOrder = async () => {
     //     const newOrder = await createOrder();
     //     navigation.navigate("OrdersTab", {
@@ -12,22 +14,30 @@ const BasketScreen = () => {
     //       params: { id: newOrder.id },
     //     });
   };
+
   return (
     <View style={styles.page}>
-      <Text style={styles.name}>{restaurant?.name}</Text>
-
+      {/* <Text style={styles.name}>{restaurant?.name}</Text> */}
       <Text style={{ fontWeight: 'bold', marginTop: 20, fontSize: 19 }}>
         Your items
       </Text>
 
-      <FlatList
-        data={restaurant.dishes}
+      {/* <FlatList
+        data={basketDishes}
         renderItem={({ item }) => <BasketDishItem basketDish={item} />}
-      />
+      /> */}
 
       <View style={styles.separator} />
-      <Pressable onPress={onCreateOrder} style={styles.button}>
-        <Text style={styles.buttonText}>Create order</Text>
+      <Pressable
+        onPress={
+          () => console.log('order')
+          // createOrder
+        }
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>
+          {/* Create order {totalPrice.toFixed(2)} */}
+        </Text>
       </Pressable>
     </View>
   );

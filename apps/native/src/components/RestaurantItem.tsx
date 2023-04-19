@@ -1,26 +1,28 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
-
-export interface RestaurantItemProps {
+interface Restaurant {
   restaurant: {
+    __typename: 'Restaurant';
     id: string;
     name: string;
+    image: string;
     deliveryFee: number;
     minDeliveryTime: number;
     maxDeliveryTime: number;
-    rating: number;
-    price: number;
-    image: string;
-    dishes: Object[];
-  };
+    rating?: number | null | undefined;
+    address: string;
+    lat: number;
+    lng: number;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
 }
 
-const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
+const RestaurantItem = ({ restaurant }: Restaurant) => {
   const navigation = useNavigation();
   const handleRestaurantPress = () => {
-    //@ts-ignore
-    navigation.navigate('Restaurant', { id: restaurant.id });
+    navigation.navigate('Restaurant' as never, { id: restaurant?.id } as never);
   };
 
   return (
@@ -30,20 +32,20 @@ const RestaurantItem = ({ restaurant }: RestaurantItemProps) => {
     >
       <Image
         source={{
-          uri: restaurant.image,
+          uri: restaurant?.image,
         }}
         style={styles.image}
       />
       <View style={styles.row}>
         <View>
-          <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+          <Text style={styles.restaurantTitle}>{restaurant?.name}</Text>
           <Text style={styles.restaurantSubtitle}>
-            $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
-            {restaurant.minDeliveryTime} minutes
+            $ {restaurant?.deliveryFee.toFixed(2)} &#8226;{' '}
+            {restaurant?.minDeliveryTime}-{restaurant?.minDeliveryTime} minutes
           </Text>
         </View>
         <View style={styles.rating}>
-          <Text>{restaurant.rating}</Text>
+          {restaurant?.rating && <Text>{restaurant?.rating.toFixed(1)}</Text>}
         </View>
       </View>
     </TouchableOpacity>

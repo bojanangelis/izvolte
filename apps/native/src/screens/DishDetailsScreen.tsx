@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import restaurants from '../../assets/data/restaurants.json';
 import { StatusBar } from 'expo-status-bar';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { getDish } from '../graphql/queries';
+import { GetDishQuery } from '../API';
+import { useSelector } from 'react-redux';
+import { dbUserData } from '../../features/dbUser';
+import { ParamList } from './RestaurantDetailsScreen';
+// import { useBasketContext } from '../context/BasketContext';
 
 const DishDetailsScreen = () => {
   const navigation = useNavigation();
-  const dish = restaurants[0].dishes[0];
-  const [quantity, setQuantity] = useState(0);
+  const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
+  const [dish, setDish] = useState<GetDishQuery['getDish']>();
+  const [quantity, setQuantity] = useState(1);
+  const dbUser = useSelector(dbUserData);
+  const { id } = route.params;
+
+  //@ts-ignore
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchDishById = async () => {
+      try {
+        const dishDetails = await API.graphql<GraphQLQuery<GetDishQuery>>(
+          graphqlOperation(getDish, { id }),
+        );
+        setDish(dishDetails?.data?.getDish);
+      } catch (err) {
+        console.error('Error fetching restaurant', err);
+      }
+    };
+    fetchDishById();
+  }, [id]);
 
   const handleQuantity = (value: string) => {
     switch (value) {
@@ -21,15 +55,24 @@ const DishDetailsScreen = () => {
     }
   };
 
-  const getTotal = () => {
-    return (dish.price * quantity).toFixed(2);
+  const addToBasket = async () => {
+    // await addDishToBasket(dish, quantity);
+    navigation.goBack();
   };
+
+  const getTotal = () => {
+    if (dish) return (dish.price * quantity).toFixed(2);
+  };
+
+  if (!dish) return <ActivityIndicator size={'large'} color="gray" />;
 
   return (
     <View style={styles.page}>
       <Image source={{ uri: dish?.image }} style={styles.imageHeader} />
-      <Text style={styles.title}>{dish.name}</Text>
-      <Text style={styles.description}>{dish.description}</Text>
+      <Text style={styles.title}>{dish?.name}</Text>
+      <Text style={styles.description} numberOfLines={2}>
+        {dish?.description}
+      </Text>
       <View style={styles.separator} />
 
       <View style={styles.row}>
@@ -43,7 +86,8 @@ const DishDetailsScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('Basket')}
+        //@ts-ignore
+        onPress={addToBasket}
         style={styles.button}
       >
         <Text style={styles.buttonText}>

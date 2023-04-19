@@ -1,25 +1,25 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
-import { RestaurantItemProps } from './RestaurantItem';
 
-const RestaurantDetailsScreanHeader = ({ restaurant }: RestaurantItemProps) => {
+const RestaurantDetailsScreanHeader = ({ restaurant }: any) => {
   return (
     <View>
-      {restaurant.image && (
-        <Image
-          style={styles.image}
-          source={{ uri: restaurant.image }}
-          resizeMode="cover"
-        />
-      )}
+      <Image
+        style={styles.image}
+        source={{ uri: restaurant?.image }}
+        resizeMode="cover"
+      />
 
       <View style={styles.container}>
-        <Text style={styles.title}>{restaurant.name}</Text>
+        <Text style={styles.title}>{restaurant?.name}</Text>
         <Text style={styles.subtitle}>
-          $ {restaurant.deliveryFee} &#8226; {restaurant.minDeliveryTime}-
-          {restaurant.minDeliveryTime} minutes
+          $ {restaurant?.deliveryFee?.toFixed(2)} &#8226;{' '}
+          {restaurant?.minDeliveryTime} - {restaurant?.minDeliveryTime} minutes
         </Text>
-        <Text style={styles.menuTitle}>Menu</Text>
+        <Text style={styles.menuTitle}>
+          Tuka se listaat pojadok, rucek, vecera, blago, sokovi moram i backend
+          da sredam i koga ke se klikne da me scrollne do niv
+        </Text>
       </View>
     </View>
   );
