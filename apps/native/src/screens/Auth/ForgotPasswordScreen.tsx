@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,25 +6,28 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
+import { AntDesign } from '@expo/vector-icons';
 import GoBackComponent from '../../components/GoBackIcon';
 
 const ForgotPasswordScreen = () => {
-  const { control, handleSubmit } = useForm();
   const navigation = useNavigation();
-
-  const onSendPressed = async (data: any) => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const onSendPressed = async () => {
+    if (!email) return;
     try {
-      await Auth.forgotPassword(data.username);
-      //@ts-ignore
-      navigation.navigate('NewPassword');
+      setLoading(true);
+      const authData = await Auth.forgotPassword(email);
+      if (authData)
+        //@ts-ignore
+        navigation.navigate('ConfirmNewCodeForPasswordReset', { email: email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
+    setLoading(false);
   };
 
   const onSignInPress = () => {
@@ -33,82 +36,85 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.root}>
-      <Text style={styles.title}>Reset password on your izvolte account</Text>
+    <View style={styles.rootView}>
+      <Text style={styles.titleView}>Reset your Izvolte password</Text>
       <View style={styles.inputContainerView}>
         <Text style={styles.textInputLabel}>Enter your email address</Text>
         <TextInput
           style={styles.inputContainer}
-          // value={data.email}
-          // onChangeText={value => handleInput(value, 'email')}
+          value={email}
+          onChangeText={(text: string) => setEmail(text)}
           placeholder="Type your email"
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
-          autoComplete="email"
         />
       </View>
 
       <TouchableOpacity
-        //@ts-ignore
-        // disabled={loading}
-        // onPress={onRegisterPressed}
+        disabled={loading || !email}
+        onPress={onSendPressed}
         style={styles.buttonNext}
       >
-        <Text style={styles.buttonNextText}>Reset password</Text>
+        <Text> </Text>
+        <Text style={styles.buttonNextText}>Confirm</Text>
+        <AntDesign
+          style={styles.arrowNext}
+          name="arrowright"
+          size={22}
+          color="white"
+        />
       </TouchableOpacity>
       <GoBackComponent />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    alignItems: 'flex-start',
+  textInputLabel: {
+    fontWeight: '500',
+    color: 'black',
+    marginBottom: 5,
+  },
+  inputContainerView: {
+    paddingVertical: 10,
+  },
+  arrowNext: {},
+  buttonNext: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: '#f7d639',
+    borderRadius: 2,
+    padding: 10,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+  },
+  buttonNextText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  rootView: {
+    backgroundColor: 'white',
     flex: 1,
     padding: 20,
-    width: '100%',
+    paddingTop: '25%',
   },
-  title: {
-    marginVertical: 20,
+  titleView: {
     fontSize: 20,
+    paddingBottom: 20,
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'left',
   },
-  text: {
-    color: 'gray',
-    marginVertical: 10,
-  },
-  inputContainerView: {
-    padding: 20,
-    paddingVertical: 10,
-    width: '100%',
-  },
-  textInputLabel: {
-    fontWeight: '500',
-    marginBottom: 5,
-  },
   inputContainer: {
     backgroundColor: '#EEEEEE',
     width: '100%',
-    // marginTop: 20,
     padding: 20,
     borderRadius: 2,
-  },
-  buttonNext: {
-    alignItems: 'center',
-    backgroundColor: '#f7d639',
-    borderRadius: 2,
-
-    padding: 14,
-    marginVertical: 20,
-  },
-  buttonNextText: {
-    color: 'white',
-    fontSize: 19,
-    letterSpacing: 1,
-    fontWeight: '600',
   },
 });
 

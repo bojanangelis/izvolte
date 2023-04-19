@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
+import { Auth, Hub } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import GoBackComponent from '../../components/GoBackIcon';
@@ -31,20 +31,31 @@ const SignUpScreen = () => {
       [key]: value,
     }));
   };
+
+  useEffect(() => {
+    Hub.listen('auth', data => {
+      console.log('auth -->', data);
+    });
+  }, []);
+
   const onRegisterPressed = async () => {
     if (data.password !== data.confirmPassword) return;
     try {
       setLoading(true);
-      await Auth.signUp({
+      const dataa = await Auth.signUp({
         username: data.email,
         password: data.password,
         attributes: { email: data.email },
         autoSignIn: { enabled: true },
       });
+      console.log(dataa);
       //@ts-ignore
-      navigation.navigate('ConfirmEmail', { email: data.email });
+      navigation.navigate('ConfirmEmail', {
+        email: data.email,
+        password: data.password,
+      });
     } catch (e: any) {
-      Alert.alert('Oops', e.message);
+      Alert.alert(e.message);
       setLoading(false);
     }
   };

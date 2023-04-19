@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -12,16 +12,22 @@ import { useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { AntDesign } from '@expo/vector-icons';
 import SocialSignInButtons from '../../components/SocialSigninButtons';
-interface Params {
+import GoBackComponent from '../../components/GoBackIcon';
+import { useDispatch } from 'react-redux';
+import { UserState, login, logout } from '../../../features/authUser';
+export interface Params {
   email: string;
+  password: string;
 }
 const ConfirmEmailScreen = () => {
   const route = useRoute();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState('');
 
   const navigation = useNavigation();
   const email = (route?.params as Params)?.email ?? '';
+  const password = (route?.params as Params)?.password ?? '';
   const onConfirmPressed = async () => {
     try {
       setLoading(true);
@@ -34,6 +40,35 @@ const ConfirmEmailScreen = () => {
     }
     setLoading(false);
   };
+
+  const handleSignIn = async () => {
+    setLoading(true);
+    Auth.signIn(email, password)
+      .then(user => {
+        dispatchLogin({
+          email: user?.attributes?.email ?? '',
+          emailAuthenticated: user?.attributes?.email_verified ?? false,
+          sub: user?.attributes?.sub ?? '',
+        });
+      })
+      .catch(err => {
+        Alert.alert(err?.message);
+        dispatch(logout);
+      });
+    setLoading(false);
+  };
+
+  const dispatchLogin = useCallback(
+    (user: UserState['user']) =>
+      dispatch(
+        login({
+          email: user?.email ?? '',
+          sub: user?.sub ?? '',
+          emailAuthenticated: user?.emailAuthenticated ?? false,
+        }),
+      ),
+    [dispatch],
+  );
 
   const onResendPress = async () => {
     try {
@@ -78,21 +113,10 @@ const ConfirmEmailScreen = () => {
         />
       </TouchableOpacity>
       <Text style={styles.text}>
-        By proceeding, you consent to get calls, Whatsapp or SMS messages,
-        including by automated means, from izvolte and its affiliates to the
-        number provided.{' '}
-        <Text
-          style={styles.link}
-          onPress={() => console.log('navigate on terms of use')}
-        >
-          Terms of Use
-        </Text>{' '}
-        and{' '}
-        <Text
-          style={styles.link}
-          onPress={() => console.log('navigate on Privacy Policy.')}
-        >
-          Privacy Policy.
+        Check you email address for the code confirmation, or
+        <Text style={styles.link} onPress={onResendPress}>
+          {' '}
+          resend code.
         </Text>
       </Text>
       <View style={styles.dividerContainer}>
@@ -101,6 +125,7 @@ const ConfirmEmailScreen = () => {
         <View style={styles.divider}></View>
       </View>
       <SocialSignInButtons signInButton />
+      <GoBackComponent />
     </View>
   );
 };
@@ -139,7 +164,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#f7d639',
     borderRadius: 2,
     padding: 10,
     paddingHorizontal: 20,

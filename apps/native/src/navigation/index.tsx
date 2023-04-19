@@ -38,6 +38,7 @@ import { ListUsersQuery } from '../API';
 import { listUsers } from '../graphql/queries';
 import { addDbUser, dbUserData, User } from '../../features/dbUser';
 import SearchScreen from '../screens/SearchScreen';
+import ConfirmNewCodeForPasswordReset from '../screens/Auth/ConfirmNewCodeForPasswordReset';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -242,6 +243,10 @@ const AuthStackNavigator = () => {
       <AuthStack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
+      />
+      <AuthStack.Screen
+        name="ConfirmNewCodeForPasswordReset"
+        component={ConfirmNewCodeForPasswordReset}
       />
       <AuthStack.Screen name="NewPassword" component={NewPasswordScreen} />
     </AuthStack.Navigator>
