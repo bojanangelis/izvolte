@@ -1,12 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
@@ -15,26 +8,36 @@ import SocialSignInButtons from '../../components/SocialSigninButtons';
 import GoBackComponent from '../../components/GoBackIcon';
 import { useDispatch } from 'react-redux';
 import { UserState, login, logout } from '../../../features/authUser';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+
 export interface Params {
   email: string;
   password: string;
 }
 const ConfirmEmailScreen = () => {
+  const CELL_COUNT = 6;
   const route = useRoute();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState('');
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
 
-  const navigation = useNavigation();
   const email = (route?.params as Params)?.email ?? '';
   const password = (route?.params as Params)?.password ?? '';
   const onConfirmPressed = async () => {
     try {
       setLoading(true);
-      const data = await Auth.confirmSignUp(email, code);
-      console.log(data);
-      //@ts-ignore
-      navigation.navigate('HomeTabs');
+      await Auth.confirmSignUp(email, value);
+      await handleSignIn();
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -86,18 +89,27 @@ const ConfirmEmailScreen = () => {
     <View style={styles.rootView}>
       <Text style={styles.titleView}>Confirm your email</Text>
       <View style={styles.inputContainerView}>
-        <Text style={styles.textInputLabel}>Enter your code</Text>
-        <TextInput
-          style={styles.inputContainer}
-          value={code}
-          onChangeText={(text: string) => setCode(text)}
-          placeholder="Type your code"
+        <CodeField
+          ref={ref}
+          {...props}
+          caretHidden={false}
+          value={value}
+          onChangeText={setValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
+          textContentType="oneTimeCode"
+          renderCell={({ index, symbol, isFocused }) => (
+            <Text
+              key={index}
+              style={[styles.cell, isFocused && styles.focusCell]}
+              onLayout={getCellOnLayoutHandler(index)}
+            >
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          )}
         />
       </View>
-
       <TouchableOpacity
         disabled={loading}
         onPress={onConfirmPressed}
@@ -131,6 +143,19 @@ const ConfirmEmailScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  codeFieldRoot: { marginTop: 20, paddingHorizontal: 40 },
+  cell: {
+    width: 45,
+    height: 50,
+    lineHeight: 40,
+    fontSize: 28,
+    borderWidth: 0.5,
+    borderColor: '#00000030',
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderColor: '#000',
+  },
   textInputLabel: {
     fontWeight: '500',
     color: 'black',

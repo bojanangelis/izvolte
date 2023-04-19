@@ -6,10 +6,9 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Auth, Hub } from 'aws-amplify';
+import React, { useState } from 'react';
+import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
 import GoBackComponent from '../../components/GoBackIcon';
 
 interface FormData {
@@ -32,23 +31,17 @@ const SignUpScreen = () => {
     }));
   };
 
-  useEffect(() => {
-    Hub.listen('auth', data => {
-      console.log('auth -->', data);
-    });
-  }, []);
-
   const onRegisterPressed = async () => {
     if (data.password !== data.confirmPassword) return;
+
     try {
       setLoading(true);
-      const dataa = await Auth.signUp({
+      await Auth.signUp({
         username: data.email,
         password: data.password,
         attributes: { email: data.email },
         autoSignIn: { enabled: true },
       });
-      console.log(dataa);
       //@ts-ignore
       navigation.navigate('ConfirmEmail', {
         email: data.email,
@@ -107,7 +100,7 @@ const SignUpScreen = () => {
         onPress={onRegisterPressed}
         style={styles.buttonNext}
       >
-        <Text style={styles.buttonNextText}>Create account</Text>
+        <Text style={styles.buttonNextText}>Create Izvolte account</Text>
       </TouchableOpacity>
       <GoBackComponent />
     </View>

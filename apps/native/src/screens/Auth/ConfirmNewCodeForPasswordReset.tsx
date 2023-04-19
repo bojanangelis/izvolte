@@ -53,13 +53,11 @@ const ConfirmNewCodeForPasswordReset = () => {
     setValue,
   });
   const email = (route?.params as Params)?.email ?? '';
-  console.log('email i got here wow-->', email);
-  console.log(value.length);
+
   if (value.length === 6) {
     //@ts-ignore
     navigation.navigate('NewPasswordScreen', { email: email, code: value });
   }
-  const verifyCode = async () => {};
 
   return (
     <SafeAreaView style={styles.root}>
@@ -69,7 +67,7 @@ const ConfirmNewCodeForPasswordReset = () => {
       <CodeField
         ref={ref}
         {...props}
-        // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+        caretHidden={false}
         value={value}
         onChangeText={setValue}
         cellCount={CELL_COUNT}

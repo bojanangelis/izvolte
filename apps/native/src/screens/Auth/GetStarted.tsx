@@ -40,7 +40,12 @@ const GetStarted = () => {
         });
       })
       .catch(err => {
-        Alert.alert(err?.message);
+        if (err?.code === 'UserNotConfirmedException') {
+          //@ts-ignore
+          navigation.navigate('ConfirmEmail', { email: email });
+        } else {
+          Alert.alert(err?.message);
+        }
         dispatch(logout);
       });
     setLoading(false);
