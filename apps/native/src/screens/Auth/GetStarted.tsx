@@ -13,8 +13,11 @@ import SocialSignInButtons from '../../components/SocialSigninButtons';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { UserState, login, logout } from '../../../features/authUser';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+const isLocalhost = Boolean(__DEV__);
 
 const GetStarted = () => {
+  console.log('what is this ->>', isLocalhost);
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

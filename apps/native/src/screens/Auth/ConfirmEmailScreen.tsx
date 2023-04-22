@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
 import { useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { AntDesign } from '@expo/vector-icons';
