@@ -84,45 +84,45 @@ const RootNavigator = () => {
     [dispatch],
   );
 
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        dispatchLogin({
-          email: user?.attributes?.email ?? '',
-          emailAuthenticated: user?.attributes?.email_verified ?? false,
-          sub: user?.attributes?.sub ?? '',
-        });
-      } catch (err) {
-        console.error('Error fetching current authenticated user:', err);
-        dispatch(logout);
-      }
-      setLoading(false);
-    };
-    checkAuthStatus();
-  }, [dispatch, dispatchLogin]);
+  // useEffect(() => {
+  //   const checkAuthStatus = async () => {
+  //     try {
+  //       const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
+  //       dispatchLogin({
+  //         email: user?.attributes?.email ?? '',
+  //         emailAuthenticated: user?.attributes?.email_verified ?? false,
+  //         sub: user?.attributes?.sub ?? '',
+  //       });
+  //     } catch (err) {
+  //       console.error('Error fetching current authenticated user:', err);
+  //       dispatch(logout);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   checkAuthStatus();
+  // }, [dispatch, dispatchLogin]);
 
-  useEffect(() => {
-    const catchUser = async () => {
-      if (userAuthentication?.sub) {
-        console.log('usersub->', userAuthentication?.sub);
-        const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
-          graphqlOperation(listUsers, {
-            filter: {
-              sub: {
-                eq: userAuthentication.sub,
-              },
-            },
-          }),
-        );
-        if (data.data?.listUsers?.items[0])
-          dispatchDbUser(data.data?.listUsers?.items[0]);
-      }
-    };
-    catchUser().catch(e => console.error(e));
-  }, [userAuthentication?.sub]);
+  // useEffect(() => {
+  //   const catchUser = async () => {
+  //     if (userAuthentication?.sub) {
+  //       console.log('usersub->', userAuthentication?.sub);
+  //       const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
+  //         graphqlOperation(listUsers, {
+  //           filter: {
+  //             sub: {
+  //               eq: userAuthentication.sub,
+  //             },
+  //           },
+  //         }),
+  //       );
+  //       if (data.data?.listUsers?.items[0])
+  //         dispatchDbUser(data.data?.listUsers?.items[0]);
+  //     }
+  //   };
+  //   catchUser().catch(e => console.error(e));
+  // }, [userAuthentication?.sub]);
 
-  if (loading)
+  if (!loading)
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />
