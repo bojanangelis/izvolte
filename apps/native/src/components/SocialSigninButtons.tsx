@@ -17,7 +17,6 @@ const SocialSignInButtons = ({
   const [customSet, setCustomState] = useState();
   useEffect(() => {
     const unsubscribe = Hub.listen('auth', ({ payload: { event, data } }) => {
-      console.log(data);
       switch (event) {
         case 'signIn':
           setUser(data);
@@ -34,7 +33,7 @@ const SocialSignInButtons = ({
       .catch(() => console.log('Not signed in'));
     return unsubscribe;
   }, []);
-  console.log('user-->', user);
+  console.log('the user-->', user);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const dispatchLogin = useCallback(
@@ -52,10 +51,11 @@ const SocialSignInButtons = ({
     console.warn('onSignInFacebook');
   };
 
-  const onSignInGoogle = () => {
-    Auth.federatedSignIn({
+  const onSignInGoogle = async () => {
+    const data = await Auth.federatedSignIn({
       provider: CognitoHostedUIIdentityProvider.Google,
     });
+    console.log(data);
     // .then(user => {
     // console.log(user);
     // dispatchLogin({

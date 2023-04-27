@@ -63,7 +63,7 @@
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
     "authProviders": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://192.168.100.41:19000/\",\"myapp://\",\"myapp://myapp/\"],\"LogoutURLs\":[\"https://192.168.100.41:19000/\",\"myapp://\",\"myapp://myapp/\"]}",
-    "thirdPartyAuth": false
+    "thirdPartyAuth": false,
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"exposchemeappname://\",\"https://192.168.100.41:19000/\",\"https://192.168.100.41:19000\",\"https://192.168.1.134:19000\",\"https://192.168.1.134:19000/\"],\"LogoutURLs\":[\"exposchemeappname://\",\"https://192.168.100.41:19000/\",\"https://192.168.100.41:19000\",\"https://192.168.1.134:19000\",\"https://192.168.1.134:19000/\"]}"
   }
 }

@@ -36,12 +36,11 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2023-04-22T16:51:59.128Z",
+      "lastPushTimeStamp": "2023-04-25T09:54:49.364Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiizvolteclient"
-      },
-      "lastPushDirHash": "ZgDeWvSCC6rd1BhVpKBOkA/m8+s="
+      }
     }
   },
   "auth": {
@@ -76,19 +75,19 @@
         "UserPoolId": "eu-central-1_q5c9LgaGs",
         "AppClientIDWeb": "2onb1c2qiu2rrf6se6asgkavf8",
         "AppClientID": "121p8hbnn5vl2qqoqsmdtetqhg",
+        "HostedUIDomain": "izvolteclientf26da1d6-f26da1d6-dev",
         "IdentityPoolId": "eu-central-1:ee1a2cd7-1625-466c-889d-f3e9a6332c1b",
         "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:310817921623:userpool/eu-central-1_q5c9LgaGs",
         "IdentityPoolName": "testAuthIdentityPool__dev",
-        "UserPoolName": "izvolteClient",
-        "HostedUIDomain": "izvolteclientf26da1d6-f26da1d6-dev",
-        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://192.168.100.41:19000/\"],\"LogoutURLs\":[\"https://192.168.100.41:19000/\"]}"
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://172.20.10.4:19000\",\"exp://172.20.10.4:19000\"],\"LogoutURLs\":[\"https://172.20.10.4:19000\",\"exp://172.20.10.4:19000\"]}",
+        "UserPoolName": "izvolteClient"
       },
-      "lastPushTimeStamp": "2023-04-22T16:51:59.434Z",
+      "lastPushTimeStamp": "2023-04-25T09:54:49.411Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/auth/izvolteClient-cloudformation-template.json",
         "logicalId": "authizvolteClient"
       },
-      "lastPushDirHash": "3T0K096db9pOxVyWOED9gsJze48="
+      "lastPushDirHash": "kW9C+C4I8zK8No+L5ePrcSsR3ik="
     }
   }
 }
