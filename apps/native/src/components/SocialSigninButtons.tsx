@@ -13,27 +13,27 @@ interface SocialSigninButtonsInterface {
 const SocialSignInButtons = ({
   signInButton,
 }: SocialSigninButtonsInterface) => {
-  const [user, setUser] = useState(null);
-  const [customSet, setCustomState] = useState();
-  useEffect(() => {
-    const unsubscribe = Hub.listen('auth', ({ payload: { event, data } }) => {
-      switch (event) {
-        case 'signIn':
-          setUser(data);
-          break;
-        case 'signOut':
-          setUser(null);
-          break;
-        case 'customOAuthState':
-          setCustomState(data);
-      }
-    });
-    Auth.currentAuthenticatedUser()
-      .then(currentUser => setUser(currentUser))
-      .catch(() => console.log('Not signed in'));
-    return unsubscribe;
-  }, []);
-  console.log('the user-->', user);
+  // const [user, setUser] = useState(null);
+  // const [customSet, setCustomState] = useState();
+  // useEffect(() => {
+  //   const unsubscribe = Hub.listen('auth', ({ payload: { event, data } }) => {
+  //     switch (event) {
+  //       case 'signIn':
+  //         setUser(data);
+  //         break;
+  //       case 'signOut':
+  //         setUser(null);
+  //         break;
+  //       case 'customOAuthState':
+  //         setCustomState(data);
+  //     }
+  //   });
+  //   Auth.currentAuthenticatedUser()
+  //     .then(currentUser => setUser(currentUser))
+  //     .catch(() => console.log('Not signed in'));
+  //   return unsubscribe;
+  // }, []);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const dispatchLogin = useCallback(
@@ -52,29 +52,17 @@ const SocialSignInButtons = ({
   };
 
   const onSignInGoogle = async () => {
-    const data = await Auth.federatedSignIn({
+    await Auth.federatedSignIn({
       provider: CognitoHostedUIIdentityProvider.Google,
     });
-    console.log(data);
-    // .then(user => {
-    // console.log(user);
-    // dispatchLogin({
-    //   email: user?.attributes?.email ?? '',
-    //   emailAuthenticated: user?.attributes?.email_verified ?? false,
-    //   sub: user?.attributes?.sub ?? '',
-    // });
-    // })
-    // .catch(err => {
-    // console.log(err);
-    // Alert.alert(err?.message);
-    // dispatch(logout);
-    // });
   };
+
   const onSignIn = () => {
     console.warn('signIn');
     //@ts-ignore
     navigation.navigate('GetStarted');
   };
+
   const onEmail = () => {
     console.warn('onEmail');
     //@ts-ignore

@@ -13,8 +13,8 @@ import { withOAuth } from 'aws-amplify-react-native';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
 
 const App = () => {
-  const url = Linking.useURL();
-  console.log('url', url);
+  // const url = Linking.useURL();
+  // console.log('url', url);
   // const isLocalhost = Boolean(__DEV__);
   // Assuming you have two redirect URIs, and the first is for localhost and second is for production
   // const [localRedirectSignIn, productionRedirectSignIn] =
@@ -98,14 +98,15 @@ const App = () => {
   // Technically you need to pass the correct redirectUrl to the web browser.
   let redirectUrl = Linking.makeUrl();
   if (redirectUrl.startsWith('exp://1')) {
-    console.log('daaa->');
+    // console.log('daaa->');
     // handle simulator(localhost) and device(Lan)
-    redirectUrl = redirectUrl + '/';
+    redirectUrl = redirectUrl;
   } else if (redirectUrl === expoScheme) {
+    // console.log('ova e ');
     // dont do anything
   } else {
     // handle the expo client
-    redirectUrl = redirectUrl + '/';
+    redirectUrl = Linking.makeUrl();
   }
   amplifyConfig.oauth.redirectSignIn = redirectUrl;
   amplifyConfig.oauth.redirectSignOut = redirectUrl;
@@ -113,7 +114,8 @@ const App = () => {
   Amplify.configure(amplifyConfig);
   return (
     <Provider store={store}>
-      {/* <SafeAreaView>
+      {/* TESTING */}
+      {/* <SafeAreaView> 
         <Button
           title="Open google"
           onPress={() =>

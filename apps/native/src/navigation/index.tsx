@@ -18,7 +18,7 @@ import BasketScreen from '../screens/BasketScreen';
 import DishDetailsScreen from '../screens/DishDetailsScreen';
 import Profile from '../screens/ProfileScreen';
 import { useState, useEffect, useCallback } from 'react';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, Auth, graphqlOperation, Hub } from 'aws-amplify';
 import ConfirmEmailScreen from '../screens/Auth/ConfirmEmailScreen';
 import StartUp from '../screens/Auth/StartUp';
 import GetStarted from '../screens/Auth/GetStarted';
@@ -39,6 +39,7 @@ import { listUsers } from '../graphql/queries';
 import { addDbUser, dbUserData, User } from '../../features/dbUser';
 import SearchScreen from '../screens/SearchScreen';
 import ConfirmNewCodeForPasswordReset from '../screens/Auth/ConfirmNewCodeForPasswordReset';
+import ErrorScreen from '../screens/ErrorScreen';
 
 export type RootStackParamList = {
   HomeTabs: undefined;
@@ -63,9 +64,7 @@ const RootNavigator = () => {
   // da imame nekoj test tuka kade shto ako dbUser e poln a userAuthentication e prazen
   // daj neshto da se desili ili obratno, just to be safe.
   const dbUser = useSelector(dbUserData);
-  // console.log('dbUSER-->', dbUser);
-  // console.log('userAuthentication->>', userAuthentication?.sub);
-
+  console.log('ovoj mi e dbuser->', dbUser);
   const dispatchLogin = useCallback(
     (user: UserState['user']) =>
       dispatch(
@@ -84,45 +83,44 @@ const RootNavigator = () => {
     [dispatch],
   );
 
-  // useEffect(() => {
-  //   const checkAuthStatus = async () => {
-  //     try {
-  //       const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
-  //       dispatchLogin({
-  //         email: user?.attributes?.email ?? '',
-  //         emailAuthenticated: user?.attributes?.email_verified ?? false,
-  //         sub: user?.attributes?.sub ?? '',
-  //       });
-  //     } catch (err) {
-  //       console.error('Error fetching current authenticated user:', err);
-  //       dispatch(logout);
-  //     }
-  //     setLoading(false);
-  //   };
-  //   checkAuthStatus();
-  // }, [dispatch, dispatchLogin]);
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
+        dispatchLogin({
+          email: user?.attributes?.email ?? '',
+          emailAuthenticated: user?.attributes?.email_verified ?? false,
+          sub: user?.attributes?.sub ?? '',
+        });
+      } catch (err) {
+        console.error('Error fetching current authenticated user:', err);
+        dispatch(logout);
+      }
+      setLoading(false);
+    };
+    checkAuthStatus();
+  }, [dispatch, dispatchLogin]);
 
-  // useEffect(() => {
-  //   const catchUser = async () => {
-  //     if (userAuthentication?.sub) {
-  //       console.log('usersub->', userAuthentication?.sub);
-  //       const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
-  //         graphqlOperation(listUsers, {
-  //           filter: {
-  //             sub: {
-  //               eq: userAuthentication.sub,
-  //             },
-  //           },
-  //         }),
-  //       );
-  //       if (data.data?.listUsers?.items[0])
-  //         dispatchDbUser(data.data?.listUsers?.items[0]);
-  //     }
-  //   };
-  //   catchUser().catch(e => console.error(e));
-  // }, [userAuthentication?.sub]);
+  useEffect(() => {
+    const catchUser = async () => {
+      if (userAuthentication?.sub) {
+        const data = await API.graphql<GraphQLQuery<ListUsersQuery>>(
+          graphqlOperation(listUsers, {
+            filter: {
+              sub: {
+                eq: userAuthentication.sub,
+              },
+            },
+          }),
+        );
+        if (data.data?.listUsers?.items[0])
+          dispatchDbUser(data.data?.listUsers?.items[0]);
+      }
+    };
+    catchUser().catch(e => console.error(e));
+  }, [userAuthentication?.sub]);
 
-  if (!loading)
+  if (loading)
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />
@@ -216,6 +214,14 @@ const HomeStackNavigator = () => {
       />
       <HomeStack.Screen name="Dish" component={DishDetailsScreen} />
       <HomeStack.Screen name="Basket" component={BasketScreen} />
+      <HomeStack.Screen
+        name="Error"
+        component={ErrorScreen}
+        options={{
+          presentation: 'modal',
+          headerShown: false,
+        }}
+      />
     </HomeStack.Navigator>
   );
 };

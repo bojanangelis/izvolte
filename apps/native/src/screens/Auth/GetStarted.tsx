@@ -13,7 +13,6 @@ import SocialSignInButtons from '../../components/SocialSigninButtons';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { UserState, login, logout } from '../../../features/authUser';
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 const GetStarted = () => {
   const dispatch = useDispatch();
