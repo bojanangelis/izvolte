@@ -47,22 +47,13 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.rootHeader}>
-        <Text>Your location </Text>
+        <Text>Now, </Text>
+        <Text>Your location</Text>
+        <Animatable.View ref={ref => ref}>
+          <AntDesign name="down" size={18} color="black" />
+        </Animatable.View>
       </View>
-      <Animatable.View ref={ref => ref}>
-        <AntDesign name="down" size={18} color="black" />
-      </Animatable.View>
 
-      {/* {restaurants !== null && (
-        <FlatList
-          data={(restaurants?.items as never) ?? []}
-          renderItem={({ item }) => <RestaurantItem restaurant={item} />}
-          keyExtractor={item => item?.id ?? '0'}
-          showsVerticalScrollIndicator={false}
-          style={styles.container}
-          contentContainerStyle={styles.list}
-        />
-      )} */}
       {restaurants !== null && (
         <ScrollView
           horizontal

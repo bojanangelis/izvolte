@@ -4,37 +4,65 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import GoBackComponent from '../../components/GoBackIcon';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
 interface FormData {
+  newPassword: string;
+  confirmNewPassword: string;
+}
+export interface ParamsNewPass {
   code: string;
-  password: string;
-  confirmPassword: string;
+  email: string;
 }
 
 const NewPasswordScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FormData>({
-    code: '',
-    password: '',
-    confirmPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
   });
+  const code = (route?.params as ParamsNewPass)?.code ?? '';
+  const email = (route?.params as ParamsNewPass)?.email ?? '';
+  console.log(email);
+  console.log(code);
+  console.log('data--><', data);
   const handleInput = (value: string, key: keyof FormData) => {
     setData(prevState => ({
       ...prevState,
       [key]: value,
     }));
   };
+
+  const submitNewPassword = async () => {
+    if (data.newPassword !== data.confirmNewPassword) return;
+    try {
+      const x = await Auth.forgotPasswordSubmit(email, code, data.newPassword);
+
+      //@ts-ignore go navigate it to startscreen.
+      if (x === 'SUCCESS') navigation.navigate('GetStarted');
+    } catch (error: any) {
+      console.log('Error resetting password:', error);
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <View style={styles.rootView}>
       <Text style={styles.titleView}>Setup new password</Text>
+
       <View style={styles.inputContainerView}>
         <Text style={styles.textInputLabel}>Enter your new password</Text>
         <TextInput
           style={styles.inputContainer}
-          value={data.code}
-          onChangeText={value => handleInput(value, 'code')}
+          value={data.newPassword}
+          onChangeText={value => handleInput(value, 'newPassword')}
           placeholder="Type your password"
           secureTextEntry={true}
           keyboardType="visible-password"
@@ -45,30 +73,18 @@ const NewPasswordScreen = () => {
         <Text style={styles.textInputLabel}>Confirm your new password</Text>
         <TextInput
           style={styles.inputContainer}
-          value={data.password}
-          onChangeText={value => handleInput(value, 'password')}
+          value={data.confirmNewPassword}
+          onChangeText={value => handleInput(value, 'confirmNewPassword')}
           placeholder="Confirm your password"
           secureTextEntry={true}
           keyboardType="visible-password"
           autoCorrect={false}
         />
       </View>
-      {/* <View style={styles.inputContainerView}>
-        <Text style={styles.textInputLabel}>Enter your code</Text>
-        <TextInput
-          style={styles.inputContainer}
-          value={data.code}
-          onChangeText={value => handleInput(value, 'code')}
-          placeholder="Type your code"
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View> */}
 
       <TouchableOpacity
-        // disabled={loading}
-        // onPress={onConfirmPressed}
+        disabled={loading}
+        onPress={submitNewPassword}
         style={styles.buttonNext}
       >
         <Text> </Text>

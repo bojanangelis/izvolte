@@ -58,6 +58,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+
   const dispatch = useDispatch();
   const userAuthentication = useSelector(authUserData);
 
@@ -116,11 +118,15 @@ const RootNavigator = () => {
         if (data.data?.listUsers?.items[0])
           dispatchDbUser(data.data?.listUsers?.items[0]);
       }
+      setUserLoading(false);
     };
-    catchUser().catch(e => console.error(e));
+    catchUser().catch(e => {
+      dispatch(logout);
+      console.error(e);
+    });
   }, [userAuthentication?.sub]);
 
-  if (loading)
+  if (loading || userLoading)
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="loadingStack" component={LoadingStackNavigator} />

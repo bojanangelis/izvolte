@@ -1,8 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Auth } from 'aws-amplify';
 import React, { useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
-
+import { SafeAreaView, Text, StyleSheet } from 'react-native';
 import {
   CodeField,
   Cursor,
@@ -63,7 +61,7 @@ const ConfirmNewCodeForPasswordReset = () => {
 
   if (value.length === 6) {
     //@ts-ignore
-    navigation.navigate('NewPasswordScreen', { email: email, code: value });
+    navigation.navigate('NewPassword', { email: email, code: value });
   }
 
   return (
