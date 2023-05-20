@@ -67,6 +67,7 @@ const GetStarted = () => {
     return (
       <View>
         <Text>Loading...</Text>
+        <Text>WIPP ON THISSS...</Text>
       </View>
     );
 

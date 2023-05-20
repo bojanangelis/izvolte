@@ -12,6 +12,7 @@
     "client:native": "yarn start --ios"
   },
   "dependencies": {
+    "@expo/html-elements": "^0.4.2",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/netinfo": "9.3.7",
     "@react-native-picker/picker": "2.4.8",
@@ -28,7 +29,9 @@
     "aws-amplify-react-native": "^7.0.2",
     "aws-lambda": "^1.0.7",
     "expo": "^48.0.0",
+    "expo-linking": "^4.0.1",
     "expo-status-bar": "~1.4.4",
+    "expo-web-browser": "~12.1.1",
     "google-libphonenumber": "^3.2.32",
     "react": "18.2.0",
     "react-dom": "18.2.0",

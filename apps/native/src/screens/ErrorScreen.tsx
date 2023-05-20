@@ -1,11 +1,12 @@
 import { View, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import React from 'react';
-import { ProgressBar } from 'react-native-paper';
+import CloseIcon from '../components/CloseIcon';
 
 const ErrorScreen = () => {
   const styles = StyleSheet.create({
     root: {
+      position: 'relative',
       height: '100%',
       alignItems: 'center',
       justifyContent: 'center',
@@ -16,7 +17,6 @@ const ErrorScreen = () => {
       height: 400,
       width: '100%',
     },
-
     inputContainerText: {
       fontSize: 20,
       letterSpacing: 2,
@@ -50,9 +50,10 @@ const ErrorScreen = () => {
           iterationCount={1}
           style={styles.inputContainerText}
         >
-          Something whent wrong . . .
+          Something whent wrong
         </Animatable.Text>
       </View>
+      <CloseIcon />
     </View>
   );
 };

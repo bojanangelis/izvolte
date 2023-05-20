@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
   buttonSeeStores: {
     width: '100%',
     backgroundColor: '#f7d639',
-    padding: 20,
-    borderRadius: 2,
+    padding: 15,
+    borderRadius: 4,
   },
   buttonSeeStoresText: {
     textAlign: 'center',

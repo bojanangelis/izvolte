@@ -1,0 +1,93 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-izvolteclient-dev-154420-authRole",
+      "UnauthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolteclient-dev-154420-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::310817921623:role/amplify-izvolteclient-dev-154420-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-izvolteclient-dev-154420-deployment",
+      "UnauthRoleName": "amplify-izvolteclient-dev-154420-unauthRole",
+      "StackName": "amplify-izvolteclient-dev-154420",
+      "StackId": "arn:aws:cloudformation:eu-central-1:310817921623:stack/amplify-izvolteclient-dev-154420/0b9fd100-bf52-11ed-8acc-06b6933bbd4e",
+      "AmplifyAppId": "d2yufx908y9tzk"
+    }
+  },
+  "api": {
+    "izvolteclient": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        },
+        "GraphQLAPIIdOutput": "325twgw2jzgqjei3lcobreasji",
+        "GraphQLAPIEndpointOutput": "https://qlkfgkzpljc2nh6l47wke2rdoq.appsync-api.eu-central-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-wftx2rmb25cgbbgpmfxu6jwx24"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-04-27T18:01:42.451Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiizvolteclient"
+      }
+    }
+  },
+  "auth": {
+    "izvolteClient": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "eu-central-1_q5c9LgaGs",
+        "AppClientIDWeb": "2onb1c2qiu2rrf6se6asgkavf8",
+        "AppClientID": "121p8hbnn5vl2qqoqsmdtetqhg",
+        "HostedUIDomain": "izvolteclientf26da1d6-f26da1d6-dev",
+        "IdentityPoolId": "eu-central-1:ee1a2cd7-1625-466c-889d-f3e9a6332c1b",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:310817921623:userpool/eu-central-1_q5c9LgaGs",
+        "IdentityPoolName": "testAuthIdentityPool__dev",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"exposchemeappname://\",\"https://192.168.100.41:19000/\",\"https://192.168.100.41:19000\",\"https://192.168.1.134:19000\",\"https://192.168.1.134:19000/\"],\"LogoutURLs\":[\"exposchemeappname://\",\"https://192.168.100.41:19000/\",\"https://192.168.100.41:19000\",\"https://192.168.1.134:19000\",\"https://192.168.1.134:19000/\"]}",
+        "UserPoolName": "izvolteClient"
+      },
+      "lastPushTimeStamp": "2023-04-27T18:01:42.452Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-izvolteclient-dev-154420-deployment/amplify-cfn-templates/auth/izvolteClient-cloudformation-template.json",
+        "logicalId": "authizvolteClient"
+      },
+      "lastPushDirHash": "fDiuYZKYWTeTpK5JcJyGX/CfHDg="
+    }
+  }
+}

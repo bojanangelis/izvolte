@@ -28,8 +28,6 @@ const RestaurantDetailsScreen: FC = () => {
   const route = useRoute<RouteProp<ParamList, 'Restaurant'>>();
   const navigation = useNavigation();
   const { id } = route.params;
-  // const { getRestaurant, basket, basketDishes }: any = useBasketContext();
-  console.log(id);
   useEffect(() => {
     if (!id) return;
     const fetchRestaurantById = async () => {

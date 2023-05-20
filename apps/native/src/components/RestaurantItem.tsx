@@ -22,6 +22,7 @@ interface Restaurant {
 const RestaurantItem = ({ restaurant }: Restaurant) => {
   const navigation = useNavigation();
   const handleRestaurantPress = () => {
+    //@ts-ignore
     navigation.navigate('Restaurant' as never, { id: restaurant?.id } as never);
   };
 
@@ -56,19 +57,33 @@ export default RestaurantItem;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
   },
   restaurantContainer: {
-    width: '100%',
-    marginVertical: 10,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+    borderRadius: 5,
+    maxHeight: 240,
+    minWidth: 240,
+    maxWidth: 300,
+    padding: 10,
+    flex: 1,
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
   image: {
     width: '100%',
-    aspectRatio: 5 / 3,
+    aspectRatio: 4 / 2,
     marginBottom: 5,
   },
   restaurantTitle: {
